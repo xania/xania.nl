@@ -1,4 +1,6 @@
 {
+  "description": "Xania Software",
+  "repository": "https://github.com/xania/xania.nl",
   "scripts": {
     "build": "npx vite build"
   },
