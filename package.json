@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "npx vite build"
+  },
   "devDependencies": {
     "sass": "^1.54.3"
   }
