@@ -3,7 +3,7 @@ import * as jsx from "@xania/view";
 
 function App() {
   return (
-    <div>
+    <>
       <p>
         Software engineer with 20y+ handson experience in software development
       </p>
@@ -29,7 +29,7 @@ function App() {
           <li>Azure Static Websites</li>
         </ul>
       </section>
-    </div>
+    </>
   );
 }
 
