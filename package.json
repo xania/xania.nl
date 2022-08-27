@@ -2,9 +2,13 @@
   "description": "Xania Software",
   "repository": "https://github.com/xania/xania.nl",
   "scripts": {
+    "start": "npx vite",
     "build": "npx vite build"
   },
   "devDependencies": {
-    "sass": "^1.54.3"
+    "sass": "^1.54.5"
+  },
+  "dependencies": {
+    "@xania/view": "file:view"
   }
 }
