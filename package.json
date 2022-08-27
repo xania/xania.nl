@@ -10,5 +10,8 @@
   },
   "dependencies": {
     "@xania/view": "file:view"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }
