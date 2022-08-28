@@ -4,6 +4,22 @@ import * as jsx from "@xania/view";
 function App() {
   return (
     <>
+      <Header />
+      <Main />
+    </>
+  );
+}
+
+function Header() {
+  return (
+    <div class="header">
+      <h1>Ibrahim ben Salah</h1>
+    </div>
+  );
+}
+function Main() {
+  return (
+    <div class="main">
       <p>
         Software engineer with 20y+ handson experience in software development
       </p>
@@ -29,8 +45,8 @@ function App() {
           <li>Azure Static Websites</li>
         </ul>
       </section>
-    </>
+    </div>
   );
 }
 
-render(<App />, "#main");
+render(<App />, "#app");

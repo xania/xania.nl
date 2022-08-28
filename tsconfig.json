@@ -1,7 +1,11 @@
 {
+  "include": ["view/lib", "view/types", "src"],
   "compilerOptions": {
+    "noEmit": true,
+    "target": "ES2016",
     "jsxFactory": "jsx.createElement",
     "jsx": "react",
-    "jsxFragmentFactory": "jsx.createFragment"
+    "jsxFragmentFactory": "jsx.createFragment",
+    "moduleResolution": "node"
   }
 }
