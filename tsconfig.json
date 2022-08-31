@@ -1,5 +1,5 @@
 {
-  "include": ["view/lib", "view/types", "src"],
+  "include": ["view/lib", "view/types", "src", "mvc.js"],
   "compilerOptions": {
     "noEmit": true,
     "target": "ES2016",

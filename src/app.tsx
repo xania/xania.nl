@@ -1,5 +1,7 @@
 import { render } from "@xania/view";
 import * as jsx from "@xania/view";
+import { RouterOutlet } from "@xania/mvc.js";
+import { createBrowser, createRouter } from "@xania/mvc.js/router";
 
 function App() {
   return (
@@ -17,7 +19,15 @@ function Header() {
     </div>
   );
 }
+
+function AdminComponent() {
+  return <div>Admin component</div>;
+}
 function Main() {
+  const browser = createBrowser([]);
+  const router = createRouter(browser, browser.routes, [
+    { path: ["admin"], component: AdminComponent },
+  ]);
   return (
     <div class="main">
       <p>
@@ -45,8 +55,9 @@ function Main() {
           <li>Azure Static Websites</li>
         </ul>
       </section>
+      <RouterOutlet router={router} />
     </div>
   );
 }
 
-render(<App />, "#app");
+(<App />).render("#app");

@@ -1,3 +1,6 @@
 [submodule "view"]
 	path = view
 	url = https://github.com/xania/view.git
+[submodule "mvc.js"]
+	path = mvc.js
+	url = https://github.com/xania/mvc.js.git
