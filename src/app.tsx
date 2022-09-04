@@ -1,7 +1,8 @@
-import { render } from "@xania/view";
 import * as jsx from "@xania/view";
-import { RouterOutlet } from "@xania/mvc.js";
-import { createBrowser, createRouter } from "@xania/mvc.js/router";
+import { render } from "@xania/view";
+import { createBrowser } from "./router/browser-router";
+import { Outlet } from "./router/outlet";
+import { route } from "./router/view-resolver";
 
 function App() {
   return (
@@ -21,13 +22,18 @@ function Header() {
 }
 
 function AdminComponent() {
-  return <div>Admin component</div>;
+  return {
+    view: <div>Admin component</div>,
+    routes: [
+      {
+        match: ["b", "c"],
+        view: <div>dafasdf</div>,
+      },
+    ],
+  };
 }
+
 function Main() {
-  const browser = createBrowser([]);
-  const router = createRouter(browser, browser.routes, [
-    { path: ["admin"], component: AdminComponent },
-  ]);
   return (
     <div class="main">
       <p>
@@ -55,9 +61,47 @@ function Main() {
           <li>Azure Static Websites</li>
         </ul>
       </section>
-      <RouterOutlet router={router} />
+      <Nav />
+      <Outlet
+        router={createBrowser([])}
+        routes={[route(regex, AdminComponent)]}
+      />
     </div>
   );
 }
 
-(<App />).render("#app");
+function regex(path: string[]) {
+  return Promise.resolve({
+    length: 1,
+  });
+}
+
+render(<App />, "#app");
+
+function Nav() {
+  return (
+    <div>
+      <div>Hello World</div>
+      <div>
+        <a href="/" class="router-link">
+          Home
+        </a>
+      </div>
+      <div>
+        <a href="/a" class="router-link">
+          /a
+        </a>
+      </div>
+      <div>
+        <a href="/a/b" class="router-link">
+          /a/b
+        </a>
+      </div>
+      <div>
+        <a href="/a/b/c" class="router-link">
+          /a/b/c
+        </a>
+      </div>
+    </div>
+  );
+}
