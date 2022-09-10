@@ -17,7 +17,6 @@ export function createViewResolver<TView>(
     };
   }
 
-  resolve["routes"] = routes;
   return resolve;
 
   function resolve(remainingPath: string[]) {
@@ -26,12 +25,12 @@ export function createViewResolver<TView>(
       if (segment) {
         const { view } = route;
         if (segment instanceof Promise) {
-          return segment.then(build);
+          return segment.then(buildResolution);
         } else {
-          return Promise.resolve(build(segment));
+          return Promise.resolve(buildResolution(segment));
         }
 
-        function build(segment: RouteSegment) {
+        function buildResolution(segment: RouteSegment) {
           const appliedPath = remainingPath.slice(0, segment.length);
           return {
             appliedPath,

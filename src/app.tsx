@@ -43,10 +43,10 @@ function Main() {
         I am currently looking for a new projects working with .NET and or
         JavaScript frameworks
         <div>
-          Contact:{" "}
+          Contact:
           <a href="mailto:ibrahim.bensalah@xania.nl">
             ibrahim.bensalah@xania.nl
-          </a>{" "}
+          </a>
           0641379989
         </div>
       </p>
