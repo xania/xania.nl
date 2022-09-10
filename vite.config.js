@@ -4,4 +4,7 @@ export default {
     port: 8081,
   },
   root: "src",
+  build: {
+    outDir: "../dist",
+  },
 };
