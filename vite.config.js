@@ -6,5 +6,11 @@ export default {
   root: "src",
   build: {
     outDir: "../dist",
+    rollupOptions: {
+      input: {
+        cvApp: "./src/index.html",
+        invoiceApp: "./src/invoices/index.html",
+      },
+    },
   },
 };
