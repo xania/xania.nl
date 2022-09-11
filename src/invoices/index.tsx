@@ -7,8 +7,6 @@ export function InvoiceApp() {
   return <section>{invoices.map(invoiceLink)}</section>;
 }
 
-render(<InvoiceApp />, "#app");
-
 function invoiceLink(invoice: Invoice) {
   return (
     <div class="mdc-card demo-card">
@@ -34,30 +32,71 @@ function invoiceLink(invoice: Invoice) {
   );
 
   function onDownload() {
-    console.log(invoice);
+    var response = fetch("/api/create-invoice", {
+      method: "post",
+      body: JSON.stringify(invoice),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    response
+      .then((resp) => resp.blob())
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = `Factuur ${invoice.number}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(() => alert("oh no!"));
   }
 }
 
-function invoice2017053(): Invoice {
-  return {
-    number: "2017053",
-    date: "2022-10-09",
-    description: "Periode Aug 2022",
-    lines: [reasultLine("Inzet Reasult BV", 160)],
-  };
+const multiplied: Company = {
+  name: "Multiplied Midden Nederland B.V.",
+  addressLines: ["Matthew David Agteres"],
+};
+
+const xania: Sender = {
+  bankAccount: "NL61 INGB 0005 8455 00",
+  name: "Xania Software",
+};
+
+interface Sender {
+  bankAccount: string;
+  name: string;
 }
 
 function invoice2017054(): Invoice {
   return {
     number: "2017054",
-    date: "2022-11-01",
+    date: "2022-10-09",
+    description: "Periode Aug 2022",
+    lines: [reasultLine("Inzet Reasult BV", 160)],
+    expirationDays: 30,
+    company: multiplied,
+    sender: xania,
+  };
+}
+
+function invoice2017053(): Invoice {
+  return {
+    number: "2017053",
+    date: "2022-09-11",
     description: "Periode Okt 2022",
-    lines: [reasultLine("Inzet Reasult BV", 8 * 8)],
+    lines: [reasultLine("Inzet Reasult BV", 60)],
+    expirationDays: 30,
+    company: multiplied,
+    sender: xania,
   };
 }
 
 function reasultLine(description: string, hours: number) {
   return {
+    tax: 0.21,
     description,
     hours,
     amount: hours * 97,
@@ -75,4 +114,26 @@ interface Invoice {
   date: string;
   description: string;
   lines: InvoiceLine[];
+  expirationDays: number;
+  company: Company;
+  sender: Sender;
 }
+
+interface Company {
+  name: string;
+  addressLines: string[];
+}
+
+interface Address {
+  contactName?: string;
+  phone?: string;
+  email?: string;
+  street?: string;
+  nr?: string;
+  nrExtra?: string;
+  zipCode?: string;
+  city?: string;
+  state?: string;
+}
+
+render(<InvoiceApp />, "#app");

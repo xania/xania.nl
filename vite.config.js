@@ -2,6 +2,9 @@
 export default {
   server: {
     port: 8081,
+    proxy: {
+      "/api": { target: "http://localhost:7071", changeOrigin: true },
+    },
   },
   root: "src",
   build: {

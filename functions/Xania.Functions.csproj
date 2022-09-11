@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <UserSecretsId>a4181f96-78ae-4c4b-bf5a-9fda6606833f</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Invoices\blue.PNG" />
+    <None Remove="Invoices\logo.PNG" />
+    <None Remove="Invoices\roboto.regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+    <PackageReference Include="itext7" Version="7.2.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.0.1" />
+    <PackageReference Include="SharpZipLib" Version="1.3.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Invoices\blue.PNG" />
+    <EmbeddedResource Include="Invoices\logo.PNG" />
+    <EmbeddedResource Include="Invoices\roboto.regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>
