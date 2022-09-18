@@ -1,10 +1,12 @@
 {
   "version": "0.2.0",
-  "configurations": [{
-    "type": "pwa-chrome",
-    "name": "Home",
-    "request": "launch",
-    "url": "http://localhost:8081/",
-    "sourceMaps": true
-  }]
+  "configurations": [
+    {
+      "type": "pwa-chrome",
+      "name": "Home",
+      "request": "launch",
+      "url": "http://localhost:9091/",
+      "sourceMaps": true
+    }
+  ]
 }

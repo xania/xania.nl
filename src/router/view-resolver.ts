@@ -23,20 +23,23 @@ export function createViewResolver<TView>(
     for (const route of compiled) {
       const segment = route.match(remainingPath);
       if (segment) {
-        const { view } = route;
         if (segment instanceof Promise) {
           return segment.then(buildResolution);
         } else {
-          return Promise.resolve(buildResolution(segment));
+          return buildResolution(segment);
         }
 
-        function buildResolution(segment: RouteSegment) {
+        async function buildResolution(segment: RouteSegment) {
           const appliedPath = remainingPath.slice(0, segment.length);
+
+          const { view, routes } = await applyComponent(route.component);
+
           return {
             appliedPath,
             view,
             params: segment.params,
-            resolve: route.resolve,
+            resolve:
+              routes instanceof Function ? routes : createViewResolver(routes),
           } as ViewResolution<TView>;
         }
       }
@@ -49,15 +52,13 @@ export function createViewResolver<TView>(
 
   function compile(routes: RouteInput<TView>[]): Route<TView>[] {
     const results: Route<TView>[] = [];
-    if (Array.isArray(routes)) {
+    if (routes instanceof Array) {
       for (const route of routes) {
-        const { match, routes, view } = route;
+        const { match, component } = route;
 
         results.push({
           match: match instanceof Function ? match : pathMatcher(match),
-          resolve:
-            routes instanceof Function ? routes : createViewResolver(routes),
-          view,
+          component,
         });
       }
     }
@@ -115,14 +116,12 @@ interface NotFound {
 
 export interface RouteInput<TView> {
   match: PathTemplate | Route<TView>["match"];
-  view?: TView;
-  routes?: ViewResolver<TView> | RouteInput<TView>[];
+  component: ComponentInput<TView>;
 }
 
 interface Route<TView> {
   match(path: Path): RouteSegment | Promise<RouteSegment>;
-  view?: TView;
-  resolve?: ViewResolver<TView>;
+  component: ComponentInput<TView>;
 }
 
 function isArrayEmpty(arr: any[]) {
@@ -141,17 +140,45 @@ function isArrayEmpty(arr: any[]) {
 //   };
 // }
 
-interface RouteComponent<TView> {
+export interface RouteComponent<TView = any> {
   view: TView;
-  routes?: RouteInput<TView>["routes"];
+  routes?: RouteInput<TView>[] | ViewResolver<TView>;
 }
+
+type ComponentFunc<TView> = () => RouteComponent<TView>;
+type ComponentInput<TView> =
+  | ComponentFunc<TView>
+  | { prototype: RouteComponent<TView> };
 
 export function route<TView>(
   match: RouteInput<TView>["match"],
-  component: () => RouteComponent<TView>
-) {
+  component: RouteInput<TView>["component"]
+): RouteInput<TView> {
   return {
     match,
-    ...component(),
+    component,
   };
+}
+
+function applyComponent(fn: any) {
+  var result = fn();
+  if (result instanceof Promise) {
+    return result.then(buildResult);
+  } else {
+    return Promise.resolve(buildResult(result));
+  }
+
+  function buildResult(result) {
+    try {
+      if (result && "render" in result) {
+        return {
+          view: result,
+        };
+      } else {
+        return result;
+      }
+    } catch (e) {
+      return Reflect.construct(fn, []);
+    }
+  }
 }

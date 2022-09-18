@@ -32,6 +32,10 @@ export function Outlet<TView>(props: OutletProps<TView>) {
               const entry = cache[i];
               if (entry?.view !== view) {
                 cache[i] = { view, binding: view.render(target) };
+
+                if (entry) {
+                  entry.binding.dispose();
+                }
               }
               x = x.next;
               i++;
@@ -75,7 +79,7 @@ async function resolveRoute(
   path: Path,
   resolveView: ViewResolver
 ) {
-  if (path.length === 0 || !(resolveView instanceof Function))
+  if (!(resolveView instanceof Function))
     return new EmptyResult(path, resolveView);
   // check if we can reuse prev view result
   if (prev instanceof ViewResult && matchPath(prev.appliedPath, path)) {
@@ -112,9 +116,11 @@ async function resolveRoute(
   }
 }
 
-function matchPath(path: Path, newPath: Path) {
-  for (let i = 0; i < path.length; i++) {
-    if (path[i] !== newPath[i]) return false;
+function matchPath(basePath: Path, newPath: Path) {
+  if (basePath.length === 0) return false;
+
+  for (let i = 0; i < basePath.length; i++) {
+    if (basePath[i] !== newPath[i]) return false;
   }
 
   return true;

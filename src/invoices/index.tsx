@@ -1,5 +1,6 @@
 import * as jsx from "@xania/view";
-import { render } from "@xania/view";
+
+import "./style.scss";
 
 export function InvoiceApp() {
   var invoices: Invoice[] = [invoice2017053(), invoice2017054()];
@@ -135,5 +136,3 @@ interface Address {
   city?: string;
   state?: string;
 }
-
-render(<InvoiceApp />, "#app");
