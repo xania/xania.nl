@@ -1,7 +1,7 @@
 import * as jsx from "@xania/view";
 import { Dish } from "./dish";
 
-export async function MenuCard() {
+export async function MenuCardApp() {
   const data = await loadData();
   return (
     <div>
