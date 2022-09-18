@@ -6,6 +6,7 @@
     "jsxFactory": "jsx.createElement",
     "jsx": "react",
     "jsxFragmentFactory": "jsx.createFragment",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "module": "ES2020"
   }
 }

@@ -38,6 +38,11 @@ function Nav() {
         </a>
       </div>
       <div>
+        <a href="/menucard" class="router-link">
+          menucard
+        </a>
+      </div>
+      <div>
         <a href="/a/b/c" class="router-link">
           /a/b/c
         </a>

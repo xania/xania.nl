@@ -173,7 +173,11 @@ function applyComponent(fn: any) {
   }
 
   function buildResult(result) {
-    if (result && "render" in result) {
+    if (!result) return result;
+    if (result instanceof Function)
+      // typically when using dynamic imports
+      return applyComponent(result);
+    if ("render" in result) {
       return {
         view: result,
       };

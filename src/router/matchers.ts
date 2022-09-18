@@ -1,0 +1,13 @@
+export function empty(path: string[]) {
+  if (path.length === 0) return { length: 0 };
+}
+
+export function regex(pattern: RegExp) {
+  return (path: string[]) => {
+    var match = pattern.exec(path[0]);
+    if (match)
+      return Promise.resolve({
+        length: 1,
+      });
+  };
+}

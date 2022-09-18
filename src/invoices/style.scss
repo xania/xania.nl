@@ -1,9 +1,3 @@
-@use "@material/card";
-@use "@material/typography/mdc-typography";
-@use "@material/button/styles";
-
-@include card.core-styles;
-
 section {
   display: flex;
 
