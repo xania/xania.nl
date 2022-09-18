@@ -161,24 +161,24 @@ export function route<TView>(
 }
 
 function applyComponent(fn: any) {
-  var result = fn();
-  if (result instanceof Promise) {
-    return result.then(buildResult);
-  } else {
-    return Promise.resolve(buildResult(result));
+  try {
+    var result = fn();
+    if (result instanceof Promise) {
+      return result.then(buildResult);
+    } else {
+      return Promise.resolve(buildResult(result));
+    }
+  } catch (e) {
+    return Promise.resolve(Reflect.construct(fn, []));
   }
 
   function buildResult(result) {
-    try {
-      if (result && "render" in result) {
-        return {
-          view: result,
-        };
-      } else {
-        return result;
-      }
-    } catch (e) {
-      return Reflect.construct(fn, []);
+    if (result && "render" in result) {
+      return {
+        view: result,
+      };
+    } else {
+      return result;
     }
   }
 }
