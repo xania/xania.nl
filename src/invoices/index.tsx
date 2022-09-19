@@ -75,7 +75,7 @@ function invoice2017054(): Invoice {
   return {
     number: "2017054",
     date: "2022-10-09",
-    description: "Periode Aug 2022",
+    description: "Periode Sept 2022",
     lines: [reasultLine("Inzet Reasult BV", 160)],
     expirationDays: 30,
     company: multiplied,
@@ -87,7 +87,7 @@ function invoice2017053(): Invoice {
   return {
     number: "2017053",
     date: "2022-09-11",
-    description: "Periode Okt 2022",
+    description: "Periode Aug 2022",
     lines: [reasultLine("Inzet Reasult BV", 60)],
     expirationDays: 30,
     company: multiplied,
