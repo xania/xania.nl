@@ -2,6 +2,7 @@ import * as jsx from "@xania/view";
 import classes from "./index.module.scss";
 
 interface DishProps {
+  id: number;
   title: string;
   description: string;
   price: number;

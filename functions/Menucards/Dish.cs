@@ -8,13 +8,6 @@ namespace Xania.Functions.Menucards
 {
     public class MenuCard
     {
-        public IEnumerable<Dish> Dishes { get; set; }
-    }
-
-    public class Dish
-    {
-        public string Title { get; internal set; }
-        public string Description { get; internal set; }
-        public decimal Price { get; internal set; }
+        public IEnumerable<Product> Dishes { get; set; }
     }
 }

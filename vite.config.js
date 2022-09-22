@@ -3,7 +3,7 @@ export default {
   server: {
     port: 9091,
     proxy: {
-      "/api": { target: "http://localhost:7071", changeOrigin: true },
+      "/api": { target: "http://localhost:7125", changeOrigin: true },
     },
   },
   root: "src",

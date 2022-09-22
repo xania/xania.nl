@@ -5,9 +5,11 @@ export function empty(path: string[]) {
 export function regex(pattern: RegExp) {
   return (path: string[]) => {
     var match = pattern.exec(path[0]);
-    if (match)
+    if (match) {
       return Promise.resolve({
         length: 1,
+        params: match.groups,
       });
+    }
   };
 }

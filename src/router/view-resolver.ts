@@ -32,7 +32,10 @@ export function createViewResolver<TView>(
         async function buildResolution(segment: RouteSegment) {
           const appliedPath = remainingPath.slice(0, segment.length);
 
-          const { view, routes } = await applyComponent(route.component);
+          const { view, routes } = await applyComponent(
+            route.component,
+            segment.params
+          );
 
           return {
             appliedPath,
@@ -160,23 +163,23 @@ export function route<TView>(
   };
 }
 
-function applyComponent(fn: any) {
+function applyComponent(fn: any, params: any) {
   try {
-    var result = fn();
+    var result = fn(params);
     if (result instanceof Promise) {
       return result.then(buildResult);
     } else {
       return Promise.resolve(buildResult(result));
     }
   } catch (e) {
-    return Promise.resolve(Reflect.construct(fn, []));
+    return Promise.resolve(Reflect.construct(fn, [params]));
   }
 
   function buildResult(result) {
     if (!result) return result;
     if (result instanceof Function)
       // typically when using dynamic imports
-      return applyComponent(result);
+      return applyComponent(result, params);
     if ("render" in result) {
       return {
         view: result,
