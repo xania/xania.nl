@@ -1,14 +1,8 @@
 import * as jsx from "@xania/view";
+import { Product } from "../../azure-functions";
 import classes from "./index.module.scss";
 
-interface DishProps {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-}
-
-export function Dish(props: DishProps) {
+export function Dish(props: Product) {
   return (
     <div class={[classes["dish"], "mdc-card"]}>
       <h3 class={classes["dish__title"]}>{props.title}</h3>

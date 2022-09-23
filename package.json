@@ -3,7 +3,8 @@
   "repository": "https://github.com/xania/xania.nl",
   "scripts": {
     "start": "npx vite",
-    "build": "npx vite build"
+    "build": "npx vite build",
+    "swag": "npx swagger-typescript-api --api-class-name XaniaClient -p http://localhost:7125/api/swagger/json -o ./src -n azure-functions.ts"
   },
   "devDependencies": {
     "sass": "^1.54.5",

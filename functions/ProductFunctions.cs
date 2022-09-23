@@ -10,11 +10,12 @@ using static Xania.Functions.Menucards.Factories;
 
 namespace Xania.Functions
 {
-    public static class GetMenucard
+    public static class ProductFunctions
     {
-        [FunctionName("get-menucard")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "get-menucard")] HttpRequest req,
+        [FunctionName("product")]
+        [ProducesResponseType(typeof(MenuCard), 200)]
+        public static IActionResult ProductList(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "product")] HttpRequest req,
             ExecutionContext context,
             ILogger log)
         {

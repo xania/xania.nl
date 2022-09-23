@@ -1,4 +1,5 @@
 import * as jsx from "@xania/view";
+import { XaniaClient } from "../azure-functions";
 
 import "./style.scss";
 
@@ -32,27 +33,17 @@ function invoiceLink(invoice: Invoice) {
     </div>
   );
 
-  function onDownload() {
-    var response = fetch("/api/create-invoice", {
-      method: "post",
-      body: JSON.stringify(invoice),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  async function onDownload() {
+    const client = new XaniaClient({ baseUrl: null });
+    const blob = await client.api.invoiceCreate(invoice).then((e) => e.blob());
 
-    response
-      .then((resp) => resp.blob())
-      .then((blob) => {
-        const url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(blob);
 
-        var link = document.createElement("a");
-        link.href = url;
-        link.download = `Factuur ${invoice.number}.pdf`;
-        link.click();
-        window.URL.revokeObjectURL(url);
-      })
-      .catch(() => alert("oh no!"));
+    var link = document.createElement("a");
+    link.href = url;
+    link.download = `Factuur ${invoice.number}.pdf`;
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
 }
 
