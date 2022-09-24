@@ -1,5 +1,5 @@
 import * as jsx from "@xania/view";
-import { XaniaClient } from "../azure-functions";
+import { Company, Invoice, XaniaClient } from "../azure-functions";
 
 import "./style.scss";
 
@@ -93,37 +93,4 @@ function reasultLine(description: string, hours: number) {
     hours,
     amount: hours * 97,
   };
-}
-
-interface InvoiceLine {
-  description: string;
-  hours: number;
-  amount: number;
-}
-
-interface Invoice {
-  number: string;
-  date: string;
-  description: string;
-  lines: InvoiceLine[];
-  expirationDays: number;
-  company: Company;
-  sender: Sender;
-}
-
-interface Company {
-  name: string;
-  addressLines: string[];
-}
-
-interface Address {
-  contactName?: string;
-  phone?: string;
-  email?: string;
-  street?: string;
-  nr?: string;
-  nrExtra?: string;
-  zipCode?: string;
-  city?: string;
-  state?: string;
 }

@@ -1,0 +1,230 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Swagger document",
+    "description": "Integrate Swagger UI With Azure Functions",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7125"
+    }
+  ],
+  "paths": {
+    "/api/invoice": {
+      "post": {
+        "tags": [
+          "invoice"
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Invoice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/product": {
+      "get": {
+        "tags": [
+          "product"
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MenuCard"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InvoiceLine": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "tax": {
+            "type": "number",
+            "format": "double"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressLines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Sender": {
+        "type": "object",
+        "properties": {
+          "bankAccount": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvoiceLine"
+            },
+            "nullable": true
+          },
+          "totalTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalAmountExclTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "totalAmountInclTax": {
+            "type": "number",
+            "format": "double",
+            "readOnly": true
+          },
+          "company": {
+            "$ref": "#/components/schemas/Company"
+          },
+          "sender": {
+            "$ref": "#/components/schemas/Sender"
+          },
+          "expirationDays": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "options": {
+            "type": "array",
+            "items": { },
+            "nullable": true,
+            "readOnly": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MenuCard": {
+        "type": "object",
+        "properties": {
+          "dishes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

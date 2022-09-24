@@ -6,7 +6,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using System.Threading.Tasks;
 using Xania.Functions.Helpers;
 using Xania.Functions.Invoices;
-using static iText.Svg.SvgConstants;
 
 namespace Xania.Functions
 {

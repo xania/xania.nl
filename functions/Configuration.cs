@@ -1,14 +1,9 @@
 ﻿using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Xania.Functions
 {
-    internal class FunctionAppConfiguration
+  internal class FunctionAppConfiguration
     {
         public static IConfiguration Get(ExecutionContext context)
         {

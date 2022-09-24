@@ -54,7 +54,6 @@ namespace Xania.Functions
                 };
                 opts.ConfigureSwaggerGen = x =>
                 {
-
                     //x.CustomOperationIds(apiDesc =>
                     //{
                     //    return apiDesc.TryGetMethodInfo(out MethodInfo mInfo) ? mInfo.Name + "ttt" : default(Guid).ToString();
