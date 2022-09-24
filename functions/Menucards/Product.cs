@@ -7,7 +7,14 @@ namespace Xania.Functions.Menucards
         public string Title { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public IList<object> Options { get; } = new List<object>();
+
+        public IList<IOption> Options { get; } = new List<IOption>();
         public int Id { get; internal set; }
+    }
+
+    [SubTypes(typeof(MultiChoiceOption), typeof(ProductOption))]
+    public interface IOption: IDescriminatedUnion
+    {
+
     }
 }

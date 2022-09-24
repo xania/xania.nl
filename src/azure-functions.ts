@@ -52,13 +52,24 @@ export interface Invoice {
   expirationDays?: number;
 }
 
+export interface ProductOption {
+  value?: string | null;
+  type?: string | null;
+}
+
+export interface MultiChoiceOption {
+  name?: string | null;
+  options?: (MultiChoiceOption | ProductOption)[] | null;
+  type?: string | null;
+}
+
 export interface Product {
   title?: string | null;
   description?: string | null;
 
   /** @format double */
   price?: number;
-  options?: any[] | null;
+  options?: (MultiChoiceOption | ProductOption)[] | null;
 
   /** @format int32 */
   id?: number;

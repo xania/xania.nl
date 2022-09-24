@@ -17,9 +17,12 @@
         };
     }
 
-    public class MultiChoiceOption
+    public class MultiChoiceOption: IOption
     {
         public string Name { get; init; }
-        public object[] Options { get; init; }
+        public IOption[] Options { get; init; }
+        public string Type => "multi";
+
+        public readonly string dd = "asdfasdf";
     }
 }
