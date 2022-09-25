@@ -9,12 +9,10 @@ namespace Xania.Functions.Menucards
         public decimal Price { get; set; }
 
         public IList<IOption> Options { get; } = new List<IOption>();
-        public int Id { get; internal set; }
+        public int Id { get; set; }
     }
 
-    [SubTypes(typeof(MultiChoiceOption), typeof(ProductOption))]
-    public interface IOption: IDescriminatedUnion
+    public interface IOption
     {
-
     }
 }

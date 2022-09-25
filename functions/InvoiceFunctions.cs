@@ -1,4 +1,3 @@
-using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -11,13 +10,13 @@ namespace Xania.Functions
 {
     public static class InvoiceFunctions
     {
+        [OpenApiOperation]
+        [OpenApiRequestBody(typeof(Invoice))]
+        [OpenApiResponseBody(typeof(byte[]))]
         [FunctionName("invoice")]
-        [ProducesResponseType(typeof(byte[]), 200)]
-        [Produces("application/octet-stream")]
         public static async Task<IActionResult> CreateInvoice(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoice")][RequestBodyType(typeof(Invoice), "Invoice")] HttpRequest req)
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoice")] HttpRequest req)
         {
-            
             var invoice = await req.FromBody<Invoice>();
 
             var generateFunc = InvoiceReport.Generate(invoice);

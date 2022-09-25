@@ -4,9 +4,11 @@
   "scripts": {
     "start": "npx vite",
     "build": "npx vite build",
-    "swag": "npx swagger-typescript-api --api-class-name XaniaClient -p http://localhost:7125/api/swagger/json -o ./src -n azure-functions.ts"
+    "swag": "npx swagger-typescript-api --api-class-name XaniaClient -p http://localhost:7125/api/openapi -o ./src -n azure-functions.ts",
+    "openapi": "openapi-typescript http://localhost:7125/api/openapi --output ./src/azure-functions.ts"
   },
   "devDependencies": {
+    "openapi-typescript": "file:../openapi-typescript",
     "sass": "^1.54.5",
     "vite": "3.0.9"
   },

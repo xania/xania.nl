@@ -8,6 +8,9 @@ export function Dish(product: Product) {
       <h3 class={classes["dish__title"]}>{product.title}</h3>
       <p>{product.description}</p>
       <span>&euro; {product.price}</span>
+      {product.options.map((o) => (
+        <div>{o.type}</div>
+      ))}
     </div>
   );
 }

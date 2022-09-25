@@ -1,4 +1,7 @@
-﻿namespace Xania.Functions.Menucards
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+
+namespace Xania.Functions.Menucards
 {
     public static class Factories
     {
@@ -20,9 +23,16 @@
     public class MultiChoiceOption: IOption
     {
         public string Name { get; init; }
-        public IOption[] Options { get; init; }
-        public string Type => "multi";
 
-        public readonly string dd = "asdfasdf";
+        public IList<IOption> Options { get; init; }
+
+        public const string Type = "multi";
+    }
+
+    public class ProductOption : IOption
+    {
+        public string Value { get; init; }
+
+        public const string Type = "single";
     }
 }

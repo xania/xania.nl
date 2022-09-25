@@ -1,25 +1,26 @@
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Xania.Functions.Menucards;
 using static Xania.Functions.Menucards.Factories;
-
+using static Xania.Functions.OpenApiFunctions;
 
 namespace Xania.Functions
 {
     public static class ProductFunctions
     {
+        [OpenApiOperation]
+        //[OpenApiResponseWithBody(System.Net.HttpStatusCode.OK, "application/json", bodyType: typeof(MenuCard))]
+        [OpenApiResponseBody(typeof(MenuCard))]
         [FunctionName("product")]
-        [ProducesResponseType(typeof(MenuCard), 200)]
         public static IActionResult ProductList(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "product")] HttpRequest req,
             ExecutionContext context,
             ILogger log)
         {
-            return new ObjectResult(new MenuCard
+            return Json(new MenuCard
             {
                 Dishes = new[]
                 {
@@ -52,6 +53,9 @@ namespace Xania.Functions
                 }
             });
         }
+
+
+
     }
 
 }

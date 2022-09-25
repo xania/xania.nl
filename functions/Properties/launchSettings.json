@@ -3,7 +3,7 @@
     "functions": {
       "commandName": "Project",
       "commandLineArgs": "--port 7125",
-      "launchBrowser": false
+      "nativeDebugging": true
     }
   }
 }

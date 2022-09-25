@@ -3,6 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
     <UserSecretsId>a4181f96-78ae-4c4b-bf5a-9fda6606833f</UserSecretsId>
+    <IncludeSymbols>False</IncludeSymbols>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Invoices\blue.PNG" />
@@ -11,10 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
-    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.3.2" />
     <PackageReference Include="itext7" Version="7.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.3" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.4.2" />
     <PackageReference Include="SharpZipLib" Version="1.3.3" />
   </ItemGroup>
   <ItemGroup>

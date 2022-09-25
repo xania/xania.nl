@@ -8,6 +8,7 @@ namespace Xania.Functions.Invoices
         public string Number { get; set; }
         public string Description { get; set; }
         public string Date { get; set; }
+        public IEnumerable<int> Numbers { get; set; } = Enumerable.Empty<int>();
         public IEnumerable<InvoiceLine> Lines { get; set; } = Enumerable.Empty<InvoiceLine>();
         public decimal TotalTax => Lines.Sum(e => e.Amount * e.Tax);
         public decimal TotalAmountExclTax => Lines.Sum(e => e.Amount);

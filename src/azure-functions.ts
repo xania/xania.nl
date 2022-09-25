@@ -9,74 +9,77 @@
  * ---------------------------------------------------------------
  */
 
-export interface InvoiceLine {
-  /** @format int32 */
-  hours?: number;
-  description?: string | null;
-
-  /** @format double */
-  tax?: number;
-
-  /** @format double */
-  amount?: number;
-}
-
-export interface Company {
-  name?: string | null;
-  addressLines?: string[] | null;
-}
-
-export interface Sender {
-  bankAccount?: string | null;
-  name?: string | null;
-}
-
-export interface Invoice {
-  number?: string | null;
-  description?: string | null;
-  date?: string | null;
-  lines?: InvoiceLine[] | null;
-
-  /** @format double */
-  totalTax?: number;
-
-  /** @format double */
-  totalAmountExclTax?: number;
-
-  /** @format double */
-  totalAmountInclTax?: number;
-  company?: Company;
-  sender?: Sender;
-
-  /** @format int32 */
-  expirationDays?: number;
-}
-
-export interface ProductOption {
-  value?: string | null;
-  type?: string | null;
-}
-
-export interface MultiChoiceOption {
-  name?: string | null;
-  options?: (MultiChoiceOption | ProductOption)[] | null;
-  type?: string | null;
+export interface MenuCard {
+  dishes: Product[];
 }
 
 export interface Product {
-  title?: string | null;
-  description?: string | null;
+  title: string | null;
+  description: string | null;
 
   /** @format double */
-  price?: number;
-  options?: (MultiChoiceOption | ProductOption)[] | null;
+  price: number;
+  options: IOption[];
 
-  /** @format int32 */
-  id?: number;
+  /** @format in32 */
+  id: number;
 }
 
-export interface MenuCard {
-  dishes?: Product[] | null;
+export type IOption = MultiChoiceOption | ProductOption;
+
+export interface ProductOption {
+  type: "single";
+  value: string | null;
+}
+
+export interface MultiChoiceOption {
+  type: "multi";
+  name: string | null;
+  options: IOption[];
+}
+
+export interface Invoice {
+  number: string | null;
+  description: string | null;
+  date: string | null;
+  numbers: number[];
+  lines: InvoiceLine[];
+
+  /** @format double */
+  totalTax: number;
+
+  /** @format double */
+  totalAmountExclTax: number;
+
+  /** @format double */
+  totalAmountInclTax: number;
+  company: Company;
+  sender: Sender;
+
+  /** @format in32 */
+  expirationDays: number;
+}
+
+export interface Sender {
+  bankAccount: string | null;
+  name: string | null;
+}
+
+export interface Company {
+  name: string | null;
+  addressLines: string[];
+}
+
+export interface InvoiceLine {
+  /** @format in32 */
+  hours: number;
+  description: string | null;
+
+  /** @format double */
+  tax: number;
+
+  /** @format double */
+  amount: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -124,7 +127,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "http://localhost:7125";
+  public baseUrl: string = "";
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
@@ -288,43 +291,37 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Swagger document
- * @version v2
- * @baseUrl http://localhost:7125
- *
- * Integrate Swagger UI With Azure Functions
+ * @title Xania OpenApi Client
+ * @version 1.0.0
  */
 export class XaniaClient<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
   api = {
     /**
      * No description
      *
-     * @tags invoice
      * @name InvoiceCreate
      * @request POST:/api/invoice
      */
-    invoiceCreate: (data: Invoice, query?: { code?: string }, params: RequestParams = {}) =>
+    invoiceCreate: (data: Invoice, params: RequestParams = {}) =>
       this.request<string, any>({
         path: `/api/invoice`,
         method: "POST",
-        query: query,
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
     /**
      * No description
      *
-     * @tags product
      * @name ProductList
      * @request GET:/api/product
      */
-    productList: (query?: { code?: string }, params: RequestParams = {}) =>
+    productList: (params: RequestParams = {}) =>
       this.request<MenuCard, any>({
         path: `/api/product`,
         method: "GET",
-        query: query,
         format: "json",
         ...params,
       }),
