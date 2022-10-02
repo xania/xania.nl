@@ -356,7 +356,9 @@ namespace Xania.Functions
                     propSchema.ReadOnly = isReadOnly;
 
                     schema.Properties.Add(propName, propSchema);
-                    schema.Required.Add(propName);
+
+                    if (!isReadOnly)
+                        schema.Required.Add(propName);
 
                     if (referencedTypes != null)
                         foreach (var refType in referencedTypes)

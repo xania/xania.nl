@@ -4,6 +4,7 @@ import { regex } from "../router/matchers";
 import { RouteComponent } from "../router/view-resolver";
 import { Dish } from "./dish";
 import classes from "./list.module.scss";
+import { MDCRipple } from "@material/ripple";
 
 export async function MenuCardApp(): Promise<RouteComponent> {
   const menuCard = await loadData();
@@ -12,15 +13,20 @@ export async function MenuCardApp(): Promise<RouteComponent> {
       return (
         <div>
           {menuCard.dishes.map((dish) => (
-            <div class={[classes["dish"], "mdc-card"]}>
-              <h3 class={classes["dish__title"]}>
-                <a href={"/menucard/" + dish.id} class="router-link">
-                  {dish.title}
-                </a>
-              </h3>
+            <a
+              href={"/menucard/" + dish.id}
+              class={[
+                classes["dish"],
+                "router-link",
+                "mdc-card",
+                "mdc-ripple-surface",
+              ]}
+            >
+              {MDCRipple}
+              <h3 class={classes["dish__title"]}>{dish.title}</h3>
               <p>{dish.description}</p>
               <span>&euro; {dish.price}</span>
-            </div>
+            </a>
           ))}
         </div>
       );
@@ -45,11 +51,7 @@ function loadData() {
     baseUrl: "",
   });
 
-  return client.api
-    .productList(null, {
-      baseUrl: "",
-    })
-    .then((e) => e.data);
+  return client.api.productList().then((e) => e.data);
   // return fetch("/api/get-menucard", {
   //   headers: {
   //     "Content-Type": "application/json",

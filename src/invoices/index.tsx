@@ -35,9 +35,9 @@ function invoiceLink(invoice: Invoice) {
 
   async function onDownload() {
     const client = new XaniaClient({ baseUrl: null });
-    const blob = await client.api.invoiceCreate(invoice).then((e) => e.blob());
+    const response = await await client.api.invoiceCreate(invoice);
 
-    const url = window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(response.data);
 
     var link = document.createElement("a");
     link.href = url;
@@ -65,9 +65,9 @@ interface Sender {
 function invoice2017054(): Invoice {
   return {
     number: "2017054",
-    date: "2022-10-09",
+    date: "2022-10-01",
     description: "Periode Sept 2022",
-    lines: [reasultLine("Inzet Reasult BV", 160)],
+    lines: [reasultLine("Inzet Reasult BV", 176)],
     expirationDays: 30,
     company: multiplied,
     sender: xania,
@@ -92,5 +92,5 @@ function reasultLine(description: string, hours: number) {
     description,
     hours,
     amount: hours * 97,
-  };
+  } as any;
 }

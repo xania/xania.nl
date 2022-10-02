@@ -1,10 +1,14 @@
 .dish {
   padding: 10px;
-  margin: 10px;
+  margin: 10px 0;
 
   &__title {
     color: green;
     margin: 0;
     padding: 0;
+  }
+
+  &__options {
+    margin: 20px 0;
   }
 }

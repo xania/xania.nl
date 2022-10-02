@@ -24,7 +24,7 @@ namespace Xania.Functions.Menucards
     {
         public string Name { get; init; }
 
-        public IList<IOption> Options { get; init; }
+        public IList<ProductOption> Options { get; init; }
 
         public const string Type = "multi";
     }
