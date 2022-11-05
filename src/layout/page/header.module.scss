@@ -1,0 +1,44 @@
+@use "@material/elevation/mixins" as elevation-mixins;
+
+.header {
+  display: flex;
+  width: 100%;
+  color: var(--theme-primary, #fff);
+  background-color: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  // :global(.mdc-ripple-surface.mdc-ripple-upgraded::before) {
+  //   background-color: var(
+  //     --mdc-ripple-color,
+  //     var(--mdc-theme-on-primary, #fff)
+  //   );
+  // }
+
+  // :global(.mdc-ripple-surface.mdc-ripple-upgraded::after) {
+  //   background-color: var(
+  //     --mdc-ripple-color,
+  //     var(--mdc-theme-on-primary, #fff)
+  //   );
+  // }
+
+  &__title {
+    margin: auto;
+  }
+
+  &__section {
+    flex: 1;
+    display: inline-flex;
+    line-height: 48px;
+    height: 48px;
+    @include elevation-mixins.elevation(4);
+
+    &--align-end {
+      margin: 0 0 0 auto;
+    }
+  }
+  :global(.mdc-icon-button) {
+    margin: 0 2px;
+  }
+}

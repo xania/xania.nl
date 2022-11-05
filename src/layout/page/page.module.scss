@@ -1,0 +1,101 @@
+$duration: 0.4s;
+$toolbar-fix: 0;
+
+.page--toolbar-fix {
+  padding-top: $toolbar-fix;
+}
+
+:export {
+  animationDuration: $duration;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+
+  transition: opacity;
+  transition-duration: $duration;
+  background-color: inherit;
+
+  &__content {
+    flex: 1;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: auto;
+  }
+
+  &:last-child {
+    animation-name: slideIn;
+    animation-duration: $duration;
+    box-shadow: -10px 0px 10px 1px #aaaaaa41;
+    z-index: 1;
+  }
+
+  &:not(:last-child) {
+    animation-name: slideAway;
+    animation-duration: $duration;
+    box-shadow: -10px 0px 10px 1px #aaaaaa41;
+    z-index: 1;
+  }
+}
+
+.slide-out {
+  animation-name: slideAway;
+  animation-duration: $duration;
+  animation-fill-mode: forwards;
+}
+
+// @supports not (-webkit-touch-callout: none) {
+//   /* CSS for other than iOS devices */
+//   .slide-out {
+//     animation-name: slideOut;
+//     animation-duration: 0.4s;
+//     animation-fill-mode: forwards;
+//   }
+// }
+
+// @supports (-webkit-touch-callout: none) {
+//   /* CSS for other than iOS devices */
+//   .slide-out {
+//     display: none;
+//   }
+// }
+
+@keyframes darken {
+  0% {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.274);
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+  }
+}
+@keyframes slideAway {
+  0% {
+  }
+  100% {
+    transform: translateX(-40%);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

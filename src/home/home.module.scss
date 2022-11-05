@@ -1,0 +1,10 @@
+.home {
+  color: red;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+  :global(.mdc-text-field) {
+    margin: 40px;
+  }
+}

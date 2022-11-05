@@ -1,0 +1,12 @@
+﻿.highlite {
+  animation: anim 1000ms ease-out;
+}
+
+@keyframes anim {
+  0% {
+    background-color: rgba(251, 255, 0, 0.295);
+  }
+  100% {
+    background-color: white;
+  }
+}

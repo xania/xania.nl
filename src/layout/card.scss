@@ -1,0 +1,49 @@
+@use "@material/ripple/styles" as ripple;
+@use "@material/card" as card;
+@use "@material/elevation/mixins" as elevation-mixins;
+@use "@material/typography/mdc-typography";
+
+@use "@material/card/mdc-card";
+
+.mdc-card {
+  margin: 20px;
+  padding: 0;
+
+  label {
+    color: gray;
+  }
+
+  &__content {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__action {
+    @extend .mdc-ripple-surface;
+    display: block;
+  }
+
+  &__title--headline {
+    @extend .mdc-typography;
+    @extend .mdc-typography--headline6;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__title--subtitle {
+    @extend .mdc-typography;
+    @extend .mdc-typography--subtitle2;
+    padding: 0;
+    margin: 0;
+    color: gray;
+  }
+
+  &__actions {
+    @extend .mdc-card__actions;
+  }
+
+  // @include card.outline(white, 4px);
+  // @include card.fill-color(#f5f5f5);
+  @include elevation-mixins.elevation(5);
+}

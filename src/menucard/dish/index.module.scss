@@ -1,0 +1,16 @@
+.dish {
+  padding: 16px;
+  margin: 10px;
+  background-color: #f3f3f3;
+
+  &__title {
+    margin: 0;
+    padding: 0;
+    color: rgb(91, 91, 122);
+    font-weight: 600;
+  }
+
+  &__options {
+    margin: 16px 10px;
+  }
+}

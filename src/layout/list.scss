@@ -1,0 +1,25 @@
+@use "@material/list/evolution-mixins";
+@use "@material/ripple/styles" as ripple;
+
+.mdc-list-item--with-leading-icon {
+  @include evolution-mixins.item-start-spacing($leading: 16px, $trailing: 16px);
+}
+
+.mdc-list {
+  @include evolution-mixins.core-styles();
+
+  &-item {
+    @extend .mdc-list-item;
+    @extend .mdc-list-item--with-one-line;
+    @extend .mdc-ripple-surface;
+
+    // mdc-list-item--with-one-line mdc-ripple-surface;
+
+    &__content {
+      @extend .mdc-list-item__content;
+    }
+    &__end {
+      @extend .mdc-list-item__end;
+    }
+  }
+}

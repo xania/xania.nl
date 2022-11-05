@@ -1,0 +1,13 @@
+@use "@material/textfield/mdc-text-field";
+
+.mdc-text-field {
+  margin: 8px 0;
+
+  &--filled:not(.mdc-text-field--disabled) {
+    background-color: white;
+  }
+
+  &--disabled.mdc-text-field--filled {
+    background-color: #f1f1f1;
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "include": ["view/lib", "view/types", "src", "mvc.js"],
+  "compilerOptions": {
+    "noEmit": true,
+    "target": "ES2016",
+    "jsxFactory": "jsx.createElement",
+    "jsx": "react",
+    "jsxFragmentFactory": "jsx.createFragment",
+    "moduleResolution": "node",
+    "module": "ES2020"
+  }
+}

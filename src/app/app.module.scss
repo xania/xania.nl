@@ -1,0 +1,32 @@
+$height: 80px;
+
+// :global(.app) {
+// }
+
+.app__container {
+  background-color: var(--theme-secondary, white);
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+
+  height: 100%;
+
+  box-sizing: border-box;
+  position: relative;
+  padding: 10px 0;
+
+  overflow: auto;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.app__footer {
+  color: white;
+  height: 60px;
+  text-align: center;
+  //  clip-path: polygon(40% 0, 0 0, 0 100%, 100% 100%, 100% 0, 60% 0, 50% 50%);
+  box-shadow: 0 -5px 10px -5px rgb(112, 112, 112);
+  z-index: 100;
+  margin: 10px 0 0 0;
+  box-sizing: border-box;
+}

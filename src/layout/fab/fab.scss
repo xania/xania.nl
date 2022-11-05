@@ -1,0 +1,11 @@
+@use "@material/fab";
+
+@include fab.core-styles;
+
+.mdc-fab {
+  z-index: 100;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 16px;
+}

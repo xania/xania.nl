@@ -1,0 +1,4 @@
+node_modules/
+dist/
+server/Xania.Tests/bin/
+server/Xania.Tests/obj/
