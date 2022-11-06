@@ -4,20 +4,7 @@ $height: 80px;
 // }
 
 .app__container {
-  background-color: var(--theme-secondary, white);
   flex: 1;
-  display: flex;
-  flex-direction: row;
-
-  height: 100%;
-
-  box-sizing: border-box;
-  position: relative;
-  padding: 10px 0;
-
-  overflow: auto;
-
-  -webkit-overflow-scrolling: touch;
 }
 
 .app__footer {

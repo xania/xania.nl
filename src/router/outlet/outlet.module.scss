@@ -1,5 +1,17 @@
 @use "@material/elevation/mixins" as elevation-mixins;
 
+$duration: 0.4s;
+
+.outlet {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  position: relative;
+  padding: 10px 0;
+
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .loading {
   padding: 10px;
   position: absolute;
@@ -21,7 +33,6 @@
   box-sizing: border-box;
 
   overflow: hidden;
-  background-color: white;
 
   // &--active {
   //   border: 3px dashed green;
@@ -38,7 +49,22 @@ $media-width: 600px;
     &--active {
       min-width: 350px;
       margin: 0 10px;
+      background-color: white;
       @include elevation-mixins.elevation(5);
+
+      & > *:last-child {
+        animation-name: slideIn;
+        animation-duration: $duration;
+        box-shadow: -10px 0px 10px 1px #aaaaaa41;
+        z-index: 1;
+      }
+
+      & > *:not(:last-child) {
+        animation-name: slideAway;
+        animation-duration: $duration;
+        box-shadow: -10px 0px 10px 1px #aaaaaa41;
+        z-index: 1;
+      }
     }
 
     box-sizing: border-box;
@@ -47,9 +73,15 @@ $media-width: 600px;
 }
 
 @media only screen and (max-width: $media-width) {
+  /* mobile specific */
   .page-container {
     &--active {
-      width: 100%;
+      min-width: 100%;
+      position: absolute;
+      background-color: white;
+
+      animation-name: slideIn;
+      animation-duration: $duration;
     }
     z-index: 3;
   }
@@ -151,5 +183,29 @@ $media-width: 600px;
   100% {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+  }
+}
+@keyframes slideAway {
+  0% {
+  }
+  100% {
+    transform: translateX(-40%);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }

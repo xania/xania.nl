@@ -29,6 +29,7 @@ export function Outlet<TView>(props: OutletProps<TView>) {
 
   return {
     render(target: RenderTarget) {
+      target.classList.add(classes["outlet"]);
       var rootPage = new Page(target, [], rootResolve);
       var sub = router.routes
         .pipe(
@@ -152,7 +153,7 @@ class Page {
         classes["page-container--inactive"],
         classes["page-container--active"]
       );
-      _container.scrollIntoView();
+      // _container.scrollIntoView();
       setTimeout(function () {
         _container.classList.remove(classes["page-container--loading"]);
       }, 400);

@@ -30,20 +30,6 @@ $toolbar-fix: 0;
     box-sizing: border-box;
     overflow: auto;
   }
-
-  &:last-child {
-    animation-name: slideIn;
-    animation-duration: $duration;
-    box-shadow: -10px 0px 10px 1px #aaaaaa41;
-    z-index: 1;
-  }
-
-  &:not(:last-child) {
-    animation-name: slideAway;
-    animation-duration: $duration;
-    box-shadow: -10px 0px 10px 1px #aaaaaa41;
-    z-index: 1;
-  }
 }
 
 .slide-out {
@@ -74,28 +60,5 @@ $toolbar-fix: 0;
   }
   100% {
     background-color: rgba(0, 0, 0, 0.274);
-  }
-}
-@keyframes slideIn {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-  }
-}
-@keyframes slideAway {
-  0% {
-  }
-  100% {
-    transform: translateX(-40%);
-  }
-}
-
-@keyframes slideOut {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(100%);
   }
 }
