@@ -1,6 +1,6 @@
 import mkcert from "vite-plugin-mkcert";
 import { start } from "./cosmos";
-import secrets from "./secrets";
+import secrets from "./src/secrets";
 
 const { networkInterfaces } = require("os");
 

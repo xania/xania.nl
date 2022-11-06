@@ -64,6 +64,7 @@ function Drawer(props: DrawerProps) {
             <MainLink text="Home" url={"/"} icon="home" />
             <MainLink text="Invoices" url={"/invoices"} icon="euro_symbol" />
             <MainLink text="Menucard" url={"/menucard"} icon="restaurant" />
+            <MainLink text="Mollie" url={"/mollie"} icon="money" />
             <a
               class="mdc-list-item"
               href="/reasult"

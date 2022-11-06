@@ -13,7 +13,7 @@ export class HomeComponent implements RouteComponent {
     return (
       <Page>
         <PageContent>
-          <Css value={[classes["home"]]} />
+          <Css value={classes["home"]} />
           {/* <div class="mdc-text-field">
             <input class="mdc-text-field__input" id="text-field-hero-input" />
             <div class="mdc-line-ripple"></div>
@@ -22,7 +22,7 @@ export class HomeComponent implements RouteComponent {
             </label>
             {MDCTextField}
           </div> */}
-          <TextField label="Zoek in de buurt..." onChange={(_) => {}} />
+          <TextField label="Zoek in de buurt..." />
           <img src="/home/intro.jpg" style="width: 70%;" />
         </PageContent>
       </Page>

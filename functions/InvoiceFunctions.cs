@@ -17,7 +17,7 @@ namespace Xania.Functions
         public static async Task<IActionResult> CreateInvoice(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoice")] HttpRequest req)
         {
-            var invoice = await req.FromBody<Invoice>();
+            var invoice = req.FromBody<Invoice>();
 
             var generateFunc = InvoiceReport.Generate(invoice);
             req.HttpContext.Response.ContentType = "application/octet-stream";
