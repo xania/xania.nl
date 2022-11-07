@@ -19,7 +19,7 @@ export function Select(props: SelectProps, children) {
       const { value } = props;
       if (value) {
         if (isField(value)) {
-          select.value = value.valueOf();
+          select.value = value.valueOf()?.toString();
           select.listen("MDCSelect:change", (evt) => {
             value.update(select.value);
           });

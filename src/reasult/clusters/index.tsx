@@ -1,6 +1,5 @@
 import { jsxFactory, useContext } from "@xania/view";
 import { Observable } from "rxjs";
-import { Fab } from "../../layout/fab";
 import { useFormData } from "../../layout/form-data";
 import { PageHeader } from "../../layout/page/header";
 import { Page, PageContent } from "../../layout/page";
@@ -32,7 +31,6 @@ export async function ClusterView(
         <Page>
           {clusterForm.onChange((cluster) =>
             upsertCluster({ processId, cluster }).then((_) => {
-              queryCluster(cluster.id, processId).then(console.log);
               callback(cluster);
             })
           )}
@@ -115,7 +113,11 @@ export async function ProcessClusters(props: ProcessClustersProps) {
   const clusters = updates.pipe(
     Ro.map((u) => {
       const idx = initial.findIndex((e) => e.id == u.id);
-      initial[idx] = u;
+      if (idx > 0) {
+        initial[idx] = u;
+      } else {
+        initial.push(u);
+      }
       return initial;
     }),
     Ro.startWith(initial)
@@ -128,8 +130,6 @@ export async function ProcessClusters(props: ProcessClustersProps) {
         const a = node.parentElement;
         if (!a.classList.contains(highliteClass)) {
           a.classList.add(highliteClass);
-
-          console.log("highlite", { a });
 
           setTimeout((_) => {
             a.classList.remove(highliteClass);

@@ -3,7 +3,6 @@ import { jsxFactory } from "@xania/view";
 import { RenderTarget } from "@xania/view";
 import { ViewContext } from "../../router/outlet";
 import { RouteTrigger } from "../../router/router";
-console.log(classes);
 
 const match = /(?<d>\d+(\.\d+)?)s/.exec(classes["animationDuration"]);
 const duration = parseFloat(match[1]) * 1000;

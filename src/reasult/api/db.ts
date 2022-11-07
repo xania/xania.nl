@@ -22,6 +22,7 @@ export interface Cluster {
 
 export function queryClusters() {
   return query(
+    "rem",
     `
     select value r.data from r 
     where r.type = 'PropertyIndex' 
@@ -33,6 +34,7 @@ export function queryCluster(
   processId: string
 ): Promise<Cluster[]> {
   return query(
+    "rem",
     `
     select value r.data from r 
     where r.type = 'Cluster' 
@@ -42,8 +44,8 @@ export function queryCluster(
   );
 }
 
-function query(text: string) {
-  return fetch("/db", {
+export function query(client: string, text: string) {
+  return fetch(`/api/cosmos/${client}`, {
     method: "POST",
     body: text,
   }).then((e) => e.json());

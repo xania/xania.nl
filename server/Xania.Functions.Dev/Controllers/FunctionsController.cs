@@ -19,10 +19,10 @@ namespace Xania.Functions.Dev.Controllers
             };
         }
 
-        [HttpGet("mollie/payments")]
-        public Task<IActionResult> ListPayments()
+        [HttpGet("mollie/{client}/payments")]
+        public Task<IActionResult> ListPayments(string client)
         {
-            return MollieFunctions.ListPayments(this.Request, _context);
+            return MollieFunctions.ListPayments(this.Request, client, _context);
         }
 
         [HttpGet("product")]
@@ -46,6 +46,18 @@ namespace Xania.Functions.Dev.Controllers
             var response = await func.RunReverse(this.HttpContext.GetHttpRequestMessage(), _context, endpoint, _logger);
 
             return new HttpResponseMessageResult(response);
+        }
+
+        [HttpPost("cosmos/{client}")]
+        public Task<object> CosmosQuery(string client)
+        {
+            return CosmosFunctions.CosmosQuery(this.Request, _context, client, _logger);
+        }
+
+        [HttpPost("mollie/{client}/create-payment")]
+        public Task<IActionResult> MollieCreatePayment(string client)
+        {
+            return MollieFunctions.CreatePayment(this.Request, client, _context, _logger);
         }
     }
 

@@ -1,5 +1,6 @@
 import { Path } from "./path";
 import { compilePathTemplate, PathTemplate } from "./path-template";
+import { RouteContext } from "./router-context";
 
 export function createRouteResolver<TView>(
   routes: RouteInput<TView>[]
@@ -138,7 +139,7 @@ export interface RouteComponent<TView = any> {
   routes?: RouteInput<TView>[] | RouteResolver<TView>;
 }
 
-type ComponentFunc<TView> = () => RouteComponent<TView>;
+type ComponentFunc<TView> = (context: RouteContext) => RouteComponent<TView>;
 type ComponentInput<TView> =
   | ComponentFunc<TView>
   | { prototype: RouteComponent<TView> };

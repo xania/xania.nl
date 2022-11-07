@@ -37,6 +37,7 @@ import { ClusterView, ProcessClusters } from "./clusters";
 import "./api/db";
 import { useFormData } from "../layout/form-data";
 import { RouteContext } from "../router/router-context";
+import { ProcessClusterSettings } from "./process/cluster-settings";
 
 const jsx = jsxFactory({});
 
@@ -268,6 +269,11 @@ async function ProcessCofigurationView(context: RouteContext) {
                     <span class="material-icons">add</span>
                   </IconButton>
                 </a>
+                <a href={`${context.url}/clusters`} class="router-link">
+                  <IconButton>
+                    <span class="material-icons">settings</span>
+                  </IconButton>
+                </a>
               </div>
             </div>
           </PageContent>
@@ -275,12 +281,16 @@ async function ProcessCofigurationView(context: RouteContext) {
       );
     },
     routes: [
-      route(regex(/(?<id>\d+)/i), (context: RouteContext) =>
+      route(regex(/(?<id>\d+)/i), (context) =>
         PropertyView(context, properties[context.params.id])
       ),
       route(["cluster", ":id"], (context) =>
         ClusterView(context, (cluster) => events.next(cluster))
       ),
+      route(["cluster"], (context) =>
+        ClusterView(context, (cluster) => events.next(cluster))
+      ),
+      route(["clusters"], ProcessClusterSettings),
     ],
   };
 }

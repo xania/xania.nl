@@ -5,8 +5,8 @@ import { route } from "../../router/route-resolver";
 import { MDCRipple } from "@material/ripple";
 import { regex } from "../../router/matchers";
 import { Config } from "../api/config";
-import { RouteContext } from "../../router/outlet2";
 import { RiskFreeRatesView } from "./risk-free-rates";
+import { RouteContext } from "../../router/router-context";
 
 const jsx = jsxFactory({});
 
@@ -65,7 +65,9 @@ async function TaxSchemeListView() {
       );
     },
     routes: [
-      route(regex(/(?<id>.+)/), (params) => <TaxSchemeView id={params.id} />),
+      route(regex(/(?<id>.+)/), ({ params }) => (
+        <TaxSchemeView id={params.id} />
+      )),
     ],
   };
 }
@@ -77,7 +79,6 @@ interface TaxSchemeViewProps {
 async function TaxSchemeView(props: TaxSchemeViewProps) {
   const response = await fetchRealEstateTaxScheme(props.id);
   var scheme = response.realEstateTransferTaxScheme;
-  console.log(scheme);
   return {
     get view() {
       return (

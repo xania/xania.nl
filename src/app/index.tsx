@@ -8,6 +8,7 @@ import { ToolBar } from "../layout/toolbar";
 import { MDCDrawer } from "@material/drawer";
 import { ReasultApp } from "../reasult";
 import { CounterApp } from "../benchmark/counter";
+import { PaletZuidApp } from "../palet-zuid";
 
 const jsx = jsxFactory({ classes });
 
@@ -15,6 +16,7 @@ export function App() {
   const webApp = createWebApp([
     route(["reasult"], ReasultApp),
     route(["counter"], CounterApp),
+    route(["palet-zuid"], PaletZuidApp),
     route(matchers.any, HomeComponent),
   ]);
   var state = useState(false);

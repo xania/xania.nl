@@ -1,5 +1,6 @@
 import { Config } from "./api/config";
 import { Cluster } from "./api/db";
+import { ReferenceEntityType } from "./api/types";
 
 export interface HomeResponse {
   activeProcesses: {
@@ -188,7 +189,6 @@ export async function fetchPropertyIndexes(
   const response = await fetch(
     `${Config.RemBaseUrl}/query/property/indexes?processId=${processId}&assetId=${assetId}&propertyId=${propertyId}`
   ).then((e) => e.json());
-  console.log(response);
 
   return response;
 }
@@ -219,6 +219,26 @@ export function fetchCluster(
   processId: string
 ): Promise<ClusterViewResponse> {
   return get(`query/process/cluster?processId=${processId}&id=${id || ""}`);
+}
+
+export interface ClusterSettingsViewResponse {
+  filterScope:
+    | ReferenceEntityType.City
+    | ReferenceEntityType.Country
+    | ReferenceEntityType.Region
+    | ReferenceEntityType.Sector;
+  lists: {
+    filterScopes: ListItem[];
+    sectors: ListItem[];
+    citites: ListItem[];
+    regions: ListItem[];
+    countries: ListItem[];
+  };
+}
+export function fetchProcessClusterSettings(
+  processId: string
+): Promise<ClusterSettingsViewResponse> {
+  return get(`query/process/clustersettings?processId=${processId}`);
 }
 
 export interface UpsertClusterCommand {

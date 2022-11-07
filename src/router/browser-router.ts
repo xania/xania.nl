@@ -91,7 +91,6 @@ function pushPath(pathname: string) {
   let { pathname: old } = window.location;
 
   if (old + "/" === pathname) {
-    console.log("replaceState", pathname);
     window.history.replaceState(pathname, null, pathname);
   } else if (old !== pathname) {
     window.history.pushState(pathname, null, pathname);

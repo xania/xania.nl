@@ -11,7 +11,6 @@ export function twoway<T>(context: T, field: keyof T) {
     return {
       value: context[field],
       onChange(value) {
-        console.log(value);
         context[field] = value;
       },
     };
