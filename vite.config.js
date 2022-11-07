@@ -52,7 +52,3 @@ export default {
     console.log(dd);
   },
 };
-
-if (secrets) {
-  start(secrets["xania.nl"]);
-}

@@ -91,7 +91,6 @@ namespace Xania.Functions
             };
             try
             {
-
                 var result = await paymentClient.CreatePaymentAsync(request);
                 return new RedirectResult(result.Links.Checkout.Href);
             }
