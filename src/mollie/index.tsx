@@ -19,11 +19,10 @@ export async function MollieApp() {
 
   // console.log(payment);
   var list = await mollieClient.payments.list();
-  console.log(list);
 
   return {
     get view() {
-      return <div>hello mollie</div>;
+      return <div>hello mollie {list._embedded.payments.length}</div>;
     },
   };
 }

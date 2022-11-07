@@ -40,9 +40,14 @@ export class PaymentsClient {
   }
 }
 
-export interface ListResponse<T> {}
+export interface ListResponse<T> {
+  _embedded: T;
+  _links: {}[];
+}
 
-export interface PaymentResponse {}
+export interface PaymentResponse {
+  payments: {}[];
+}
 
 export interface CreatePayment {
   amount: {

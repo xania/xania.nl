@@ -23,8 +23,7 @@ namespace Xania.Functions
         [FunctionName("list-payments")]
         public static async Task<IActionResult> ListPayments(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "mollie/payments")] HttpRequest req,
-            ExecutionContext context,
-            ILogger log)
+            ExecutionContext context)
         {
             var paymentClient = CreatePaymentClient(context);
 

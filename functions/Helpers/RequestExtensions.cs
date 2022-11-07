@@ -13,7 +13,7 @@ namespace Xania.Functions.Helpers
             {
                 PropertyNameCaseInsensitive = true
             };
-            return System.Text.Json.JsonSerializer.Deserialize<T>(req.Body, options);
+            return System.Text.Json.JsonSerializer.Deserialize<T>(req.BodyReader.AsStream(), options);
         }
         public static async Task<T> ToObject<T>(this HttpContent content)
         {

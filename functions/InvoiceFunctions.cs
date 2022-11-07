@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using System.Threading.Tasks;
 using Xania.Functions.Helpers;
 using Xania.Functions.Invoices;
 
@@ -14,7 +12,7 @@ namespace Xania.Functions
         [OpenApiRequestBody(typeof(Invoice))]
         [OpenApiResponseBody(typeof(byte[]))]
         [FunctionName("invoice")]
-        public static async Task<IActionResult> CreateInvoice(
+        public static object CreateInvoice(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "invoice")] HttpRequest req)
         {
             var invoice = req.FromBody<Invoice>();

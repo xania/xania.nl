@@ -11,25 +11,29 @@ namespace Xania.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddHttpClient("ReverseProxy")
-                .ConfigurePrimaryHttpMessageHandler(() =>
-                    new HttpClientHandler()
-                    {
-                        AllowAutoRedirect = false,
-                        // MaxAutomaticRedirections = 20,
-                        CookieContainer = new System.Net.CookieContainer(),
-                        ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
-                        {
-                            var isDevelopment = false;
-#if DEBUG
-                            isDevelopment = true;
-#endif
-                            if (isDevelopment) return true;
-                            return sslPolicyErrors == SslPolicyErrors.None;
-                        }
-                    }
-                );
+            Configure(builder.Services);
+        }
 
+        public static void Configure(IServiceCollection services)
+        {
+            services.AddHttpClient("ReverseProxy")
+                            .ConfigurePrimaryHttpMessageHandler(() =>
+                                new HttpClientHandler()
+                                {
+                                    AllowAutoRedirect = false,
+                                    // MaxAutomaticRedirections = 20,
+                                    CookieContainer = new System.Net.CookieContainer(),
+                                    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) =>
+                                    {
+                                        var isDevelopment = false;
+#if DEBUG
+                                        isDevelopment = true;
+#endif
+                                        if (isDevelopment) return true;
+                                        return sslPolicyErrors == SslPolicyErrors.None;
+                                    }
+                                }
+                            );
         }
     }
 }

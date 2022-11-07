@@ -10,51 +10,21 @@ using System.Threading.Tasks;
 
 namespace Xania.Functions
 {
-    public class Reverse
+    public class ReverseFunctions
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly HashSet<string> _allowedHeaders = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
-        {
-            "Accept",
-            "Accept-Encoding",
-            "Accept-Language",
-            "Authorization",
-            "Connection",
-            "Content-Type",
-            "User-Agent",
-            // "Host",
-            "Referer",
-        };
         private readonly HashSet<string> _excludeHeaders = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase)
         {
             "Host"
         };
 
-        /*
-Accept: application/json
-Accept-Encoding: gzip, deflate, br
-Accept-Language: en-US,en;q=0.9
-Authorization: Bearer [Mollie:ApiKey]
-Connection: keep-alive
-Content-Type: application/json
-Host: localhost:9091
-Referer: http://localhost:9091/mollie
-sec-ch-ua: "Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Sec-Fetch-Dest: empty
-Sec-Fetch-Mode: cors
-Sec-Fetch-Site: same-origin
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36
-        */
-
-        public Reverse(IHttpClientFactory httpClientFactory)
+        public ReverseFunctions(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
 
         [FunctionName("Reverse")]
-        public async Task<HttpResponseMessage> Run(
+        public async Task<HttpResponseMessage> RunReverse(
             [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "reverse/{*endpoint}")] HttpRequestMessage original,
             ExecutionContext context,
             string endpoint,

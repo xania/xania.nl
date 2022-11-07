@@ -36,7 +36,11 @@ export default {
         target: "http://localhost:9595",
         rewrite: (path) => path.replace(/^\/db/, ""),
       },
-      "/api": { target: "http://localhost:7125", changeOrigin: true },
+      "/api": {
+        target: "http://localhost:5263",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+        changeOrigin: true,
+      },
     },
   },
   root: "src",

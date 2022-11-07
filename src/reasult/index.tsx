@@ -1,4 +1,4 @@
-import { Cluster, queryCluster, queryClusters } from "./api/db";
+import { Cluster } from "./api/db";
 import { createView, jsxFactory, RenderTarget, useState } from "@xania/view";
 import { route, RouteComponent } from "../router/route-resolver";
 import { MDCRipple } from "@material/ripple";

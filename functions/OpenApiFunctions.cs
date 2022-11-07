@@ -45,17 +45,17 @@ namespace Xania.Functions
 
         public static JsonResult Json(object value)
         {
-            return new JsonResult(value, JsonSerializerSettings);
+            return new JsonResult(value);
         }
 
-        public static JsonSerializerSettings JsonSerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
-        {
-            ContractResolver = new MyContractResolver
-            {
-                NamingStrategy = new CamelCaseNamingStrategy()
-            },
+        //public static JsonSerializerSettings JsonSerializerSettings = new Newtonsoft.Json.JsonSerializerSettings
+        //{
+        //    ContractResolver = new MyContractResolver
+        //    {
+        //        NamingStrategy = new CamelCaseNamingStrategy()
+        //    },
 
-        };
+        //};
 
         public static OpenApiSchema Enrich(this OpenApiSchema schema, PropertyInfo p)
         {
@@ -161,7 +161,7 @@ namespace Xania.Functions
                     {
                         Type = "string",
                         Format = "binary",
-                        
+
                     }, null);
 
                 return ("application/json", new OpenApiSchema()
@@ -306,7 +306,7 @@ namespace Xania.Functions
                             }
                         }).ToArray()
                     };
-                    foreach(var c in concreteTypes)
+                    foreach (var c in concreteTypes)
                         stack.Push(c);
 
                     continue;
