@@ -1,0 +1,49 @@
+<html>
+  <head> </head>
+  <body>
+    <script>
+      function submitPayment(e) {
+        var form = e.target;
+        const formData = new FormData(form);
+        var naam = formData.get("naam");
+        var groep = formData.get("groep");
+        var description =
+          "Het Palet (Zuid), Ouderbijdrage 2020-2021 / " + naam + " / " + groep;
+
+        fetch({
+          url: "http://localhost:55093/hetpaletzuid-ouderbijdrage",
+          method: "post",
+          contentType: "application/json",
+          accept: "application/json",
+        });
+
+        e.preventDefault();
+        return false;
+      }
+    </script>
+    <form onsubmit="submitPayment(event)">
+      <input
+        type="hidden"
+        name="title"
+        value="Het Palet (Zuid), Ouderbijdrage 2020-2021"
+      />
+      <input type="hidden" name="Amount" value="50" />
+
+      <input type="text" name="naam" placeholder="Naam kind" />
+      <select type="text" name="groep">
+        <option>Groep 1/2a</option>
+        <option>Groep 1/2b</option>
+        <option>Groep 1/2c</option>
+        <option>Groep 2</option>
+        <option>Groep 3</option>
+        <option>Groep 4</option>
+        <option>Groep 5</option>
+        <option>Groep 6</option>
+        <option>Groep 7</option>
+        <option>Groep 8</option>
+      </select>
+
+      <button type="submit">Verzenden</button>
+    </form>
+  </body>
+</html>
