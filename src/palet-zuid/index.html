@@ -1,49 +1,99 @@
-<html>
-  <head> </head>
-  <body>
-    <script>
-      function submitPayment(e) {
-        var form = e.target;
-        const formData = new FormData(form);
-        var naam = formData.get("naam");
-        var groep = formData.get("groep");
-        var description =
-          "Het Palet (Zuid), Ouderbijdrage 2020-2021 / " + naam + " / " + groep;
+@{ Layout = null; }
 
-        fetch({
-          url: "http://localhost:55093/hetpaletzuid-ouderbijdrage",
-          method: "post",
-          contentType: "application/json",
-          accept: "application/json",
-        });
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,shrink-to-fit=no"
+    />
 
-        e.preventDefault();
-        return false;
+    <!-- Compiled and minified CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+
+    <style type="text/css">
+      body,
+      html {
+        padding: 0;
+        margin: 0;
       }
-    </script>
-    <form onsubmit="submitPayment(event)">
-      <input
-        type="hidden"
-        name="title"
-        value="Het Palet (Zuid), Ouderbijdrage 2020-2021"
-      />
-      <input type="hidden" name="Amount" value="50" />
 
-      <input type="text" name="naam" placeholder="Naam kind" />
-      <select type="text" name="groep">
-        <option>Groep 1/2a</option>
-        <option>Groep 1/2b</option>
-        <option>Groep 1/2c</option>
-        <option>Groep 2</option>
-        <option>Groep 3</option>
-        <option>Groep 4</option>
-        <option>Groep 5</option>
-        <option>Groep 6</option>
-        <option>Groep 7</option>
-        <option>Groep 8</option>
-      </select>
+      body {
+        background-color: #eee;
+        text-align: center;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
 
-      <button type="submit">Verzenden</button>
-    </form>
+      .container-box {
+        max-width: 600px;
+        min-height: 80%;
+        background-color: white;
+        margin: 40px auto;
+        box-sizing: border-box;
+        border-radius: 14px;
+        padding: 40px;
+      }
+
+      h1 {
+        margin: 30px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-box z-depth-3">
+      <img src="~/logo.png" />
+      <h3>Ouderbijdrage 2021-2022</h3>
+
+      <form method="POST">
+        <input
+          type="hidden"
+          name="Description[]"
+          value="Het Palet (Zuid), 2021-2022"
+        />
+        <input type="hidden" name="Amount" value="50" />
+
+        <div class="input-field">
+          <input type="text" name="Description[]" placeholder="Naam kind" />
+        </div>
+        <div class="input-field">
+          <input type="text" name="Description[]" placeholder="Groep" />
+        </div>
+
+        @*
+        <div class="input-field">
+          <select name="Description[]" placeholder="groep">
+            <option value="" disabled selected>Selecteer groep</option>
+            <option>Groep 1/2a</option>
+            <option>Groep 1/2b</option>
+            <option>Groep 1/2c</option>
+            <option>Groep 2</option>
+            <option>Groep 3</option>
+            <option>Groep 4</option>
+            <option>Groep 5</option>
+            <option>Groep 6</option>
+            <option>Groep 7</option>
+            <option>Groep 8</option>
+          </select>
+          <label>Selecteer groep</label>
+        </div>
+        *@
+        <button class="waves-effect waves-light btn" type="submit">
+          Betalen
+        </button>
+      </form>
+    </div>
   </body>
 </html>
