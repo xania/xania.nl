@@ -2,10 +2,6 @@ export function empty(path: string[]) {
   if (path.length === 0) return { length: 0 };
 }
 
-export function any(path: string[]) {
-  return { length: 0 };
-}
-
 export function regex(pattern: RegExp) {
   return (path: string[]) => {
     if (path.length != 0) {

@@ -1,6 +1,6 @@
 import * as Rx from "rxjs";
 import * as Ro from "rxjs/operators";
-import { Route, Router } from "../router";
+import { Route, Router, RouteTrigger } from "../router";
 import {
   createRouteResolver,
   RouteComponent,
@@ -13,9 +13,12 @@ import classes from "./outlet.module.scss";
 import { RouteContext } from "../router-context";
 import boxes from "../animations/boxes";
 
+const duration = 400;
+
 export interface OutletProps<TView> {
   routes: RouteInput<TView>[];
   router: Router;
+  rootView: any;
 }
 
 type RenderTarget = HTMLElement;
@@ -30,7 +33,17 @@ export function Outlet<TView>(props: OutletProps<TView>) {
   return {
     render(target: RenderTarget) {
       target.classList.add(classes["outlet"]);
-      var rootPage = new Page(target, [], rootResolve);
+
+      const outletRoot = document.createElement("div");
+      if (props.rootView) {
+        outletRoot.classList.add(classes["outlet__root"]);
+        target.appendChild(outletRoot);
+
+        props.rootView.render(outletRoot);
+      }
+
+      var first: Page = new Page(target, [], rootResolve);
+
       var sub = router.routes
         .pipe(
           Ro.map<Route, [Route, HTMLDivElement]>((route) => {
@@ -40,27 +53,23 @@ export function Outlet<TView>(props: OutletProps<TView>) {
             loader.appendChild(animation);
             target.appendChild(loader);
 
+            if (route.path.length > 0) {
+              outletRoot.classList.add(classes["outlet__root--collapsed"]);
+            } else {
+              outletRoot.classList.remove(classes["outlet__root--collapsed"]);
+            }
+
             return [route, loader];
           }),
           Ro.switchMap(([route, loader]) => {
-            return Rx.of<PageResolution>({
-              route,
-              page: rootPage,
-              view: null,
-            }).pipe(
+            return Rx.from(first.navigateTo(route)).pipe(
               Ro.expand((pr) => pr.page.navigateTo(pr.route)),
-              Ro.skip(1) /* skip root */,
-              Ro.map<PageResolution, [PageResolution, HTMLDivElement]>(
-                (res) => [res, loader]
-              ),
               Ro.finalize(() => {
-                setTimeout((_) => {
-                  loader.remove();
-                }, 400);
+                loader.remove();
               })
             );
           }),
-          Ro.map(([res]) => {
+          Ro.map((res) => {
             const { page, view } = res;
 
             const context: ViewContext = {
@@ -90,23 +99,16 @@ interface PageResolution {
 
 class Page {
   private _binding: ViewBinding = null;
-  private _next: Page;
-  private _resolution: RouteResolution;
-  private _view: any;
+  public next: Page;
+  public _resolution: RouteResolution;
+  public _view: any;
   private _container: HTMLElement;
 
   constructor(
     public target: RenderTarget,
     public basePath: Path,
     public resolveRoute: RouteResolver
-  ) {
-    const div = document.createElement("div");
-    div.classList.add(classes["page-container"]);
-    div.classList.add(classes["page-container--inactive"]);
-    target.appendChild(div);
-
-    this._container = div;
-  }
+  ) {}
 
   clear() {
     this.clearNext();
@@ -116,10 +118,10 @@ class Page {
   }
 
   clearNext() {
-    if (this._next) {
-      this._next.clear();
-      this._next._container.remove();
-      this._next = null;
+    if (this.next) {
+      this.next.clear();
+      this.next._container.remove();
+      this.next = null;
     }
   }
 
@@ -131,6 +133,14 @@ class Page {
   }
 
   bind(view: any, routeResolution: RouteResolution, context: ViewContext) {
+    if (!this._container) {
+      const div = document.createElement("div");
+      div.classList.add(classes["page-container"]);
+      div.classList.add(classes["page-container--inactive"]);
+      this.target.appendChild(div);
+
+      this._container = div;
+    }
     const { _container } = this;
     this._view = view;
 
@@ -143,7 +153,7 @@ class Page {
     if (this._binding) {
       const oldBinding = this._binding;
       this._binding = null;
-      setTimeout(() => oldBinding.dispose(), 400);
+      setTimeout(() => oldBinding.dispose(), duration);
     }
 
     if (view && view.render instanceof Function) {
@@ -173,7 +183,7 @@ class Page {
 
     if (!resolveRoute) return;
 
-    const nextResolution = this._next?._resolution;
+    const nextResolution = this.next?._resolution;
     if (nextResolution) {
       if (matchPath(nextResolution.appliedPath, route.path)) {
         return nextResolution;
@@ -183,16 +193,10 @@ class Page {
     return await resolveRoute(route.path);
   };
 
-  nextPage(target: RenderTarget, basePath: Path, resolveView: RouteResolver) {
-    if (this._next) return this._next;
-    return (this._next = new Page(target, basePath, resolveView));
-  }
-
-  navigateTo = (route: Route) => {
-    const { target, _next } = this;
-
-    if (_next) {
-      const nextResolution = _next?._resolution;
+  navigateTo(route: Route) {
+    const { target, next } = this;
+    if (next) {
+      const nextResolution = next?._resolution;
       if (nextResolution) {
         if (matchPath(nextResolution.appliedPath, route.path)) {
           const remainingPath = route.path.slice(
@@ -201,8 +205,8 @@ class Page {
           const basePath = [...this.basePath, ...nextResolution.appliedPath];
           const res: PageResolution = {
             route: { path: remainingPath, trigger: route.trigger },
-            page: this.nextPage(target, basePath, _next.resolveRoute),
-            view: _next._view,
+            page: this.nextPage(target, basePath, next.resolveRoute),
+            view: next._view,
             routeResolution: nextResolution,
           };
           return Rx.of(res);
@@ -249,7 +253,12 @@ class Page {
         observer.complete();
       });
     });
-  };
+  }
+
+  nextPage(target: RenderTarget, basePath: Path, resolveView: RouteResolver) {
+    if (this.next) return this.next;
+    return (this.next = new Page(target, basePath, resolveView));
+  }
 
   createPage = (
     view: any,

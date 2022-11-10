@@ -17,6 +17,7 @@ export function twoway<T>(context: T, field: keyof T) {
 }
 
 export interface Field<T = any> {
+  valueOf?(): any;
   update(value: T): boolean;
 }
 

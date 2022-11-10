@@ -1,5 +1,4 @@
 import { jsxFactory, useContext } from "@xania/view";
-import { Observable } from "rxjs";
 import { useFormData } from "../../layout/form-data";
 import { PageHeader } from "../../layout/page/header";
 import { Page, PageContent } from "../../layout/page";
@@ -9,7 +8,6 @@ import { RouteContext } from "../../router/router-context";
 import {
   UpdateStandingProcessConfigurationCommand,
   StandingProcessConfigurationResponse,
-  upsertCluster,
 } from "../functions";
 import { selectOptions } from "../utils/select-utils";
 import classes from "./clusters.module.scss";
@@ -74,9 +72,6 @@ export function ClusterView(
   };
   function IndexMethods() {
     var result = [];
-
-    const keys = Object.keys(Fields);
-    console.log(Fields);
     for (const f in Fields) {
       if (typeof Fields[Fields[f]] === "string") {
         result.push(

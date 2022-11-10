@@ -3,9 +3,9 @@ import "./layout/card.scss";
 import "./layout/list.scss";
 import { render } from "@xania/view";
 import * as jsx from "@xania/view";
-import { App } from "./app/index";
+import { AdminApp } from "./admin/index";
 
-render(<App />, document.getElementById("app"));
+render(<AdminApp />, document.getElementById("app"));
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker.register("./sw.js");

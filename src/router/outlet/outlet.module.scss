@@ -7,11 +7,12 @@ $duration: 0.4s;
   flex-direction: row;
   box-sizing: border-box;
   position: relative;
-  padding: 10px 0;
+  padding: 0;
 
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
 .loading {
   padding: 10px;
   position: absolute;
@@ -26,20 +27,48 @@ $duration: 0.4s;
   justify-content: center;
 }
 
+.outlet__root {
+  width: 350px;
+  position: relative;
+
+  background-color: var(--theme-secondary, darkblue);
+  color: white;
+  display: flex;
+
+  transition: width 0.4s;
+
+  // &:first-child {
+  //   min-width: auto;
+  //   width: 350px;
+  //   transition: width 0.4s;
+  // }
+
+  &--collapsed {
+    min-width: auto;
+    width: 60px;
+    overflow: hidden;
+
+    * {
+      overflow: hidden;
+    }
+  }
+}
+
 .page-container {
   box-sizing: border-box;
+  min-width: auto;
+  padding: 0;
+  display: flex;
   position: relative;
-  height: 100%;
-  box-sizing: border-box;
 
   overflow: hidden;
 
   // &--active {
   //   border: 3px dashed green;
   // }
-  // &--inactive {
-  //   border: 3px dashed red;
-  // }
+  &--inactive {
+    display: none;
+  }
 }
 
 $media-width: 600px;
@@ -48,21 +77,25 @@ $media-width: 600px;
   .page-container {
     &--active {
       min-width: 350px;
-      margin: 0 10px;
+      margin: 0;
       background-color: white;
-      @include elevation-mixins.elevation(5);
 
       & > *:last-child {
         animation-name: slideIn;
         animation-duration: $duration;
-        box-shadow: -10px 0px 10px 1px #aaaaaa41;
         z-index: 1;
+
+        @include elevation-mixins.elevation(5);
       }
 
       & > *:not(:last-child) {
+        position: absolute;
+        height: calc(100% - 20px);
+        overflow: hidden;
+        bottom: 0;
+        top: 0;
         animation-name: slideAway;
         animation-duration: $duration;
-        box-shadow: -10px 0px 10px 1px #aaaaaa41;
         z-index: 1;
       }
     }
@@ -198,6 +231,7 @@ $media-width: 600px;
   }
   100% {
     transform: translateX(-40%);
+    opacity: 0;
   }
 }
 

@@ -1,22 +1,21 @@
-import classes from "./app.module.scss";
-import { State, jsxFactory, useState } from "@xania/view";
-import { createWebApp } from "../router/webapp";
-import { HomeComponent } from "../home";
-import { route } from "../router/route-resolver";
-import * as matchers from "../router/matchers";
+import classes from "./admin.module.scss";
+import { State, jsxFactory, useState, Css } from "@xania/view";
 import { ToolBar } from "../layout/toolbar";
 import { MDCDrawer } from "@material/drawer";
-import { ReasultApp } from "../reasult";
-import { CounterApp } from "../benchmark/counter";
+import { createBrowser } from "../router/browser-router";
+import { Outlet } from "../router/outlet";
+import { routes } from "../routes";
+import { HomeComponent } from "../home";
 
 const jsx = jsxFactory({ classes });
 
-export function App() {
-  const webApp = createWebApp([
-    route(["reasult"], ReasultApp),
-    route(["counter"], CounterApp),
-    route(matchers.any, HomeComponent),
-  ]);
+export function AdminApp() {
+  const router = createBrowser([]);
+  const webApp = Outlet({
+    router,
+    routes,
+    rootView: <HomeComponent />,
+  });
   var state = useState(false);
   return (
     <>
@@ -65,14 +64,8 @@ function Drawer(props: DrawerProps) {
             <MainLink text="Invoices" url={"/invoices"} icon="euro_symbol" />
             <MainLink text="Menucard" url={"/menucard"} icon="restaurant" />
             <MainLink text="Mollie" url={"/mollie"} icon="money" />
-            <a
-              class="mdc-list-item"
-              href="/reasult"
-              aria-current="page"
-              tabIndex={1}
-            >
-              Reasult
-            </a>
+            <MainLink text="Counter" url={"/counter"} icon="money" />
+            <MainLink text="Reasult" url={"/reasult"} icon="interprise" />
           </nav>
         </div>
       </aside>

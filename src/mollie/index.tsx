@@ -18,11 +18,12 @@ export async function MollieApp() {
   // });
 
   // console.log(payment);
-  var list = await mollieClient.payments.list();
+  // var list = await mollieClient.payments.list();
 
   return {
     get view() {
-      return <div>hello mollie {list._embedded.payments.length}</div>;
+      // return <div>hello mollie {list._embedded.payments.length}</div>;
+      return <div>hello mollie</div>;
     },
   };
 }

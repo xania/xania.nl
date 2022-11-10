@@ -6,7 +6,7 @@ import "./text-field.scss";
 
 export interface TextFieldProps {
   label: string;
-  value?: string | Field;
+  value?: string | Field<string>;
   hint?: string;
   sideLabel?: string;
 }

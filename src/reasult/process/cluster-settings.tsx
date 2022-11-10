@@ -52,9 +52,7 @@ export async function ProcessClusters(props: ProcessClustersProps) {
       <div class="mdc-list">
         <List data={clusters.pipe(Ro.startWith(command.clusters))}>
           <a
-            href={$(
-              (cluster, context) => props.url + "/cluster/" + context.index
-            )}
+            href={$((_, context) => props.url + "/cluster/" + context.index)}
             class="mdc-list-item router-link mdc-list-item--with-trailing-icon"
           >
             {/* {$(highlite)} */}

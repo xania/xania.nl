@@ -1,20 +1,16 @@
 import { Css, jsxFactory } from "@xania/view";
 import { Page, PageContent } from "../layout/page";
 import { TextField } from "../layout/text-field";
-import { RouteComponent } from "../router/route-resolver";
-import { routes } from "../routes";
 import classes from "./home.module.scss";
-// import { MDCTextField } from "@material/textfield";
 
 const jsx = jsxFactory({ classes });
 
-export class HomeComponent implements RouteComponent {
-  get view() {
-    return (
-      <Page>
-        <PageContent>
-          <Css value={classes["home"]} />
-          {/* <div class="mdc-text-field">
+export function HomeComponent() {
+  return (
+    <Page>
+      <PageContent>
+        <Css value={classes["home"]} />
+        {/* <div class="mdc-text-field">
             <input class="mdc-text-field__input" id="text-field-hero-input" />
             <div class="mdc-line-ripple"></div>
             <label for="text-field-hero-input" class="mdc-floating-label">
@@ -22,13 +18,18 @@ export class HomeComponent implements RouteComponent {
             </label>
             {MDCTextField}
           </div> */}
-          <TextField label="Zoek in de buurt..." />
-          <img src="/home/intro.jpg" style="width: 70%;" />
-        </PageContent>
-      </Page>
-    );
-  }
-  routes? = routes;
+        <a href="/" class="mdc-button button-button router-link">
+          Home
+        </a>
+        <a class="mdc-button button-button router-link" href="/reasult">
+          processes
+        </a>
+        <a href="/settings" class="mdc-button button-button router-link">
+          Settings
+        </a>
+      </PageContent>
+    </Page>
+  );
 }
 
 function Info() {

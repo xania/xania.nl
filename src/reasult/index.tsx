@@ -4,7 +4,6 @@ import { MDCRipple } from "@material/ripple";
 import { Page, PageContent } from "../layout/page";
 import { regex } from "../router/matchers";
 import { PageHeader } from "../layout/page/header";
-import { SettingsView } from "./settings";
 import { TextField } from "../layout/text-field";
 import { IconButton } from "../layout/icon-button";
 import * as Rx from "rxjs";
@@ -50,12 +49,6 @@ export async function ReasultApp(): Promise<RouteComponent> {
         <Page>
           <PageHeader title="REM" />
           <PageContent>
-            <a
-              href="/reasult/settings"
-              class="mdc-button button-button router-link"
-            >
-              Settings
-            </a>
             {home.activeProcesses.map(activeProcessView)}
             <a href={`/reasult/new-process`} class="router-link">
               <Fab icon="add" />
@@ -65,7 +58,6 @@ export async function ReasultApp(): Promise<RouteComponent> {
       );
     },
     routes: [
-      route(["settings"], SettingsView),
       route(["new-process"], NewProcess),
       route([":processId", "edit"], ProcessCofigurationView),
       // route(regex(/(?<id>.+)/i), (e) => <ProcessDetail processId={e.id} />),
