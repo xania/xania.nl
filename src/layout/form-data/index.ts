@@ -18,7 +18,7 @@ export function useFormData<T>(root: T) {
   }
 
   return {
-    onChange(callback: Callback) {
+    bind(callback: Callback) {
       return {
         render() {
           const subscription = subject
@@ -34,35 +34,56 @@ export function useFormData<T>(root: T) {
       };
     },
     get<K extends keyof T>(field: K) {
-      if (root != null) return new Field(subject, () => root, field);
+      if (root != null) {
+        return (
+          this[field] ??
+          (this[field] = new Field(subject, () => root, null, field))
+        );
+      }
     },
   };
 }
 
 class Field<T, K extends keyof T> {
+  private listeners: Function[] = [];
   constructor(
     private observer: Rx.Observer<any>,
     private parent: () => T,
+    private updateParent: (value: Partial<T>) => any,
     private name: K
   ) {}
+
+  change = (callback: (value: T[K]) => void) => {
+    this.listeners.push(callback);
+  };
 
   valueOf = () => {
     const { parent, name } = this;
     const context = parent();
-    return context[name];
+    if (context) return context[name];
+    else return undefined;
   };
 
-  update(value: T[K]) {
+  update = (value: T[K]) => {
     const { parent, name, observer } = this;
     const context = parent();
-    context[name] = value;
+
+    for (const listener of this.listeners) {
+      listener(value);
+    }
+
+    if (context) {
+      context[name] = value;
+    } else {
+      this.updateParent({ [name]: value } as any);
+    }
 
     observer.next(this);
     return true;
-  }
+  };
 
   get<P extends keyof T[K]>(name: P) {
-    return new Field(this.observer, this.valueOf, name);
+    return new Field(this.observer, this.valueOf, this.update, name);
   }
 
   asPerc() {
@@ -73,6 +94,18 @@ class Field<T, K extends keyof T> {
       },
       update(value) {
         return field.update((parseFloat(value) / 100) as any);
+      },
+    };
+  }
+
+  asInt() {
+    const field = this;
+    return {
+      valueOf() {
+        return field.valueOf();
+      },
+      update(value) {
+        return field.update(parseInt(value) as any);
       },
     };
   }

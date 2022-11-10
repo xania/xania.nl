@@ -1,6 +1,2 @@
-node_modules/
-dist/
-server/Xania.Tests/bin/
-server/Xania.Tests/obj/
-server/Xania.Functions.Dev/bin/
-server/Xania.Functions.Dev/obj/
+﻿node_modules
+dist

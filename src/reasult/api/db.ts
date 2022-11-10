@@ -5,19 +5,16 @@
 //   }).then((e) => e.json());
 // }
 
+import { Fields } from "./types";
+
 export interface Cluster {
-  id?: string;
+  id: string;
   code: any;
   name: string;
-  finantialStatementId: string;
+  financialStatementId: string;
   strategyId: number;
   riskFreeRate: number;
-  ervIndexMethodId: string;
-  vpvIndexMethodId: string;
-  famIndexMethodId: string;
-  landValueIndexMethodId: string;
-  targetRentIndexMethodId: string;
-  renewalRentIndexMethodId: string;
+  indexMethods: { [P in keyof typeof Fields]: string };
 }
 
 export function queryClusters() {
@@ -36,9 +33,10 @@ export function queryCluster(
   return query(
     "rem",
     `
-    select value r.data from r 
+    select value entity from r 
+    join entity in r.data
     where r.type = 'Cluster' 
-    ${id !== null ? `and r.data.id = ${escape(id)}` : ""}
+    ${id !== null ? `and entity.id = ${escape(id)}` : ""}
     and r.pk = ${escape(processId)}
     `
   );

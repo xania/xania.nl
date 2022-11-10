@@ -48,6 +48,7 @@ namespace Xania.Functions
 
             var cosmosClientOptions = new CosmosClientOptions()
             {
+                ConnectionMode = ConnectionMode.Gateway,
                 Serializer = new CosmosSystemTextJsonSerializer(new()
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

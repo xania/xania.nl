@@ -1,6 +1,6 @@
 import { Config } from "./api/config";
 import { Cluster } from "./api/db";
-import { ReferenceEntityType } from "./api/types";
+import { Fields, ReferenceEntityType } from "./api/types";
 
 export interface HomeResponse {
   activeProcesses: {
@@ -9,21 +9,33 @@ export interface HomeResponse {
     code: string;
     name: string;
     totalAssets: number;
-    createdBy: string;
     typeDescription: string;
     forecastDate: string;
-    reportingLanguage: string;
-    autoSyncSettings: boolean;
   }[];
 }
 
-interface StandingProcessConfigurationResponse {
+export interface StandingProcessConfigurationResponse {
   forecastPeriod?: { value; timeUnit };
   valuationDate: string;
   forecastDate: string;
   code: string;
   processType: string;
   name: string;
+  clusters: {
+    code: string;
+    name: string;
+    financialStatementId: string;
+    strategyId: number;
+    riskFreeRate: number;
+    indexMethods: { [P in keyof typeof Fields]: string };
+  }[];
+  clusterCharacteristic: string;
+  lists: {
+    clusterCharacteristics: ListItem[];
+    indexMethods: ListItem[];
+    financialStatements: ListItem[];
+    strategies: ListItem[];
+  };
 }
 
 export function fetchStandingProcessConfiguration(): Promise<StandingProcessConfigurationResponse> {
@@ -32,15 +44,24 @@ export function fetchStandingProcessConfiguration(): Promise<StandingProcessConf
   ).then((e) => e.json());
 }
 
-export interface StandingProcessConfiguration {
+export interface UpdateStandingProcessConfigurationCommand {
   forecastPeriod?: { value; timeUnit };
   valuationDate: string;
   forecastDate: string;
   code: string;
   name: string;
+  clusterCharacteristic: string;
+  clusters: {
+    code: any;
+    name: string;
+    financialStatementId: string;
+    strategyId: number;
+    riskFreeRate: number;
+    indexMethods: { [P in keyof typeof Fields]: string };
+  }[];
 }
 export function updateStandingProcessConfiguration(
-  data: StandingProcessConfiguration
+  data: UpdateStandingProcessConfigurationCommand
 ): Promise<void> {
   return fetch(
     `${Config.RemBaseUrl}/command/process/UpdateStandingProcessConfiguration`,
@@ -207,11 +228,7 @@ export interface ListItem {
 export interface ClusterViewResponse {
   cluster: Cluster;
 
-  lists: {
-    indexMethods: ListItem[];
-    financialStatements: ListItem[];
-    strategies: ListItem[];
-  };
+  lists: {};
 }
 
 export function fetchCluster(
@@ -243,12 +260,18 @@ export function fetchProcessClusterSettings(
 
 export interface UpsertClusterCommand {
   processId: string;
-  cluster: Cluster;
+  id?: string;
+  code: any;
+  name: string;
+  financialStatementId: string;
+  strategyId: number;
+  riskFreeRate: number;
+  indexMethods: { [P in keyof typeof Fields]: string };
 }
 
 export async function upsertCluster(command: UpsertClusterCommand) {
   const result = await post("command/process/upsertcluster", command);
-  command.cluster.id = result.newId;
+  command.id = result.newId;
 }
 
 export function fetchCountryDefaults() {
@@ -277,4 +300,23 @@ function get(path: string) {
       Accept: "application/json",
     },
   }).then((e) => e.json());
+}
+
+export interface InitialProcessClustersResponse {
+  clusters: {
+    code: any;
+    name: string;
+    financialStatementId: string;
+    strategyId: number;
+    riskFreeRate: number;
+    indexMethods: { [P in keyof typeof Fields]: string };
+  }[];
+}
+export function fetchInitialProcessClusters(
+  processId: string,
+  clusterCharacteristic: string
+): Promise<InitialProcessClustersResponse> {
+  return fetch(
+    `${Config.RemBaseUrl}/query/process/initialProcessClusters?processId=${processId}&clusterCharacteristic=${clusterCharacteristic}`
+  ).then((e) => e.json());
 }

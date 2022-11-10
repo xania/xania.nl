@@ -1,5 +1,10 @@
 {
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "server/": true,
+    "dist/": true,
+    "functions/": true
+  }
 }

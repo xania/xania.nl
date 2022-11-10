@@ -17,3 +17,25 @@ export enum EntityStatus {
   Active = 1,
   Inactive = 2,
 }
+
+export enum Fields {
+  Erv = 1,
+  TargetRent = 2,
+  RentCap = 3,
+  ReviewRent = 4,
+  TaxValue = 5,
+  RebuildValue = 6,
+  Vpv = 7,
+  MarketValueNet = 8,
+  TurnoverRate = 9,
+  Relet = 10,
+  RentFreeTerm = 11,
+  VacancyTerm = 12,
+  PassingRent = 13,
+  CashIncentive = 14,
+  LandValue = 15,
+}
+
+type dd = Fields;
+
+type a = typeof Fields[number];

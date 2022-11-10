@@ -1,3 +1,3 @@
 export const Config = {
-  RemBaseUrl: "/rem/backend",
+  RemBaseUrl: "/rem/api",
 };

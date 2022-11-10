@@ -1,4 +1,3 @@
-import { Cluster } from "./api/db";
 import { createView, jsxFactory, RenderTarget, useState } from "@xania/view";
 import { route, RouteComponent } from "../router/route-resolver";
 import { MDCRipple } from "@material/ripple";
@@ -28,16 +27,17 @@ import {
   PortfolioItemType,
   PortfolioResponse,
   ProcessStatus,
-  StandingProcessConfiguration,
   updateProcessStatus,
   updateStandingProcessConfiguration,
+  UpdateStandingProcessConfigurationCommand,
 } from "./functions";
 import { NewProcess } from "./process/new-process";
-import { ClusterView, ProcessClusters } from "./clusters";
+// import { ClusterView, ProcessClusters } from "./clusters";
 import "./api/db";
 import { useFormData } from "../layout/form-data";
 import { RouteContext } from "../router/router-context";
-import { ProcessClusterSettings } from "./process/cluster-settings";
+import { ProcessClusters } from "./process/cluster-settings";
+import { ClusterView } from "./clusters";
 
 const jsx = jsxFactory({});
 
@@ -84,19 +84,10 @@ export async function ReasultApp(): Promise<RouteComponent> {
                 {process.typeDescription}
               </h3>
               <div>
-                <label>by:</label> {process.createdBy}
-              </div>
-              <div>
                 <label>forecast:</label> {process.forecastDate}
               </div>
               <div>
                 <label>assets:</label> {process.totalAssets}
-              </div>
-              <div>
-                <label>reporting lang:</label> {process.reportingLanguage}
-              </div>
-              <div>
-                <label>auto sync settings:</label> {process.autoSyncSettings}
               </div>
             </div>
           </a>
@@ -181,22 +172,32 @@ function on<T>(event: string, fetch: () => Promise<T>) {
 async function ProcessCofigurationView(context: RouteContext) {
   const processId = context.params.processId;
   const response = await fetchStandingProcessConfiguration();
-  var config: StandingProcessConfiguration = { ...response };
+  var command: UpdateStandingProcessConfigurationCommand = {
+    clusterCharacteristic: response.clusterCharacteristic,
+    clusters: response.clusters,
+    code: response.code,
+    forecastDate: response.forecastDate,
+    valuationDate: response.valuationDate,
+    forecastPeriod: response.forecastPeriod,
+    name: response.name,
+  };
   const portfolio = await fetchPortfolioOverview(processId);
   const properties = getProperties(portfolio);
 
   async function save() {
-    updateStandingProcessConfiguration(config);
+    updateStandingProcessConfiguration(command);
   }
 
-  const formData = useFormData(config);
-  const events = new Rx.Subject<Cluster>();
+  const formData = useFormData(command);
 
   return {
     get view() {
       return (
         <Page>
-          <PageHeader title={config.name} />
+          <button click={save}>
+            <Fab icon="save" />
+          </button>
+          <PageHeader title={command.name} />
           <PageContent>
             <div class="mdc-card">
               <div class="mdc-card__content">
@@ -220,8 +221,19 @@ async function ProcessCofigurationView(context: RouteContext) {
                 />
                 <TextField
                   label="Forecast period"
-                  value={formData.get("forecastPeriod").get("value")}
+                  value={formData.get("forecastPeriod").get("value").asInt()}
                   sideLabel="months"
+                />
+              </div>
+            </div>
+
+            <div class="mdc-card">
+              <div class="mdc-card__content">
+                <ProcessClusters
+                  command={command}
+                  lists={response.lists}
+                  processId={processId}
+                  url={context.url}
                 />
               </div>
             </div>
@@ -254,28 +266,24 @@ async function ProcessCofigurationView(context: RouteContext) {
                 </a>
               </div>
             </div>
-            <div class="mdc-card">
+            {/* <div class="mdc-card">
               <div class="mdc-card__content">
                 <label>clusters</label>
-                <ProcessClusters
+                <ProcessClusterConfigurationView
                   url={context.url}
                   updates={events}
                   processId={processId}
+                  clusters={response.clusters}
                 />
               </div>
               <div class="mdc-card__actions">
-                <a href={`${context.url}/cluster`} class="router-link">
-                  <IconButton>
-                    <span class="material-icons">add</span>
-                  </IconButton>
-                </a>
                 <a href={`${context.url}/clusters`} class="router-link">
                   <IconButton>
                     <span class="material-icons">settings</span>
                   </IconButton>
                 </a>
               </div>
-            </div>
+            </div> */}
           </PageContent>
         </Page>
       );
@@ -284,13 +292,9 @@ async function ProcessCofigurationView(context: RouteContext) {
       route(regex(/(?<id>\d+)/i), (context) =>
         PropertyView(context, properties[context.params.id])
       ),
-      route(["cluster", ":id"], (context) =>
-        ClusterView(context, (cluster) => events.next(cluster))
+      route(["cluster", ":index"], (context) =>
+        ClusterView(context, command, response.lists, (cluster) => {})
       ),
-      route(["cluster"], (context) =>
-        ClusterView(context, (cluster) => events.next(cluster))
-      ),
-      route(["clusters"], ProcessClusterSettings),
     ],
   };
 }

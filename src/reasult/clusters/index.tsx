@@ -6,35 +6,36 @@ import { Page, PageContent } from "../../layout/page";
 import { Select } from "../../layout/select";
 import { TextField } from "../../layout/text-field";
 import { RouteContext } from "../../router/router-context";
-import { Cluster, queryCluster } from "../api/db";
-import { fetchCluster, upsertCluster } from "../functions";
+import {
+  UpdateStandingProcessConfigurationCommand,
+  StandingProcessConfigurationResponse,
+  upsertCluster,
+} from "../functions";
 import { selectOptions } from "../utils/select-utils";
-import * as Ro from "rxjs/operators";
-import { List } from "@xania/view/lib/directives/list";
 import classes from "./clusters.module.scss";
+import { Fields } from "../api/types";
 
 const jsx = jsxFactory({ classes });
 
-export async function ClusterView(
+type Cluster = StandingProcessConfigurationResponse["clusters"][number];
+
+export function ClusterView(
   context: RouteContext,
+  command: UpdateStandingProcessConfigurationCommand,
+  lists: StandingProcessConfigurationResponse["lists"],
   callback: (cluster: Cluster) => void
 ) {
-  const { id, processId } = context.params;
-  const response = await fetchCluster(id, processId);
-  const clusterForm = useFormData(response.cluster);
+  const index = parseInt(context.params.index);
+  const cluster = command.clusters[index];
+  const clusterForm = useFormData(cluster);
 
-  const indexMethods = selectOptions(response.lists.indexMethods);
+  const indexMethods = selectOptions(lists.indexMethods);
 
   return {
     get view() {
       return (
         <Page>
-          {clusterForm.onChange((cluster) =>
-            upsertCluster({ processId, cluster }).then((_) => {
-              callback(cluster);
-            })
-          )}
-          <PageHeader title={`Configure cluster (${response.cluster.code})`} />
+          <PageHeader title={`Configure cluster (${cluster.code})`} />
           <PageContent>
             <div class="mdc-card">
               <div class="mdc-card__content">
@@ -46,12 +47,12 @@ export async function ClusterView(
                 />
                 <Select
                   label="Finantial statement"
-                  value={clusterForm.get("finantialStatementId")}
+                  value={clusterForm.get("financialStatementId")}
                 >
-                  {selectOptions(response.lists.financialStatements)}
+                  {selectOptions(lists.financialStatements)}
                 </Select>
                 <Select label="Strategy" value={clusterForm.get("strategyId")}>
-                  {selectOptions(response.lists.strategies)}
+                  {selectOptions(lists.strategies)}
                 </Select>
                 <TextField
                   label="Risk free rate"
@@ -63,33 +64,7 @@ export async function ClusterView(
             <div class="mdc-card">
               <div class="mdc-card__content">
                 <label>General</label>
-                <Select label="ERV" value={clusterForm.get("ervIndexMethodId")}>
-                  {indexMethods}
-                </Select>
-                <Select label="VPV" value={clusterForm.get("vpvIndexMethodId")}>
-                  {indexMethods}
-                </Select>
-                <Select label="FAM" value={clusterForm.get("famIndexMethodId")}>
-                  {indexMethods}
-                </Select>
-                <Select
-                  label="Land value"
-                  value={clusterForm.get("landValueIndexMethodId")}
-                >
-                  {indexMethods}
-                </Select>
-                <Select
-                  label="Target rent"
-                  value={clusterForm.get("targetRentIndexMethodId")}
-                >
-                  {indexMethods}
-                </Select>
-                <Select
-                  label="Renewal rent"
-                  value={clusterForm.get("renewalRentIndexMethodId")}
-                >
-                  {indexMethods}
-                </Select>
+                {IndexMethods()}
               </div>
             </div>
           </PageContent>
@@ -97,63 +72,23 @@ export async function ClusterView(
       );
     },
   };
-}
+  function IndexMethods() {
+    var result = [];
 
-export interface ProcessClustersProps {
-  processId: string;
-  updates: Observable<Cluster>;
-  url: string;
-}
-
-export async function ProcessClusters(props: ProcessClustersProps) {
-  const { updates, processId } = props;
-
-  const initial = await queryCluster(null, processId);
-
-  const clusters = updates.pipe(
-    Ro.map((u) => {
-      const idx = initial.findIndex((e) => e.id == u.id);
-      if (idx > 0) {
-        initial[idx] = u;
-      } else {
-        initial.push(u);
+    const keys = Object.keys(Fields);
+    console.log(Fields);
+    for (const f in Fields) {
+      if (typeof Fields[Fields[f]] === "string") {
+        result.push(
+          <Select
+            label={f}
+            value={clusterForm.get("indexMethods").get(f as any)}
+          >
+            {indexMethods}
+          </Select>
+        );
       }
-      return initial;
-    }),
-    Ro.startWith(initial)
-  );
-
-  const highliteClass = classes["highlite"];
-  function highlite(cluster: Cluster, node: Node) {
-    updates.subscribe((u) => {
-      if (u.id === cluster.id) {
-        const a = node.parentElement;
-        if (!a.classList.contains(highliteClass)) {
-          a.classList.add(highliteClass);
-
-          setTimeout((_) => {
-            a.classList.remove(highliteClass);
-          }, 1000);
-        }
-      }
-    });
+    }
+    return result;
   }
-
-  const $ = useContext<Cluster>();
-  return (
-    <div class="mdc-list">
-      <List data={clusters}>
-        <a
-          href={$((cluster) => props.url + "/cluster/" + cluster.id, "id")}
-          class="mdc-list-item router-link mdc-list-item--with-trailing-icon"
-        >
-          {$(highlite)}
-          <span class="mdc-list-item__content">
-            {$("name")} ({$("code")})
-          </span>
-          <span class="material-icons mdc-list-item__end">arrow_right</span>
-        </a>
-      </List>
-    </div>
-  );
 }
