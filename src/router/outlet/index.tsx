@@ -12,6 +12,7 @@ import { Path } from "../path";
 import classes from "./outlet.module.scss";
 import { RouteContext } from "../router-context";
 import boxes from "../animations/boxes";
+import { jsxFactory } from "@xania/view";
 
 const duration = 400;
 
@@ -215,43 +216,47 @@ class Page {
     }
 
     return new Rx.Observable<PageResolution>((observer) => {
-      this.resolve(route).then(async (routeResolution) => {
-        if (routeResolution) {
-          const { _resolution } = this;
-          const parentParams = _resolution?.params;
+      this.resolve(route)
+        .catch((err) => {
+          console.error(err);
+        })
+        .then(async (routeResolution) => {
+          if (routeResolution) {
+            const { _resolution } = this;
+            const parentParams = _resolution?.params;
 
-          const { view, routes } = await applyComponent(
-            routeResolution.component,
-            {
-              params: parentParams
-                ? { ...parentParams, ...routeResolution.params }
-                : routeResolution.params,
-              url: `/${this.basePath.join(
-                "/"
-              )}/${routeResolution.appliedPath.join("/")}`,
-            }
-          );
+            const { view, routes } = await applyComponent(
+              routeResolution.component,
+              {
+                params: parentParams
+                  ? { ...parentParams, ...routeResolution.params }
+                  : routeResolution.params,
+                url: `/${this.basePath.join(
+                  "/"
+                )}/${routeResolution.appliedPath.join("/")}`,
+              }
+            );
 
-          const remainingPath = route.path.slice(
-            routeResolution.appliedPath.length
-          );
-          const basePath = [...this.basePath, ...routeResolution.appliedPath];
-          const resolveNext =
-            routes instanceof Function ? routes : createRouteResolver(routes);
-          const res: PageResolution = {
-            route: { path: remainingPath, trigger: route.trigger },
-            page: this.nextPage(target, basePath, resolveNext),
-            view,
-            routeResolution,
-          };
+            const remainingPath = route.path.slice(
+              routeResolution.appliedPath.length
+            );
+            const basePath = [...this.basePath, ...routeResolution.appliedPath];
+            const resolveNext =
+              routes instanceof Function ? routes : createRouteResolver(routes);
+            const res: PageResolution = {
+              route: { path: remainingPath, trigger: route.trigger },
+              page: this.nextPage(target, basePath, resolveNext),
+              view,
+              routeResolution,
+            };
 
-          observer.next(res);
-        } else {
-          this.clearNext();
-        }
+            observer.next(res);
+          } else {
+            this.clearNext();
+          }
 
-        observer.complete();
-      });
+          observer.complete();
+        });
     });
   }
 
@@ -376,7 +381,9 @@ function applyComponent(
   try {
     var result = fn(config);
     if (result instanceof Promise) {
-      return result.then(buildResult);
+      return result
+        .catch((err) => (console.error(err), { view: errorPage(err) }))
+        .then(buildResult);
     } else {
       return Promise.resolve(buildResult(result));
     }
@@ -397,4 +404,11 @@ function applyComponent(
       return result;
     }
   }
+}
+
+function errorPage(err: Error) {
+  const jsx = jsxFactory({});
+  return (
+    <div style="color: red; padding: 20px; margin: 10px">{err.message}</div>
+  );
 }
