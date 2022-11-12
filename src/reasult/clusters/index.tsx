@@ -1,4 +1,4 @@
-import { jsxFactory, useContext } from "@xania/view";
+import { jsxFactory } from "@xania/view";
 import { useFormData } from "../../layout/form-data";
 import { PageHeader } from "../../layout/page/header";
 import { Page, PageContent } from "../../layout/page";
@@ -25,6 +25,9 @@ export function ClusterView(
 ) {
   const index = parseInt(context.params.index);
   const cluster = command.clusters[index];
+  if (!cluster) {
+    return <div>cluster at {index} not found</div>;
+  }
   const clusterForm = useFormData(cluster);
 
   const indexMethods = selectOptions(lists.indexMethods);
@@ -33,30 +36,26 @@ export function ClusterView(
     get view() {
       return (
         <Page>
-          <PageHeader title={`Configure cluster (${cluster.code})`} />
+          <PageHeader title={`Configure cluster`} />
           <PageContent>
             <div class="mdc-card">
               <div class="mdc-card__content">
                 <label>General</label>
-                <TextField label="Cluster ID" value={clusterForm.get("code")} />
-                <TextField
-                  label="Cluster Name"
-                  value={clusterForm.get("name")}
-                />
+                <TextField label="Cluster Name" value={cluster.name} />
                 <Select
                   label="Finantial statement"
                   value={clusterForm.get("financialStatementId")}
                 >
                   {selectOptions(lists.financialStatements)}
                 </Select>
-                <Select label="Strategy" value={clusterForm.get("strategyId")}>
-                  {selectOptions(lists.strategies)}
-                </Select>
-                <TextField
-                  label="Risk free rate"
-                  sideLabel="%"
-                  value={clusterForm.get("riskFreeRate").asPerc()}
-                />
+                {lists.strategies && (
+                  <Select
+                    label="Strategy"
+                    value={clusterForm.get("strategyId")}
+                  >
+                    {selectOptions(lists.strategies)}
+                  </Select>
+                )}
               </div>
             </div>
             <div class="mdc-card">

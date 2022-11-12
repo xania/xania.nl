@@ -37,6 +37,9 @@ import { useFormData } from "../layout/form-data";
 import { RouteContext } from "../router/router-context";
 import { ProcessClusters } from "./process/cluster-settings";
 import { ClusterView } from "./clusters";
+import { Select } from "../layout/select";
+import { selectOptions } from "./utils/select-utils";
+import { queryClusters } from "./api/db";
 
 const jsx = jsxFactory({});
 
@@ -172,6 +175,7 @@ async function ProcessCofigurationView(context: RouteContext) {
     valuationDate: response.valuationDate,
     forecastPeriod: response.forecastPeriod,
     name: response.name,
+    periodType: response.periodType,
   };
   const portfolio = await fetchPortfolioOverview(processId);
   const properties = getProperties(portfolio);
@@ -197,6 +201,12 @@ async function ProcessCofigurationView(context: RouteContext) {
                 <TextField label="Type" value={response.processType} />
                 <TextField label="ID" value={formData.get("code")} />
                 <TextField label="Name" value={formData.get("name")} />
+                <Select
+                  label="Period type"
+                  value={formData.get("periodType").asInt()}
+                >
+                  {selectOptions(response.lists.periodTypes)}
+                </Select>
               </div>
             </div>
 

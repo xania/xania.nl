@@ -1,35 +1,31 @@
 import * as jsx from "@xania/view";
 import { Company, Invoice, XaniaClient } from "../azure-functions";
 import { PageHeader } from "../layout/page/header";
-import { Page } from "../layout/page";
-
-import "./style.scss";
+import { Page, PageContent } from "../layout/page";
 
 export function InvoiceApp() {
   var invoices: Invoice[] = [
-    invoice2017053(),
-    invoice2017054(),
     invoice2017055(),
+    invoice2017054(),
+    invoice2017053(),
   ];
 
   return (
     <Page>
       <PageHeader title="Invoices" backUrl="/" />
-      <section>{invoices.map(invoiceLink)}</section>
+      <PageContent>{invoices.map(invoiceLink)}</PageContent>
     </Page>
   );
 }
 
 function invoiceLink(invoice: Invoice) {
   return (
-    <div class="mdc-card demo-card">
-      <div class="demo-card__primary">
+    <a class="mdc-card mdc-ripple-surface">
+      <div class="mdc-card__content">
         <h2 class="mdc-typography mdc-typography--headline6">
           {invoice.number}
         </h2>
         <h3 class="mdc-typography mdc-typography--subtitle2">{invoice.date}</h3>
-      </div>
-      <div class="mdc-card-wrapper__text-section">
         <div class="demo-card__supporting-text">{invoice.description}</div>
       </div>
       <div class="mdc-card__actions">
@@ -41,7 +37,7 @@ function invoiceLink(invoice: Invoice) {
           <div class="mdc-button__ripple"></div>
         </button>
       </div>
-    </div>
+    </a>
   );
 
   async function onDownload() {

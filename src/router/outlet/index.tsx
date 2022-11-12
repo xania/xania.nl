@@ -70,14 +70,14 @@ export function Outlet<TView>(props: OutletProps<TView>) {
               })
             );
           }),
-          Ro.map((res) => {
+          Ro.mergeMap(async (res) => {
             const { page, view } = res;
 
             const context: ViewContext = {
               route: res.route,
             };
 
-            page.bind(view, res.routeResolution, context);
+            await page.bind(view, res.routeResolution, context);
           })
         )
         .subscribe();
@@ -113,8 +113,10 @@ class Page {
 
   clear() {
     this.clearNext();
-    this._binding?.dispose();
-    this._binding = null;
+    if (this._binding) {
+      this._binding.dispose();
+      this._binding = null;
+    }
     this._resolution = null;
   }
 
@@ -133,7 +135,11 @@ class Page {
     );
   }
 
-  bind(view: any, routeResolution: RouteResolution, context: ViewContext) {
+  async bind(
+    view: any,
+    routeResolution: RouteResolution,
+    context: ViewContext
+  ) {
     if (!this._container) {
       const div = document.createElement("div");
       div.classList.add(classes["page-container"]);
@@ -154,11 +160,12 @@ class Page {
     if (this._binding) {
       const oldBinding = this._binding;
       this._binding = null;
-      setTimeout(() => oldBinding.dispose(), duration);
+      if (oldBinding && oldBinding.dispose instanceof Function)
+        setTimeout(() => oldBinding.dispose(), duration);
     }
 
     if (view && view.render instanceof Function) {
-      this._binding = view.render(_container, context);
+      this._binding = await unwrapPromise(view.render(_container, context));
       _container.classList.add(classes["page-container--loading"]);
       _container.classList.replace(
         classes["page-container--inactive"],
@@ -378,17 +385,13 @@ function applyComponent(
   fn: any,
   config: RouteContext
 ): Promise<RouteComponent> {
-  try {
-    var result = fn(config);
-    if (result instanceof Promise) {
-      return result
-        .catch((err) => (console.error(err), { view: errorPage(err) }))
-        .then(buildResult);
-    } else {
-      return Promise.resolve(buildResult(result));
-    }
-  } catch (e) {
-    return Promise.resolve(Reflect.construct(fn, [config.params]));
+  var result = fn(config);
+  if (result instanceof Promise) {
+    return result
+      .catch((err) => (console.error(err), { view: errorPage(err) }))
+      .then(buildResult);
+  } else {
+    return Promise.resolve(buildResult(result));
   }
 
   function buildResult(result) {
@@ -411,4 +414,10 @@ function errorPage(err: Error) {
   return (
     <div style="color: red; padding: 20px; margin: 10px">{err.message}</div>
   );
+}
+
+function unwrapPromise(p: any) {
+  if (p === null || p === undefined) return p;
+  if (p instanceof Promise) return p;
+  else return Promise.resolve(p);
 }

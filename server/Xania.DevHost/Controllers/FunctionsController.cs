@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.WebApiCompatShim;
 using Microsoft.Extensions.Primitives;
+using Xania.Functions.Invoices;
 
 namespace Xania.Functions.Dev.Controllers
 {
@@ -19,45 +19,10 @@ namespace Xania.Functions.Dev.Controllers
             };
         }
 
-        [HttpGet("mollie/{client}/payments")]
-        public Task<IActionResult> ListPayments(string client)
-        {
-            return MollieFunctions.ListPayments(this.Request, client, _context);
-        }
-
-        [HttpGet("product")]
-        public IActionResult Product()
-        {
-            return ProductFunctions.ProductList(this.Request, _context, _logger);
-        }
-
-
         [HttpPost("invoice")]
         public object Invoice()
         {
             return InvoiceFunctions.CreateInvoice(this.Request);
-        }
-
-        [HttpGet("reverse/{*endpoint}")]
-        [HttpPost("reverse/{*endpoint}")]
-        public async Task<IActionResult> Reverse([FromServices] IHttpClientFactory factory, string endpoint)
-        {
-            var func = new ReverseFunctions(factory);
-            var response = await func.RunReverse(this.HttpContext.GetHttpRequestMessage(), _context, endpoint, _logger);
-
-            return new HttpResponseMessageResult(response);
-        }
-
-        [HttpPost("cosmos/{client}")]
-        public Task<object> CosmosQuery(string client)
-        {
-            return CosmosFunctions.CosmosQuery(this.Request, _context, client, _logger);
-        }
-
-        [HttpPost("mollie/{client}/create-payment")]
-        public Task<IActionResult> MollieCreatePayment(string client)
-        {
-            return MollieFunctions.CreatePayment(this.Request, client, _context, _logger);
         }
     }
 

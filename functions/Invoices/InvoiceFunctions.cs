@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Xania.Functions.Helpers;
-using Xania.Functions.Invoices;
 
-namespace Xania.Functions
+namespace Xania.Functions.Invoices
 {
     public static class InvoiceFunctions
     {

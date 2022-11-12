@@ -42,8 +42,8 @@ export async function MenuCardApp(): Promise<RouteComponent> {
     routes: [
       {
         match: regex(/(?<id>\d+)/i),
-        component(params) {
-          const { id } = params;
+        component(context) {
+          const { id } = context.params;
           const idx = menuCard.dishes.findIndex((d) => d.id == id);
           const dish = menuCard.dishes[idx];
           return <Dish {...dish} />;

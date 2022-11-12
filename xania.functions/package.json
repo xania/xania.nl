@@ -1,0 +1,19 @@
+{
+  "name": "xania-functions",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start --typescript",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@mollie/api-client": "^3.6.0"
+  },
+  "devDependencies": {
+    "@azure/functions": "^3.0.0",
+    "azure-functions-core-tools": "^4.x"
+  }
+}

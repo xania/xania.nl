@@ -4,6 +4,7 @@ import "./layout/list.scss";
 import { render } from "@xania/view";
 import * as jsx from "@xania/view";
 import { AdminApp } from "./admin/index";
+import { queryClusters } from "./reasult/api/db";
 
 render(<AdminApp />, document.getElementById("app"));
 
@@ -15,3 +16,5 @@ window.onerror = function (err) {
   alert(err);
   console.error(err);
 };
+
+queryClusters();

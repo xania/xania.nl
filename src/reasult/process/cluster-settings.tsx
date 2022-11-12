@@ -56,9 +56,7 @@ export async function ProcessClusters(props: ProcessClustersProps) {
             class="mdc-list-item router-link mdc-list-item--with-trailing-icon"
           >
             {/* {$(highlite)} */}
-            <span class="mdc-list-item__content">
-              {$("name")} ({$("code")})
-            </span>
+            <span class="mdc-list-item__content">{$("name")}</span>
             <span class="material-icons mdc-list-item__end">arrow_right</span>
           </a>
         </List>

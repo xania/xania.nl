@@ -15,6 +15,7 @@ export interface HomeResponse {
 }
 
 export interface StandingProcessConfigurationResponse {
+  periodType: number;
   forecastPeriod?: { value; timeUnit };
   valuationDate: string;
   forecastDate: string;
@@ -22,15 +23,14 @@ export interface StandingProcessConfigurationResponse {
   processType: string;
   name: string;
   clusters: {
-    code: string;
     name: string;
     financialStatementId: string;
     strategyId: number;
-    riskFreeRate: number;
     indexMethods: { [P in keyof typeof Fields]: string };
   }[];
   clusterCharacteristic: string;
   lists: {
+    periodTypes: ListItem[];
     clusterCharacteristics: ListItem[];
     indexMethods: ListItem[];
     financialStatements: ListItem[];
@@ -51,12 +51,11 @@ export interface UpdateStandingProcessConfigurationCommand {
   code: string;
   name: string;
   clusterCharacteristic: string;
+  periodType: number;
   clusters: {
-    code: any;
     name: string;
     financialStatementId: string;
     strategyId: number;
-    riskFreeRate: number;
     indexMethods: { [P in keyof typeof Fields]: string };
   }[];
 }
@@ -202,16 +201,14 @@ export function fetchPropertyOverview(
   ).then((e) => e.json());
 }
 
-export async function fetchPropertyIndexes(
+export function fetchPropertyIndexes(
   processId,
   assetId,
   propertyId
 ): Promise<any> {
-  const response = await fetch(
+  return fetch(
     `${Config.RemBaseUrl}/query/property/indexes?processId=${processId}&assetId=${assetId}&propertyId=${propertyId}`
   ).then((e) => e.json());
-
-  return response;
 }
 
 export function fetchHomeOverview(): Promise<HomeResponse> {

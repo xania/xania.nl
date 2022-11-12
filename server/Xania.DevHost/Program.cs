@@ -7,8 +7,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-Xania.Functions.Startup.Configure(builder.Services);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

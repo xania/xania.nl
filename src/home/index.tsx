@@ -27,6 +27,12 @@ export function HomeComponent() {
         <a href="/settings" class="mdc-button button-button router-link">
           Settings
         </a>
+        <a href="/hackernews" class="mdc-button button-button router-link">
+          HackerNews
+        </a>
+        <a href="/invoices" class="mdc-button button-button router-link">
+          Invoices
+        </a>
       </PageContent>
     </Page>
   );
