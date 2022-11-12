@@ -13,7 +13,7 @@
     "@mollie/api-client": "^3.6.0"
   },
   "devDependencies": {
-    "@azure/functions": "^3.0.0",
+    "@azure/functions": "^3.2.0",
     "azure-functions-core-tools": "^4.x",
     "typescript": "4.8.4"
   }
