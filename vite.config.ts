@@ -15,10 +15,6 @@ export default defineConfig({
         // rewrite: (path) => path.replace(/^\/api/, "/api"),
         // changeOrigin: true,
       },
-      "/jsfunc": {
-        target: "http://localhost:7071",
-        rewrite: (path) => path.replace(/^\/jsfunc/, "/api"),
-      },
     },
     // watch: {
     //   ignored: ["xania-functions"],
