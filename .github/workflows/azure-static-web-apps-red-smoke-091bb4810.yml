@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true
       - name: Clean
-        run: npx rimraf xania-functions/hot-reload
+        run: npx rimraf hot-reload
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
