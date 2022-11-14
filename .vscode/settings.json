@@ -5,8 +5,11 @@
   "files.exclude": {
     "server/": true,
     "dist/": true,
-    "functions/": true,
-    "**/node_modules/": true
+    "dotnet-functions/": true,
+    ".netdlify/": true,
+    "**/node_modules/": true,
+    "__blobstorage__/": true,
+    ".netlify/": true
   },
   "azureFunctions.projectSubpath": "xania.functions",
   "azureFunctions.deploySubpath": "xania.functions",

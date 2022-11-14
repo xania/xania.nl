@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[dev]
+  command = "npx vite"
+  port = 8888
+  targetPort = 9091
+
+[functions."hot-reload"]
+schedule = "*/1 * * * *"

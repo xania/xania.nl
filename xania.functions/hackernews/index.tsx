@@ -26,10 +26,6 @@ const jsx = {
   createFragment() {},
 };
 
-function Button(props: any, children: any[]) {
-  return <button click={() => console.log("Hi")}>{children}</button>;
-}
-
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
@@ -39,6 +35,10 @@ const httpTrigger: AzureFunction = async function (
     body: <App name={name} />,
   };
 };
+
+function Button(props: any, children: any[]) {
+  return <button click={() => console.log("Hi")}>{children}</button>;
+}
 
 interface AppProps {
   name: string;

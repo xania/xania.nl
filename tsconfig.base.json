@@ -1,5 +1,4 @@
 {
-  "include": ["view/lib", "view/types", "src", "mvc.js", "host/secrets.ts"],
   "compilerOptions": {
     "noEmit": true,
     "target": "ES2016",

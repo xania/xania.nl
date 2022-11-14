@@ -16,5 +16,3 @@ window.onerror = function (err) {
   alert(err);
   console.error(err);
 };
-
-queryClusters();

@@ -1,8 +1,8 @@
 import { jsxFactory } from "@xania/view";
 import { PageHeader } from "../../layout/page/header";
 import { Page, PageContent } from "../../layout/page";
-import { RouteContext } from "../../router/outlet2";
 import { fetchCountryDefaults, fetchSectorDefaults } from "../functions";
+import { RouteContext } from "../../router/router-context";
 
 const jsx = jsxFactory({});
 export async function RiskFreeRatesView(context: RouteContext) {

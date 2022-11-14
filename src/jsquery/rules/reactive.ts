@@ -1,6 +1,6 @@
-var object = {};
+const object = {};
 
-class Reactive<T> {
+export class Reactive<T> {
   constructor(public value: T) {}
 
   update<P extends keyof T>(k: P, func: (t: T) => T[P]) {

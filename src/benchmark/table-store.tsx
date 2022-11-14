@@ -173,8 +173,8 @@ export class TableStore {
 }
 
 interface RowProps {
-  select({ values: DataRow });
-  delete({ values: DataRow });
+  select(event: { values: DataRow });
+  delete(event: { values: DataRow });
 }
 
 function Row(props: RowProps) {

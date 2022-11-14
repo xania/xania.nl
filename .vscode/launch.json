@@ -5,7 +5,7 @@
       "type": "pwa-chrome",
       "name": "Home",
       "request": "launch",
-      "url": "http://localhost:9091/reasult",
+      "url": "http://localhost:9091",
       "sourceMaps": true
     },
     {
@@ -14,6 +14,30 @@
       "request": "attach",
       "port": 9229,
       "preLaunchTask": "func: host start"
+    },
+    {
+      "name": "netlify dev",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/node_modules/.bin/netlify",
+      "args": ["dev"],
+      "console": "integratedTerminal",
+      "env": { "BROWSER": "none" },
+      "serverReadyAction": {
+        "pattern": "Server now ready on (https?://[\\w:.-]+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      "name": "netlify functions:serve",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/node_modules/.bin/netlify",
+      "args": ["functions:serve"],
+      "console": "integratedTerminal"
     }
   ]
 }

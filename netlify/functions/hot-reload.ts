@@ -1,14 +1,9 @@
-import { AzureFunction, Context } from "@azure/functions";
-import { promises as fs } from "fs";
+﻿import { promises as fs } from "fs";
+import { schedule } from "@netlify/functions";
 
-const timerTrigger: AzureFunction = async function (
-  context: Context,
-  myTimer: any
-): Promise<void> {
-  touch("../src/index.tsx");
-};
-
-export default timerTrigger;
+export const handler = schedule("0 * * * *", function () {
+  touch("./src/index.tsx");
+});
 
 async function touch(filename: string) {
   console.log("touch", filename);
