@@ -53,10 +53,24 @@ export async function ProcessClusters(props: ProcessClustersProps) {
         <List data={clusters.pipe(Ro.startWith(command.clusters))}>
           <a
             href={$((_, context) => props.url + "/cluster/" + context.index)}
-            class="mdc-list-item router-link mdc-list-item--with-trailing-icon"
+            class="mdc-list-item mdc-list-item--with-two-lines router-link mdc-list-item--with-trailing-icon"
           >
-            {/* {$(highlite)} */}
-            <span class="mdc-list-item__content">{$("name")}</span>
+            <span class="mdc-list-item__content">
+              <span class="mdc-list-item__primary-text">
+                {$("name")} ({$("numberOfAssets")})
+              </span>
+              <span class="mdc-list-item__secondary-text">
+                {$(
+                  (cluster) =>
+                    cluster.characteristics
+                      ? Object.keys(cluster.characteristics)
+                          .map((e) => `${e} = ${cluster.characteristics[e]}`)
+                          .join(", ")
+                      : "",
+                  "characteristics"
+                )}
+              </span>
+            </span>
             <span class="material-icons mdc-list-item__end">arrow_right</span>
           </a>
         </List>

@@ -57,7 +57,7 @@ export function Page(opts, children) {
 }
 
 export function PageContent(_, children) {
-  return <main class={[classes["page__content"]]}>{children}</main>;
+  return <main class="page__content">{children}</main>;
 }
 
 function iOS() {

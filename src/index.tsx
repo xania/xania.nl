@@ -4,7 +4,14 @@ import "./layout/list.scss";
 import { render } from "@xania/view";
 import * as jsx from "@xania/view";
 import { AdminApp } from "./admin/index";
-import { queryClusters } from "./reasult/api/db";
+import { createBrowser } from "./router/browser-router";
+import * as Ro from "rxjs/operators";
+
+console.log(location.pathname);
+
+const router = createBrowser(["hackernews"]);
+
+router.routes.pipe(Ro.map((route) => console.log(route.path))).subscribe();
 
 render(<AdminApp />, document.getElementById("app"));
 

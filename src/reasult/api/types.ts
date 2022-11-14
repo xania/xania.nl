@@ -36,6 +36,9 @@ export enum Fields {
   LandValue = 15,
 }
 
-type dd = Fields;
-
-type a = typeof Fields[number];
+export enum ClusterCharacteristic {
+  Sector = 1,
+  City = 2,
+  Region = 4,
+  Country = 8,
+}

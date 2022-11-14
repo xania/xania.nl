@@ -1,6 +1,10 @@
 import { Config } from "./api/config";
 import { Cluster } from "./api/db";
-import { Fields, ReferenceEntityType } from "./api/types";
+import {
+  ClusterCharacteristic,
+  Fields,
+  ReferenceEntityType,
+} from "./api/types";
 
 export interface HomeResponse {
   activeProcesses: {
@@ -27,6 +31,8 @@ export interface StandingProcessConfigurationResponse {
     financialStatementId: string;
     strategyId: number;
     indexMethods: { [P in keyof typeof Fields]: string };
+    numberOfAssets: number;
+    characteristics: { [P in keyof typeof ClusterCharacteristic]: string };
   }[];
   clusterCharacteristic: string;
   lists: {
@@ -57,6 +63,7 @@ export interface UpdateStandingProcessConfigurationCommand {
     financialStatementId: string;
     strategyId: number;
     indexMethods: { [P in keyof typeof Fields]: string };
+    characteristics: { [P in keyof typeof ClusterCharacteristic]: string };
   }[];
 }
 export function updateStandingProcessConfiguration(
@@ -306,6 +313,8 @@ export interface InitialProcessClustersResponse {
     financialStatementId: string;
     strategyId: number;
     riskFreeRate: number;
+    numberOfAssets: number;
+    characteristics: { [P in keyof typeof ClusterCharacteristic]: string };
     indexMethods: { [P in keyof typeof Fields]: string };
   }[];
 }
