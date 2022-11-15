@@ -8,10 +8,12 @@ import { RouteContext } from "../../router/router-context";
 import {
   UpdateStandingProcessConfigurationCommand,
   StandingProcessConfigurationResponse,
+  ListItem,
 } from "../functions";
 import { selectOptions } from "../utils/select-utils";
 import classes from "./clusters.module.scss";
-import { Fields } from "../api/types";
+import { Fields, MarketValueStrategy } from "../api/types";
+import { marketValueStrategies } from "../list-items";
 
 const jsx = jsxFactory({ classes });
 
@@ -21,6 +23,7 @@ export function ClusterView(
   context: RouteContext,
   command: UpdateStandingProcessConfigurationCommand,
   lists: StandingProcessConfigurationResponse["lists"],
+  isStrategyRequired: boolean,
   callback: (cluster: Cluster) => void
 ) {
   const index = parseInt(context.params.index);
@@ -48,12 +51,12 @@ export function ClusterView(
                 >
                   {selectOptions(lists.financialStatements)}
                 </Select>
-                {lists.strategies && (
+                {isStrategyRequired && (
                   <Select
                     label="Strategy"
                     value={clusterForm.get("strategyId")}
                   >
-                    {selectOptions(lists.strategies)}
+                    {selectOptions(marketValueStrategies)}
                   </Select>
                 )}
               </div>

@@ -1,4 +1,4 @@
-export function delay<T>(value: T, ts: number = 1000): T {
+export function delay<T>(value: T | Promise<T>, ts: number = 1000): Promise<T> {
   return new Promise<T>((resolve, reject) => {
     setTimeout(function () {
       resolve(value);

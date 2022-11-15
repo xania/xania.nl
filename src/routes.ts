@@ -14,4 +14,5 @@ export const routes = [
   route(["hackernews"], () =>
     import("./benchmark/ssr/hackernews").then((e) => e.HackerNewsApp)
   ),
+  route(["howto"], () => import("./benchmark/howto").then((e) => e.HowtoApp)),
 ];

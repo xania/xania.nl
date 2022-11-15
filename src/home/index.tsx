@@ -33,6 +33,9 @@ export function HomeComponent() {
         <a href="/invoices" class="mdc-button button-button router-link">
           Invoices
         </a>
+        <a href="/howto" class="mdc-button button-button router-link">
+          Live Demos
+        </a>
       </PageContent>
     </Page>
   );

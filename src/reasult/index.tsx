@@ -31,7 +31,6 @@ import {
   UpdateStandingProcessConfigurationCommand,
 } from "./functions";
 import { NewProcess } from "./process/new-process";
-// import { ClusterView, ProcessClusters } from "./clusters";
 import "./api/db";
 import { useFormData } from "../layout/form-data";
 import { RouteContext } from "../router/router-context";
@@ -39,7 +38,7 @@ import { ProcessClusters } from "./process/cluster-settings";
 import { ClusterView } from "./clusters";
 import { Select } from "../layout/select";
 import { selectOptions } from "./utils/select-utils";
-import { queryClusters } from "./api/db";
+import { forecastLevels, languages, periodTypes } from "./list-items";
 
 const jsx = jsxFactory({});
 
@@ -176,6 +175,9 @@ async function ProcessCofigurationView(context: RouteContext) {
     forecastPeriod: response.forecastPeriod,
     name: response.name,
     periodType: response.periodType,
+    autoUpdatingSettings: response.autoUpdatingSettings,
+    forecastLevel: response.forecastLevel,
+    reportingLanguage: response.reportingLanguage,
   };
   const portfolio = await fetchPortfolioOverview(processId);
   const properties = getProperties(portfolio);
@@ -202,10 +204,10 @@ async function ProcessCofigurationView(context: RouteContext) {
                 <TextField label="ID" value={formData.get("code")} />
                 <TextField label="Name" value={formData.get("name")} />
                 <Select
-                  label="Period type"
-                  value={formData.get("periodType").asInt()}
+                  label="Reporing language"
+                  value={formData.get("reportingLanguage").asInt()}
                 >
-                  {selectOptions(response.lists.periodTypes)}
+                  {selectOptions(languages)}
                 </Select>
               </div>
             </div>
@@ -213,10 +215,22 @@ async function ProcessCofigurationView(context: RouteContext) {
             <div class="mdc-card">
               <div class="mdc-card__content">
                 <label>Dates and Periods</label>
+                <Select
+                  label="Period type"
+                  value={formData.get("periodType").asInt()}
+                >
+                  {selectOptions(periodTypes)}
+                </Select>
                 <TextField
                   label="Start date forecast"
                   value={formData.get("forecastDate")}
                 />
+                <Select
+                  label="Forecast level"
+                  value={formData.get("forecastLevel").asInt()}
+                >
+                  {selectOptions(forecastLevels)}
+                </Select>
                 <TextField
                   label="Value date"
                   value={formData.get("valuationDate")}
@@ -295,7 +309,13 @@ async function ProcessCofigurationView(context: RouteContext) {
         PropertyView(context, properties[context.params.id])
       ),
       route(["cluster", ":index"], (context) =>
-        ClusterView(context, command, response.lists, (cluster) => {})
+        ClusterView(
+          context,
+          command,
+          response.lists,
+          response.isStrategyRequired,
+          (cluster) => {}
+        )
       ),
     ],
   };

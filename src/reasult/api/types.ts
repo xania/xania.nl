@@ -42,3 +42,24 @@ export enum ClusterCharacteristic {
   Region = 4,
   Country = 8,
 }
+
+export enum Language {
+  English = 1,
+  Netherlands = 2,
+}
+
+export enum Forecastlevel {
+  Cashflow = 1,
+  GeneralLedger = 2,
+}
+
+export enum PeriodType {
+  CalendarYear = 1,
+  ForecastYear = 2,
+}
+
+export enum MarketValueStrategy {
+  Hold = 1,
+  Privatization = 2,
+  HoldAndPrivatization = Hold | Privatization,
+}

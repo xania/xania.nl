@@ -9,9 +9,9 @@ import * as Ro from "rxjs/operators";
 
 console.log(location.pathname);
 
-const router = createBrowser(["hackernews"]);
+// const router = createBrowser(["hackernews"]);
 
-router.routes.pipe(Ro.map((route) => console.log(route.path))).subscribe();
+// router.routes.pipe(Ro.map((route) => console.log(route.path))).subscribe();
 
 render(<AdminApp />, document.getElementById("app"));
 

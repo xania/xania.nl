@@ -1,13 +1,9 @@
 ﻿import { jsxFactory, useContext } from "@xania/view";
 import { useFormData } from "../../layout/form-data";
-import { Page, PageContent } from "../../layout/page";
-import { PageHeader } from "../../layout/page/header";
 import { Select } from "../../layout/select";
-import { route } from "../../router/route-resolver";
-import { RouteContext } from "../../router/router-context";
-import { ClusterView } from "../clusters";
 import {
-  fetchInitialProcessClusters,
+  fetchDefaultProcessClusters,
+  ListItem,
   StandingProcessConfigurationResponse,
   UpdateStandingProcessConfigurationCommand,
 } from "../functions";
@@ -15,6 +11,7 @@ import { selectOptions } from "../utils/select-utils";
 import * as Rx from "rxjs";
 import * as Ro from "rxjs/operators";
 import { List } from "@xania/view/lib/directives/list";
+import { ClusterCharacteristic } from "../api/types";
 
 const jsx = jsxFactory({});
 
@@ -34,7 +31,7 @@ export async function ProcessClusters(props: ProcessClustersProps) {
   var settingsForm = useFormData(command);
 
   settingsForm.get("clusterCharacteristic").change(async (x) => {
-    const result = await fetchInitialProcessClusters(processId, x);
+    const result = await fetchDefaultProcessClusters(processId, x);
     command.clusters = result.clusters;
     clusters.next(result.clusters);
   });
@@ -46,7 +43,7 @@ export async function ProcessClusters(props: ProcessClustersProps) {
         label="Cluster Characteristic"
         value={settingsForm.get("clusterCharacteristic").asInt()}
       >
-        {selectOptions(props.lists.clusterCharacteristics)}
+        {selectOptions(clusterCharacteristics)}
       </Select>
 
       <div class="mdc-list">
@@ -93,3 +90,8 @@ export async function ProcessClusters(props: ProcessClustersProps) {
 //     // }
 //   });
 // }
+
+const clusterCharacteristics: ListItem<ClusterCharacteristic>[] = [
+  { id: ClusterCharacteristic.Sector, name: "Sector" },
+  { id: ClusterCharacteristic.City, name: "City" },
+];

@@ -3,6 +3,9 @@ import { Cluster } from "./api/db";
 import {
   ClusterCharacteristic,
   Fields,
+  Forecastlevel,
+  Language,
+  PeriodType,
   ReferenceEntityType,
 } from "./api/types";
 
@@ -26,6 +29,11 @@ export interface StandingProcessConfigurationResponse {
   code: string;
   processType: string;
   name: string;
+  clusterCharacteristic: ClusterCharacteristic;
+  forecastLevel: Forecastlevel;
+  reportingLanguage: Language;
+  autoUpdatingSettings: boolean;
+  isStrategyRequired: boolean;
   clusters: {
     name: string;
     financialStatementId: string;
@@ -34,13 +42,9 @@ export interface StandingProcessConfigurationResponse {
     numberOfAssets: number;
     characteristics: { [P in keyof typeof ClusterCharacteristic]: string };
   }[];
-  clusterCharacteristic: string;
   lists: {
-    periodTypes: ListItem[];
-    clusterCharacteristics: ListItem[];
     indexMethods: ListItem[];
     financialStatements: ListItem[];
-    strategies: ListItem[];
   };
 }
 
@@ -56,8 +60,11 @@ export interface UpdateStandingProcessConfigurationCommand {
   forecastDate: string;
   code: string;
   name: string;
-  clusterCharacteristic: string;
-  periodType: number;
+  clusterCharacteristic: ClusterCharacteristic;
+  periodType: PeriodType;
+  forecastLevel: Forecastlevel;
+  reportingLanguage: Language;
+  autoUpdatingSettings: boolean;
   clusters: {
     name: string;
     financialStatementId: string;
@@ -224,8 +231,8 @@ export function fetchHomeOverview(): Promise<HomeResponse> {
   );
 }
 
-export interface ListItem {
-  id: string;
+export interface ListItem<TKey = string> {
+  id: TKey;
   name: string;
 }
 
@@ -306,7 +313,7 @@ function get(path: string) {
   }).then((e) => e.json());
 }
 
-export interface InitialProcessClustersResponse {
+export interface DefaultProcessClustersResponse {
   clusters: {
     code: any;
     name: string;
@@ -318,11 +325,11 @@ export interface InitialProcessClustersResponse {
     indexMethods: { [P in keyof typeof Fields]: string };
   }[];
 }
-export function fetchInitialProcessClusters(
+export function fetchDefaultProcessClusters(
   processId: string,
   clusterCharacteristic: string
-): Promise<InitialProcessClustersResponse> {
+): Promise<DefaultProcessClustersResponse> {
   return fetch(
-    `${Config.RemBaseUrl}/query/process/initialProcessClusters?processId=${processId}&clusterCharacteristic=${clusterCharacteristic}`
+    `${Config.RemBaseUrl}/query/process/defaultProcessClusters?processId=${processId}&clusterCharacteristic=${clusterCharacteristic}`
   ).then((e) => e.json());
 }
