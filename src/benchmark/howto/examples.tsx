@@ -1,7 +1,10 @@
 ﻿import classes from "./css.module.scss";
 import { jsxFactory, view } from "@xania/view/lib/jsx2";
 import { RenderTarget, State, useState } from "@xania/view";
+import { useInterval } from "./use-interval";
 import { delay } from "../../layout/helpers";
+import * as Rx from "rxjs";
+import * as Ro from "rxjs/operators";
 
 const jsx = jsxFactory({ classes });
 
@@ -36,13 +39,44 @@ export function NestedTextAndElements() {
 }
 
 export function MultipleRootElementsDemo() {
-  /**
-   * Alternatively u can just return an array of the root elements
-   */
   return (
     <>
-      <span class="element">root element 1</span>
-      <span class="element">root element 2</span>
+      <span class="element">simple root element 1</span>
+      <span class={delay("element")}>
+        Element suspended untill attribute promise is resolved
+      </span>
+      {useInterval(() => (
+        <span class="element slide-in">{new Date().toLocaleTimeString()}</span>
+      ))}
+      {Rx.timer(0, 1500).pipe(
+        Ro.scan((p, next, i) => next + 1, 0),
+        Ro.map((idx) => (
+          <span class="element slide-in">I am an rxjs observable {idx}</span>
+        ))
+      )}
+    </>
+  );
+}
+
+export function FormElementsDemo() {
+  const firstName = useState("");
+  const lastName = useState("");
+
+  return (
+    <>
+      <input
+        placeholder="First name"
+        type="text"
+        keyup={(e: any) => firstName.update(e.node.value)}
+      />
+      <input
+        placeholder="Last name"
+        type="text"
+        keyup={(e: any) => lastName.update(e.node.value)}
+      />
+      <div>
+        {firstName} {lastName}
+      </div>
     </>
   );
 }
@@ -54,7 +88,7 @@ export function CssModuleDemo() {
 }
 
 export function DelayedTextContent(props: { value: Promise<string> }) {
-  return <span class="element">{props.value}</span>;
+  return <span class="element slide-in">{props.value}</span>;
 }
 
 export function UseStateDemo() {
@@ -71,31 +105,13 @@ export function UseStateDemo() {
 }
 
 export function TimerDemo() {
-  const time: State<Date> = useState(new Date());
-
-  /**
-   * the mount/unmount handlers are registered right with the resulting view
-   * instead of having to use global context like most other jsx implementations
-   */
   return (
     <div class="element">
-      {useInterval(time.reduce(() => new Date()))}
-      <div>Current Time: {time.map((t) => t.toLocaleTimeString())}</div>
+      <div>
+        Current Time: {useInterval(() => new Date().toLocaleTimeString())}
+      </div>
     </div>
   );
-
-  function useInterval(callback, ms: number = 1000) {
-    return {
-      subscribe() {
-        const timer = setInterval(callback, ms);
-        return {
-          unsubscribe() {
-            clearInterval(timer);
-          },
-        };
-      },
-    };
-  }
 }
 
 export function CustomRenderDemo() {
@@ -103,8 +119,7 @@ export function CustomRenderDemo() {
     render(target: RenderTarget) {
       const div = document.createElement("div");
       div.className = "element";
-      div.innerHTML =
-        "This element is created with <br />custom dom operations";
+      div.innerHTML = "This dom element is created using <br />custom code";
 
       target.appendChild(div);
 
@@ -115,4 +130,11 @@ export function CustomRenderDemo() {
       };
     },
   };
+}
+
+export function ClassListDemo() {
+  const theme = useInterval((prev: string = "dark-theme") =>
+    prev === "light-theme" ? "dark-theme" : "light-theme"
+  );
+  return <div class={[theme, "element"]}>Toggle theme class each second</div>;
 }

@@ -238,9 +238,9 @@ class Page {
                 params: parentParams
                   ? { ...parentParams, ...routeResolution.params }
                   : routeResolution.params,
-                url: `/${this.basePath.join(
-                  "/"
-                )}/${routeResolution.appliedPath.join("/")}`,
+                url: `${this.basePath
+                  .map((e) => "/" + e)
+                  .join("")}/${routeResolution.appliedPath.join("/")}`,
               }
             );
 

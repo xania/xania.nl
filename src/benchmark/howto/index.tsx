@@ -12,13 +12,68 @@ import {
   TimerDemo,
   UseStateDemo,
   CustomRenderDemo,
+  ClassListDemo,
+  FormElementsDemo,
 } from "./examples";
 import "./style.scss";
 import classes from "./css.module.scss";
+import { RouteContext } from "../../router/router-context";
+import { route } from "../../router/route-resolver";
 
 const jsx = jsxFactory({ classes });
 
-export function HowtoApp() {
+export function HowtoApp(context: RouteContext) {
+  return {
+    get view() {
+      return (
+        <Page>
+          <PageContent>
+            <p class="info">
+              <h2>Core features of xania are demo's here</h2>
+              <p>
+                This is all you need to know to understand xania,
+                <br />
+                everything else is just you and how creative you are
+              </p>
+              <p>
+                Click here to find more advanced examples build <br />
+                on top of the core features below
+              </p>
+              <a class="router-link" href={`${context.url}/basic-elements`}>
+                basic elements
+              </a>
+              <a class="router-link" href={`${context.url}/dynamic-elements`}>
+                dynamic elements
+              </a>
+              <a class="router-link" href={`${context.url}/form-elements`}>
+                form elements
+              </a>
+            </p>
+          </PageContent>
+        </Page>
+      );
+    },
+    routes: [
+      route(["basic-elements"], BasicElements),
+      route(["dynamic-elements"], DynamicElements),
+      route(["form-elements"], FormElements),
+    ],
+  };
+}
+
+export function FormElements() {
+  return (
+    <Page>
+      <PageContent>
+        <SectionDemo title="Simple element with text content">
+          <FormElementsDemo />
+        </SectionDemo>
+      </PageContent>
+    </Page>
+  );
+}
+
+export function BasicElements() {
   return (
     <Page>
       <PageContent>
@@ -31,14 +86,20 @@ export function HowtoApp() {
         <SectionDemo title="Nested text and elements">
           <NestedTextAndElements />
         </SectionDemo>
-        <SectionDemo title="Multiple roots">
-          <MultipleRootElementsDemo />
-        </SectionDemo>
         <SectionDemo title="Css module support">
           <CssModuleDemo />
         </SectionDemo>
+      </PageContent>
+    </Page>
+  );
+}
+
+export function DynamicElements() {
+  return (
+    <Page>
+      <PageContent>
         <SectionDemo title="Async text content">
-          <DelayedTextContent value={delay("No you see me", 1000)} />
+          <DelayedTextContent value={delay("Now you see me", 1000)} />
         </SectionDemo>
         <SectionDemo title="Reactive support">
           <UseStateDemo />
@@ -48,6 +109,12 @@ export function HowtoApp() {
         </SectionDemo>
         <SectionDemo title="Custom render function">
           <CustomRenderDemo />
+        </SectionDemo>
+        <SectionDemo title="Element class list consists of constant and dynamic values">
+          <ClassListDemo />
+        </SectionDemo>
+        <SectionDemo title="Multiple  root elements can be of any type">
+          <MultipleRootElementsDemo />
         </SectionDemo>
       </PageContent>
     </Page>
