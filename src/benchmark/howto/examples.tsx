@@ -1,7 +1,7 @@
 ﻿import classes from "./css.module.scss";
 import { jsxFactory, view } from "@xania/view/lib/jsx2";
 import { RenderTarget, State, useState } from "@xania/view";
-import { useInterval } from "./use-interval";
+// import { useInterval } from "./use-interval";
 import { delay } from "../../layout/helpers";
 import * as Rx from "rxjs";
 import * as Ro from "rxjs/operators";
@@ -45,9 +45,13 @@ export function MultipleRootElementsDemo() {
       <span class={delay("element")}>
         Element suspended untill attribute promise is resolved
       </span>
-      {useInterval(() => (
-        <span class="element slide-in">{new Date().toLocaleTimeString()}</span>
-      ))}
+      {Rx.timer(0, 1000).pipe(
+        Ro.map(() => (
+          <span class="element slide-in">
+            {new Date().toLocaleTimeString()}
+          </span>
+        ))
+      )}
       {Rx.timer(0, 1500).pipe(
         Ro.scan((p, next, i) => next + 1, 0),
         Ro.map((idx) => (
@@ -108,7 +112,8 @@ export function TimerDemo() {
   return (
     <div class="element">
       <div>
-        Current Time: {useInterval(() => new Date().toLocaleTimeString())}
+        Current Time:{" "}
+        {Rx.timer(0, 1000).pipe(Ro.map(() => new Date().toLocaleTimeString()))}
       </div>
     </div>
   );
@@ -133,8 +138,11 @@ export function CustomRenderDemo() {
 }
 
 export function ClassListDemo() {
-  const theme = useInterval((prev: string = "dark-theme") =>
-    prev === "light-theme" ? "dark-theme" : "light-theme"
+  const theme = Rx.timer(0, 1000).pipe(
+    Ro.startWith("dark-theme"),
+    Ro.scan((prev, next) =>
+      prev === "light-theme" ? "dark-theme" : "light-theme"
+    )
   );
   return <div class={[theme, "element"]}>Toggle theme class each second</div>;
 }

@@ -1,4 +1,4 @@
-﻿import { jsxFactory, RenderTarget } from "@xania/view";
+﻿import { Css, jsxFactory, RenderTarget } from "@xania/view";
 import { delay } from "../../layout/helpers";
 import { Page, PageContent } from "../../layout/page";
 import {
@@ -19,6 +19,7 @@ import "./style.scss";
 import classes from "./css.module.scss";
 import { RouteContext } from "../../router/router-context";
 import { route } from "../../router/route-resolver";
+import { TodoApp } from "../todo";
 
 const jsx = jsxFactory({ classes });
 
@@ -39,16 +40,28 @@ export function HowtoApp(context: RouteContext) {
                 Click here to find more advanced examples build <br />
                 on top of the core features below
               </p>
-              <a class="router-link" href={`${context.url}/basic-elements`}>
-                basic elements
-              </a>
-              <a class="router-link" href={`${context.url}/dynamic-elements`}>
-                dynamic elements
-              </a>
-              <a class="router-link" href={`${context.url}/form-elements`}>
-                form elements
-              </a>
             </p>
+            <a
+              class="demo-link router-link"
+              href={`${context.url}/basic-elements`}
+            >
+              basic elements
+            </a>
+            <a
+              class="demo-link router-link"
+              href={`${context.url}/dynamic-elements`}
+            >
+              dynamic elements
+            </a>
+            <a
+              class="demo-link router-link"
+              href={`${context.url}/form-elements`}
+            >
+              form elements
+            </a>
+            <a class="demo-link router-link" href={`${context.url}/todo`}>
+              todo app
+            </a>
           </PageContent>
         </Page>
       );
@@ -57,6 +70,7 @@ export function HowtoApp(context: RouteContext) {
       route(["basic-elements"], BasicElements),
       route(["dynamic-elements"], DynamicElements),
       route(["form-elements"], FormElements),
+      route(["todo"], TodoApp),
     ],
   };
 }

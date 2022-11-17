@@ -27,15 +27,15 @@
   background-color: rgb(255, 255, 206);
   padding: 20px;
   color: rgb(78, 78, 78);
+}
 
-  :global(.router-link) {
-    display: inline-block;
-    border: 1px solid rgb(199, 199, 199);
-    border-radius: 4px;
-    padding: 8px;
-    margin: 8px;
-    text-align: center;
-  }
+.demo-link {
+  display: inline-block;
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 4px;
+  padding: 8px;
+  margin: 8px;
+  text-align: center;
 }
 
 .slide-in {
