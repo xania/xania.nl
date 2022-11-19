@@ -4,7 +4,7 @@
   "editor.tabSize": 2,
   "files.exclude": {
     "server/": true,
-    "dist/": true,
+    "ffdist/": true,
     "dotnet-functions/": true,
     ".netdlify/": true,
     "**/node_modules/": true,

@@ -7,6 +7,12 @@ import { regex } from "../../router/matchers";
 import { Config } from "../api/config";
 import { RiskFreeRatesView } from "./risk-free-rates";
 import { RouteContext } from "../../router/router-context";
+import {
+  fetchRealEstateTransferTaxSchemes,
+  RealEstateTransferTaxSchemesResponse,
+  updateRealEstateTaxSchemeStatus,
+} from "../functions";
+import { ToggleButton } from "../../layout/icon-button/toggle-button";
 
 const jsx = jsxFactory({});
 
@@ -17,28 +23,80 @@ export async function SettingsView(context: RouteContext) {
         <Page>
           <PageHeader title="Settings" />
           <PageContent>
-            <a href={context.url + "/risk-free-rates"}>Risk free rates</a>
-            <button
-              click={createTestData}
-              class="mdc-button mdc-button--raised"
-            >
-              Seed data
-            </button>
-            <a
-              href="/reasult/settings/tax-schemes"
-              class="mdc-button mdc-button--raised router-link"
-            >
-              Tax Schemes
-            </a>
+            <div style="display: flex; flex-direction: column">
+              <a href={context.url + "/risk-free-rates"}>Risk free rates</a>
+              <button
+                click={createTestData}
+                class="mdc-button mdc-button--raised"
+              >
+                Seed data
+              </button>
+              <a
+                href="/reasult/settings/tax-schemes"
+                class="mdc-button mdc-button--raised router-link"
+              >
+                Tax Schemes
+              </a>
+              <a
+                href="/settings/rett-schemes"
+                class="mdc-button mdc-button--raised router-link"
+              >
+                RETT Schemes
+              </a>
+            </div>
           </PageContent>
         </Page>
       );
     },
     routes: [
       route(["tax-schemes"], TaxSchemeListView),
+      route(["rett-schemes"], RettSchemeListView),
       route(["risk-free-rates"], RiskFreeRatesView),
     ],
   };
+}
+
+async function RettSchemeListView(context: RouteContext) {
+  var response = await fetchRealEstateTransferTaxSchemes(
+    context.params.processId
+  );
+  return {
+    get view() {
+      return (
+        <Page>
+          <PageHeader title="rett scheme" />
+          <PageContent>
+            {response.realEstateTransferTaxSchemes.map(SchemeView)}
+          </PageContent>
+        </Page>
+      );
+    },
+  };
+
+  function SchemeView(
+    scheme: RealEstateTransferTaxSchemesResponse["realEstateTransferTaxSchemes"][number]
+  ) {
+    return (
+      <div class="mdc-card">
+        <div class="mdc=card__content">{scheme.taxScheme}</div>
+        <div class="mdc-card__actions">
+          <ToggleButton
+            on={scheme.status === EntityStatus.Active}
+            click={(state) =>
+              // api/command/Defaults/UpdateRealEstateTaxSchemeStatus
+              updateRealEstateTaxSchemeStatus({
+                id: scheme.id,
+                status:
+                  scheme.status === EntityStatus.Active
+                    ? EntityStatus.Inactive
+                    : EntityStatus.Active,
+              })
+            }
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
 async function TaxSchemeListView() {
@@ -145,6 +203,7 @@ interface RealEstateTaxSchemesResponse {
   realEstateTransferTaxSchemes: {
     id: string;
     taxScheme: string;
+    active: EntityStatus;
   }[];
 }
 

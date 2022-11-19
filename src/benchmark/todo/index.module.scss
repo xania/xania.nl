@@ -39,6 +39,7 @@ button {
   margin: 130px 0 0 0;
   position: relative;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  width: 592px;
 }
 
 .todoapp input::-webkit-input-placeholder {
@@ -163,6 +164,11 @@ button {
 
 .todo-list li.editing .view {
   display: none;
+}
+
+.view label {
+  animation-name: slideIn;
+  animation-duration: 0.3s;
 }
 
 .todo-list li .toggle {
@@ -362,5 +368,13 @@ html .clear-completed:active {
 
   .filters {
     bottom: 10px;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: rotateX(0.5turn);
+  }
+  100% {
   }
 }

@@ -2,6 +2,7 @@ import { Config } from "./api/config";
 import { Cluster } from "./api/db";
 import {
   ClusterCharacteristic,
+  EntityStatus,
   Fields,
   Forecastlevel,
   Language,
@@ -332,4 +333,45 @@ export function fetchDefaultProcessClusters(
   return fetch(
     `${Config.RemBaseUrl}/query/process/defaultProcessClusters?processId=${processId}&clusterCharacteristic=${clusterCharacteristic}`
   ).then((e) => e.json());
+}
+
+export interface RealEstateTransferTaxSchemesResponse {
+  realEstateTransferTaxSchemes: {
+    id: string;
+    country: string;
+    status: EntityStatus;
+    taxScheme: string;
+  }[];
+}
+export function fetchRealEstateTransferTaxSchemes(
+  processId: string
+): Promise<RealEstateTransferTaxSchemesResponse> {
+  return fetch(
+    `${
+      Config.RemBaseUrl
+    }/query/Defaults/RealEstateTransferTaxSchemes?${queryParams({ processId })}`
+  ).then((e) => e.json());
+}
+
+export interface UpdateRealEstateTaxSchemeStatusCommand {
+  id: string;
+  processId?: string;
+  status: EntityStatus;
+}
+export function updateRealEstateTaxSchemeStatus(
+  command: UpdateRealEstateTaxSchemeStatusCommand
+) {
+  return post("command/Defaults/UpdateRealEstateTaxSchemeStatus", command);
+}
+
+function queryParams(params: any) {
+  if (!params) return "";
+  const values: string[] = [];
+
+  for (const id in params) {
+    const value = params[id];
+    if (value !== undefined) values.push(`${id}=${params[id]}`);
+  }
+
+  return values.join("&");
 }

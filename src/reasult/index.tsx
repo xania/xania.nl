@@ -2,13 +2,10 @@ import { createView, jsxFactory, RenderTarget, useState } from "@xania/view";
 import { route, RouteComponent } from "../router/route-resolver";
 import { MDCRipple } from "@material/ripple";
 import { Page, PageContent } from "../layout/page";
-import { regex } from "../router/matchers";
 import { PageHeader } from "../layout/page/header";
 import { TextField } from "../layout/text-field";
 import { IconButton } from "../layout/icon-button";
 import * as Rx from "rxjs";
-import "./toggle.scss";
-import { delay } from "../layout/helpers";
 import { Fab } from "../layout/fab";
 import {
   Contract,
@@ -39,6 +36,7 @@ import { ClusterView } from "./clusters";
 import { Select } from "../layout/select";
 import { selectOptions } from "./utils/select-utils";
 import { forecastLevels, languages, periodTypes } from "./list-items";
+import { ToggleButton } from "../layout/icon-button/toggle-button";
 
 const jsx = jsxFactory({});
 
@@ -105,37 +103,6 @@ export async function ReasultApp(): Promise<RouteComponent> {
       </>
     );
   }
-}
-
-interface ToggleButtonProps {
-  on: boolean;
-  click: (state: boolean) => Promise<void>;
-}
-
-function ToggleButton(props: ToggleButtonProps) {
-  const initial = props.on ? "toggle_on" : "toggle_off";
-  const toggleState = useState(initial);
-  const classState = useState(initial);
-
-  return (
-    <button
-      class={[classState]}
-      click={() => {
-        const prev = toggleState.current;
-        const next = prev.includes("toggle_off") ? "toggle_on" : "toggle_off";
-        toggleState.update((_) => "sync");
-        classState.update((_) => "toggle_loading");
-        delay(props.click(prev.includes("toggle_on")), 1000).then((_) => {
-          toggleState.update((_) => next);
-          classState.update((_) => toggleState.current);
-        });
-      }}
-    >
-      <IconButton>
-        <span class="material-icons">{toggleState}</span>
-      </IconButton>
-    </button>
-  );
 }
 
 function on<T>(event: string, fetch: () => Promise<T>) {
@@ -256,11 +223,11 @@ async function ProcessCofigurationView(context: RouteContext) {
 
             <div class="mdc-card">
               <div class="mdc-card__content">
-                <label>Assets</label>
+                <label>Properties</label>
                 <div class="mdc-list">
                   {properties.map((e, i) => (
                     <a
-                      href={`${context.url}/${i}`}
+                      href={`${context.url}/asset/${e.asset.id}/prop/${e.property.id}`}
                       class="mdc-list-item router-link mdc-list-item--with-trailing-icon"
                     >
                       <span class="mdc-list-item__content">
@@ -305,9 +272,7 @@ async function ProcessCofigurationView(context: RouteContext) {
       );
     },
     routes: [
-      route(regex(/(?<id>\d+)/i), (context) =>
-        PropertyView(context, properties[context.params.id])
-      ),
+      route(["asset", ":assetId", "prop", ":propertyId"], PropertyView),
       route(["cluster", ":index"], (context) =>
         ClusterView(
           context,
@@ -321,26 +286,22 @@ async function ProcessCofigurationView(context: RouteContext) {
   };
 }
 
-async function PropertyView(
-  context: RouteContext,
-  pair: { property: PortfolioItem; asset: PortfolioItem }
-) {
-  const { processId } = context.params;
-  const { property, asset } = pair;
+async function PropertyView(context: RouteContext) {
+  const { processId, propertyId, assetId } = context.params;
 
-  const contracts = await fetchContracts(processId, asset.id, property.id);
+  const contracts = await fetchContracts(processId, assetId, propertyId);
   const jsx = jsxFactory({});
 
   return {
     get view() {
       return (
         <Page>
-          <PageHeader title={property.name} />
+          <PageHeader title="Contracts" />
           <PageContent>
             <button
               class="mdc-button"
               click={(_) =>
-                fetchPropertyIndexes(processId, asset.id, property.id)
+                fetchPropertyIndexes(processId, assetId, propertyId)
               }
             >
               Indexes
@@ -374,8 +335,8 @@ async function PropertyView(
 
     fetchContractIndexMethod(
       processId,
-      asset.id,
-      property.id,
+      assetId,
+      propertyId,
       contract.id,
       contractLine.id
     );
