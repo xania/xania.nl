@@ -3,23 +3,42 @@ import { Page, PageContent } from "../../layout/page";
 import classes from "./index.module.scss";
 import { Css, State, useState } from "@xania/view";
 import { useContext } from "@xania/view/lib/jsx2/use-context";
-import { List, useListSource } from "@xania/view/lib/list";
+import { List } from "@xania/view/lib/list";
+import { createListSource, ListSource } from "@xania/view/lib/list/list-source";
 import * as Rx from "rxjs";
+import * as Ro from "rxjs/operators";
+import { ExpressionType } from "@xania/view/lib/jsx/expression";
+import { observable } from "rxjs";
+
+console.log(observable);
 
 const jsx = jsxFactory({ classes });
 
 export function TodoApp() {
-  const newTodoText = useState("", false);
-  const items = useListSource<TodoItem>([
+  const newTodoText = useState("");
+  const items = createListSource<TodoItem>([
     {
       label: "hello",
-      completed: new State(true),
+      completed: true,
+    },
+    {
+      label: "hi",
+      completed: false,
+    },
+    {
+      label: "hoi",
+      completed: false,
     },
   ]);
-  function addTodo(todoText: string) {
-    const newItem: TodoItem = { label: todoText, completed: new State(false) };
-    items.update((l) => [...l, newItem]);
-    newTodoText.update("");
+  function addTodo() {
+    if (newTodoText.value) {
+      const newItem: TodoItem = {
+        label: newTodoText.value,
+        completed: false,
+      };
+      items.append(newItem);
+      newTodoText.update("");
+    }
   }
 
   return (
@@ -34,16 +53,20 @@ export function TodoApp() {
                 class="new-todo"
                 placeholder="What needs to be done?"
                 value={newTodoText}
-                keyup={(e) => e.event.key === "Enter" && addTodo(e.node.value)}
+                keyup={(e) => (
+                  newTodoText.update(e.node.value),
+                  e.event.key === "Enter" && addTodo()
+                )}
               />
             </header>
             <TodoList items={items} />
             <footer class="footer">
               <span class="todo-count">
                 <strong>
-                  {items.map((l) =>
-                    l.length === 1 ? "1 item" : `${l.length} items`
-                  )}
+                  {items.map((l) => {
+                    const itemsLeft = l.filter((e) => !e.completed).length;
+                    return itemsLeft === 1 ? "1 item" : `${itemsLeft} items`;
+                  })}
                 </strong>
                 <span> left</span>
               </span>
@@ -71,26 +94,19 @@ export function TodoApp() {
 }
 
 interface TodoListProps {
-  items: State<TodoItem[]>;
+  items: ListSource<TodoItem>;
 }
 
 function TodoList(props: TodoListProps) {
   const $ = useContext<TodoItem>();
-  const currentEditing = useState<TodoItem | null>(null);
+  const currentEditing = new Rx.BehaviorSubject<symbol>(null);
 
-  function updateLabel(todoItem: TodoItem, value: string) {
-    todoItem.label = value;
-    props.items.update((l) => [...l]);
+  function updateLabel(index: number, value: string) {
+    props.items.updateAt(index, (item) => ({ ...item, label: value }));
   }
 
-  function updateCompleted(todoItem: TodoItem, value: boolean) {
-    todoItem.completed.update(value);
-  }
-
-  function destroyItem(todoItem: TodoItem) {
-    console.log("destroy", todoItem.label);
-    props.items.update((l) => l.filter((e) => e !== todoItem));
-    console.log("new list", props.items.current);
+  function updateCompleted(index: number, value: boolean) {
+    props.items.updateAt(index, (item) => ({ ...item, completed: value }));
   }
 
   return (
@@ -98,8 +114,21 @@ function TodoList(props: TodoListProps) {
       <List source={props.items}>
         <li
           class={[
-            $(currentEditing.bind((x, y) => (x === y ? "editing" : null))),
-            $((e) => e.completed.map((x) => (x ? "completed" : null))),
+            $((_, { key }) =>
+              currentEditing.pipe(Ro.map((x) => (key == x ? "editing" : null)))
+            ),
+            $((todoItem) =>
+              todoItem.map((x) => (x.completed ? "completed" : null))
+            ),
+            // $((todoItem) =>
+            //   Rx.from(todoItem).pipe(
+            //     Ro.combineLatestWith(currentEditing),
+            //     Ro.map(([x, y]) => [
+            //       x.completed ? "completed" : null,
+            //       x === y ? "editing" : null,
+            //     ])
+            //   )
+            // ),
           ]}
         >
           <div class="view">
@@ -107,34 +136,37 @@ function TodoList(props: TodoListProps) {
               class="toggle"
               type="checkbox"
               checked={$("completed")}
-              change={(evt) => updateCompleted(evt.values, evt.node.checked)}
+              change={(evt) => updateCompleted(evt.index, evt.node.checked)}
+              // change={(evt) => props.items.update(evt.index, item => item.completed.update(evt.node.checked)}
             />
-            <label dblclick={(e) => currentEditing.update(e.values)}>
+            <label dblclick={(e) => currentEditing.next(e.key)}>
               {$("label")}
             </label>
             <button
               class="destroy"
-              click={(e) => destroyItem(e.values)}
+              click={(e) => props.items.deleteAt(e.index)}
             ></button>
           </div>
           <input
             class="edit"
             value={$("label")}
-            blur={() => currentEditing.update(null)}
+            blur={() => currentEditing.next(null)}
             keyup={(evnt) => {
               if (evnt.event.key === "Enter") {
-                updateLabel(evnt.values, evnt.node.value);
-                currentEditing.update(null);
+                updateLabel(evnt.index, evnt.node.value);
+                currentEditing.next(null);
               } else if (evnt.event.key === "Escape") {
-                updateLabel(evnt.values, evnt.values["label"]);
-                currentEditing.update(null);
+                updateLabel(evnt.index, evnt.values["label"]);
+                currentEditing.next(null);
               }
             }}
           >
-            {$((todoItem, { node: inputElt }) =>
-              currentEditing
-                .when((c) => c === todoItem)
-                .then((_) => focusInput(inputElt as HTMLInputElement))
+            {$((_, { key, node }) =>
+              currentEditing.pipe(
+                Ro.map((x) =>
+                  x === key ? focusInput(node as HTMLInputElement) : null
+                )
+              )
             )}
           </input>
         </li>
@@ -145,10 +177,67 @@ function TodoList(props: TodoListProps) {
 
 interface TodoItem {
   label: string;
-  completed: State<boolean>;
+  completed: boolean;
+}
+
+class Person {
+  constructor(public firstName: string) {}
 }
 
 function focusInput(elt: HTMLInputElement) {
   elt.focus();
   elt.setSelectionRange(0, elt.value.length);
+}
+
+interface Stream<T, U> extends Rx.Subscribable<U> {
+  pipe<A>(op1: Rx.OperatorFunction<T, A>): Stream<T, A>;
+  pipe<A, B>(
+    op1: Rx.OperatorFunction<T, A>,
+    op2: Rx.OperatorFunction<A, B>
+  ): Stream<T, B>;
+  pipe<A, B, C>(
+    op1: Rx.OperatorFunction<T, A>,
+    op2: Rx.OperatorFunction<A, B>,
+    op3: Rx.OperatorFunction<B, C>
+  ): Stream<T, C>;
+  pipe<A, B, C, D>(
+    op1: Rx.OperatorFunction<T, A>,
+    op2: Rx.OperatorFunction<A, B>,
+    op3: Rx.OperatorFunction<B, C>,
+    op4: Rx.OperatorFunction<C, D>
+  ): Stream<T, D>;
+  pipe<A, B, C, D>(
+    op1: Rx.OperatorFunction<T, A>,
+    op2: Rx.OperatorFunction<A, B>,
+    op3: Rx.OperatorFunction<B, C>,
+    op4: Rx.OperatorFunction<C, D>,
+    ...operations
+  ): Stream<T, unknown>;
+}
+
+function async<T, U>(fn: (data: T) => JSX.Subscribable<U>) {
+  return (data) => ({
+    type: ExpressionType.State,
+    state: fn(data),
+  });
+}
+
+function observe<T>(init: T): Stream<T, T> {
+  const subject = new Rx.BehaviorSubject<T>(init);
+
+  return createObserver(subject, subject);
+
+  function createObserver<U>(subject: Rx.Subject<T>, output: Rx.Observable<U>) {
+    return {
+      next(values: T) {
+        subject.next(values);
+      },
+      pipe(...ops) {
+        return createObserver(subject, output.pipe.apply(output, ops));
+      },
+      subscribe(...args: any[]) {
+        return output.subscribe(...args);
+      },
+    };
+  }
 }

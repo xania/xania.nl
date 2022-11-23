@@ -63,8 +63,13 @@ export function MultipleRootElementsDemo() {
 }
 
 export function FormElementsDemo() {
-  const firstName = useState("");
-  const lastName = useState("");
+  const store = useState({
+    firstName: "",
+    lastName: "",
+  });
+
+  const firstName = store.get("firstName");
+  const lastName = store.get("lastName");
 
   return (
     <>
@@ -101,7 +106,7 @@ export function UseStateDemo() {
   return (
     <div class="element">
       <div>Count: {count}</div>
-      <button class="mdc-button" click={count.reduce((e) => e + 1)}>
+      <button class="mdc-button" click={(_) => count.update(count.value + 1)}>
         <span>Increment</span>
       </button>
     </div>
@@ -112,7 +117,7 @@ export function TimerDemo() {
   return (
     <div class="element">
       <div>
-        Current Time:{" "}
+        {"Current Time: "}
         {Rx.timer(0, 1000).pipe(Ro.map(() => new Date().toLocaleTimeString()))}
       </div>
     </div>

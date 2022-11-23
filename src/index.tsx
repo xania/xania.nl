@@ -1,19 +1,17 @@
 import "./style.scss";
 import "./layout/card.scss";
 import "./layout/list.scss";
-import { render } from "@xania/view";
-import * as jsx from "@xania/view";
+// import { render } from "@xania/view";
+// import * as jsx from "@xania/view";
 import { AdminApp } from "./admin/index";
-import { createBrowser } from "./router/browser-router";
-import * as Ro from "rxjs/operators";
+import { jsxFactory } from "@xania/view/lib/jsx2";
+import { render } from "@xania/view/lib/jsx2/render";
+import { DynamicElements } from "./benchmark/howto";
+import { TodoApp } from "./benchmark/todo";
 
-console.log(location.pathname);
-
-// const router = createBrowser(["hackernews"]);
-
-// router.routes.pipe(Ro.map((route) => console.log(route.path))).subscribe();
-
-render(<AdminApp />, document.getElementById("app"));
+const jsx = jsxFactory();
+render(<TodoApp />, document.body);
+// render(<AdminApp />, document.getElementById("app"));
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker.register("./sw.js");
