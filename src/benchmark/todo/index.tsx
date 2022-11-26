@@ -1,16 +1,13 @@
 ﻿import { jsxFactory } from "@xania/view/lib/jsx2";
 import { Page, PageContent } from "../../layout/page";
-import classes from "./index.module.scss";
 import { Css, State, useState } from "@xania/view";
 import { useContext } from "@xania/view/lib/jsx2/use-context";
 import { List } from "@xania/view/lib/list";
 import { createListSource, ListSource } from "@xania/view/lib/list/list-source";
 import * as Rx from "rxjs";
 import * as Ro from "rxjs/operators";
-import { ExpressionType } from "@xania/view/lib/jsx/expression";
-import { observable } from "rxjs";
 
-console.log(observable);
+import classes from "./index.module.scss";
 
 const jsx = jsxFactory({ classes });
 
@@ -48,7 +45,7 @@ export function TodoApp() {
         <section class="todoapp">
           <div>
             <header class="header">
-              <h1>todos</h1>
+              <h1>todos </h1>
               <input
                 class="new-todo"
                 placeholder="What needs to be done?"
@@ -101,14 +98,6 @@ function TodoList(props: TodoListProps) {
   const $ = useContext<TodoItem>();
   const currentEditing = new Rx.BehaviorSubject<symbol>(null);
 
-  function updateLabel(index: number, value: string) {
-    props.items.updateAt(index, (item) => ({ ...item, label: value }));
-  }
-
-  function updateCompleted(index: number, value: boolean) {
-    props.items.updateAt(index, (item) => ({ ...item, completed: value }));
-  }
-
   return (
     <ul class="todo-list">
       <List source={props.items}>
@@ -120,15 +109,6 @@ function TodoList(props: TodoListProps) {
             $((todoItem) =>
               todoItem.map((x) => (x.completed ? "completed" : null))
             ),
-            // $((todoItem) =>
-            //   Rx.from(todoItem).pipe(
-            //     Ro.combineLatestWith(currentEditing),
-            //     Ro.map(([x, y]) => [
-            //       x.completed ? "completed" : null,
-            //       x === y ? "editing" : null,
-            //     ])
-            //   )
-            // ),
           ]}
         >
           <div class="view">
@@ -136,27 +116,30 @@ function TodoList(props: TodoListProps) {
               class="toggle"
               type="checkbox"
               checked={$("completed")}
-              change={(evt) => updateCompleted(evt.index, evt.node.checked)}
-              // change={(evt) => props.items.update(evt.index, item => item.completed.update(evt.node.checked)}
+              change={(evt) =>
+                evt.data.get("completed").update(evt.node.checked)
+              }
             />
             <label dblclick={(e) => currentEditing.next(e.key)}>
               {$("label")}
             </label>
             <button
               class="destroy"
-              click={(e) => props.items.deleteAt(e.index)}
+              click={(e) => props.items.delete(e.values)}
             ></button>
           </div>
           <input
             class="edit"
             value={$("label")}
-            blur={() => currentEditing.next(null)}
+            blur={(evnt) => {
+              evnt.node.value = evnt.data.get("label");
+              currentEditing.next(null);
+            }}
             keyup={(evnt) => {
               if (evnt.event.key === "Enter") {
-                updateLabel(evnt.index, evnt.node.value);
+                evnt.data.get("label").update(evnt.node.value);
                 currentEditing.next(null);
               } else if (evnt.event.key === "Escape") {
-                updateLabel(evnt.index, evnt.values["label"]);
                 currentEditing.next(null);
               }
             }}
@@ -189,55 +172,18 @@ function focusInput(elt: HTMLInputElement) {
   elt.setSelectionRange(0, elt.value.length);
 }
 
-interface Stream<T, U> extends Rx.Subscribable<U> {
-  pipe<A>(op1: Rx.OperatorFunction<T, A>): Stream<T, A>;
-  pipe<A, B>(
-    op1: Rx.OperatorFunction<T, A>,
-    op2: Rx.OperatorFunction<A, B>
-  ): Stream<T, B>;
-  pipe<A, B, C>(
-    op1: Rx.OperatorFunction<T, A>,
-    op2: Rx.OperatorFunction<A, B>,
-    op3: Rx.OperatorFunction<B, C>
-  ): Stream<T, C>;
-  pipe<A, B, C, D>(
-    op1: Rx.OperatorFunction<T, A>,
-    op2: Rx.OperatorFunction<A, B>,
-    op3: Rx.OperatorFunction<B, C>,
-    op4: Rx.OperatorFunction<C, D>
-  ): Stream<T, D>;
-  pipe<A, B, C, D>(
-    op1: Rx.OperatorFunction<T, A>,
-    op2: Rx.OperatorFunction<A, B>,
-    op3: Rx.OperatorFunction<B, C>,
-    op4: Rx.OperatorFunction<C, D>,
-    ...operations
-  ): Stream<T, unknown>;
-}
+var state = new State<TodoItem>(null);
+const completed = state.get("completed");
 
-function async<T, U>(fn: (data: T) => JSX.Subscribable<U>) {
-  return (data) => ({
-    type: ExpressionType.State,
-    state: fn(data),
-  });
-}
+state.update({
+  completed: true,
+  label: "asfasdfasd",
+});
 
-function observe<T>(init: T): Stream<T, T> {
-  const subject = new Rx.BehaviorSubject<T>(init);
+completed.subscribe({
+  next(value) {
+    console.log("completed value: ", value);
+  },
+});
 
-  return createObserver(subject, subject);
-
-  function createObserver<U>(subject: Rx.Subject<T>, output: Rx.Observable<U>) {
-    return {
-      next(values: T) {
-        subject.next(values);
-      },
-      pipe(...ops) {
-        return createObserver(subject, output.pipe.apply(output, ops));
-      },
-      subscribe(...args: any[]) {
-        return output.subscribe(...args);
-      },
-    };
-  }
-}
+state.flush();
