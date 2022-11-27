@@ -21,7 +21,6 @@ export default async function httpTrigger(
     return;
   }
 
-  var body = req.parseFormBody();
   var rawBody = req.rawBody as string;
   if (rawBody) {
     var fields = rawBody.split("&").reduce((prev, curr) => {
@@ -60,15 +59,4 @@ export default async function httpTrigger(
     };
     return;
   }
-
-  var amount = body.get("Amount")?.value;
-  var description = body.get("Description[]")?.value;
-
-  context.res = {
-    status: 302,
-    headers: {
-      // Location: payment._links.checkout?.href,
-    },
-    body: body.get("Description[]")?.value,
-  };
 }
