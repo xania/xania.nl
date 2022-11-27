@@ -26,11 +26,12 @@ export default async function httpTrigger(
     var fields = rawBody.split("&").reduce((prev, curr) => {
       const [key, value] = curr
         .split("=")
+        .map((s) => s.replace("+", " "))
         .map(decodeURIComponent)
         .map(decodeURI);
       if (prev) {
         if (prev[key]) {
-          prev[key] += ",+" + value;
+          prev[key] += ", " + value;
         } else {
           prev[key] = value;
         }
