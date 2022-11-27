@@ -48,6 +48,13 @@
       h1 {
         margin: 30px auto;
       }
+
+      label.extra-bijdrage {
+        padding: 10px;
+      }
+      h6 {
+        margin-top: 30px;
+      }
     </style>
   </head>
   <body>
@@ -61,7 +68,6 @@
           name="Description[]"
           value="Het Palet (Zuid), 2022-2023"
         />
-        <input type="hidden" name="Amount" value="50.00" />
         <input type="hidden" name="Currency" value="EUR" />
 
         <div class="input-field">
@@ -71,6 +77,27 @@
           <input type="text" name="Description[]" placeholder="Groep" />
         </div>
 
+        <div>
+          <h6>Uw bijdrage</h6>
+          <hr />
+          <label class="extra-bijdrage">
+            <input name="Amount" type="radio" value="50.00" checked />
+            <span>&euro; 50,00 (basis)</span>
+          </label>
+          <label class="extra-bijdrage">
+            <input name="Amount" type="radio" value="55.00" />
+            <span>+&euro; 5,00</span>
+          </label>
+          <label class="extra-bijdrage">
+            <input name="Amount" type="radio" value="60.00" />
+            <span>+&euro; 10,00</span>
+          </label>
+          <label class="extra-bijdrage">
+            <input name="Amount" type="radio" value="65.00" />
+            <span>+&euro; 15,00</span>
+          </label>
+        </div>
+        <br />
         <button class="waves-effect waves-light btn" type="submit">
           Betalen
         </button>
