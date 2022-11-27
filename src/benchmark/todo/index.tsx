@@ -46,7 +46,7 @@ export function TodoApp() {
         <section class="todoapp">
           <div>
             <header class="header">
-              <h1>todos </h1>
+              <h1>todos</h1>
               <input
                 class="new-todo"
                 placeholder="What needs to be done?"
@@ -74,6 +74,19 @@ interface TodoListProps {
 
 function TodoFooter(props: TodoListProps) {
   const { items } = props;
+
+  function all(item: TodoItem) {
+    return true;
+  }
+
+  function active(item: TodoItem) {
+    return item.completed !== true;
+  }
+
+  function completed(item: TodoItem) {
+    return item.completed === true;
+  }
+
   return (
     <footer class="footer">
       <span class="todo-count">
@@ -87,15 +100,17 @@ function TodoFooter(props: TodoListProps) {
       </span>
       <ul class="filters">
         <li>
-          <a class="selected">All</a>
+          <a class="selected" click={(_) => props.items.filter(all)}>
+            All
+          </a>
         </li>
         <span> </span>
         <li>
-          <a>Active</a>
+          <a click={(_) => props.items.filter(active)}>Active</a>
         </li>
         <span> </span>
         <li>
-          <a>Completed</a>
+          <a click={(_) => props.items.filter(completed)}>Completed</a>
         </li>
       </ul>
     </footer>
