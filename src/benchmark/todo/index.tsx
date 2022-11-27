@@ -1,6 +1,7 @@
 ﻿import { jsxFactory } from "@xania/view/lib/jsx2";
 import { Page, PageContent } from "../../layout/page";
 import { Css, State, useState } from "@xania/view";
+import { If } from "@xania/view/lib/jsx2/if";
 import { useContext } from "@xania/view/lib/jsx2/use-context";
 import { List } from "@xania/view/lib/list";
 import { createListSource, ListSource } from "@xania/view/lib/list/list-source";
@@ -57,36 +58,47 @@ export function TodoApp() {
               />
             </header>
             <TodoList items={items} />
-            <footer class="footer">
-              <span class="todo-count">
-                <strong>
-                  {items.map((l) => {
-                    const itemsLeft = l.filter((e) => !e.completed).length;
-                    return itemsLeft === 1 ? "1 item" : `${itemsLeft} items`;
-                  })}
-                </strong>
-                <span> left</span>
-              </span>
-              <ul class="filters">
-                <li>
-                  <a href="#/" class="selected">
-                    All
-                  </a>
-                </li>
-                <span> </span>
-                <li>
-                  <a href="#/active">Active</a>
-                </li>
-                <span> </span>
-                <li>
-                  <a href="#/completed">Completed</a>
-                </li>
-              </ul>
-            </footer>
+            <If condition={items.map((l) => l.length > 0)}>
+              <TodoFooter items={items} />
+            </If>
           </div>
         </section>
       </PageContent>
     </Page>
+  );
+}
+
+interface TodoListProps {
+  items: ListSource<TodoItem>;
+}
+
+function TodoFooter(props: TodoListProps) {
+  const { items } = props;
+  return (
+    <footer class="footer">
+      <span class="todo-count">
+        <strong>
+          {items.map((l) => {
+            const itemsLeft = l.filter((e) => !e.completed).length;
+            return itemsLeft === 1 ? "1 item" : `${itemsLeft} items`;
+          })}
+        </strong>
+        <span> left</span>
+      </span>
+      <ul class="filters">
+        <li>
+          <a class="selected">All</a>
+        </li>
+        <span> </span>
+        <li>
+          <a>Active</a>
+        </li>
+        <span> </span>
+        <li>
+          <a>Completed</a>
+        </li>
+      </ul>
+    </footer>
   );
 }
 
