@@ -21,21 +21,54 @@ export default async function httpTrigger(
     return;
   }
 
-  var mollieClient = createMollieClient({ apiKey: config.mollie.apiKey });
+  var body = req.parseFormBody();
+  var rawBody = req.rawBody as string;
+  if (rawBody) {
+    var fields = rawBody.split("&").reduce((prev, curr) => {
+      const [key, value] = curr
+        .split("=")
+        .map(decodeURIComponent)
+        .map(decodeURI);
+      if (prev) {
+        if (prev[key]) {
+          prev[key] += ",+" + value;
+        } else {
+          prev[key] = value;
+        }
+        return prev;
+      } else {
+        return { [key]: value };
+      }
+    }, {} as { [k: string]: string });
 
-  var payment = await mollieClient.payments.create({
-    description: "test description",
-    amount: {
-      currency: "EUR",
-      value: "10.00",
-    },
-    redirectUrl: config.mollie.redirectUrl,
-  });
+    var mollieClient = createMollieClient({ apiKey: config.mollie.apiKey });
+
+    var payment = await mollieClient.payments.create({
+      description: fields["Description"],
+      amount: {
+        currency: fields.Currency,
+        value: fields.Amount,
+      },
+      redirectUrl: config.mollie.redirectUrl,
+    });
+
+    context.res = {
+      status: 302,
+      headers: {
+        Location: payment._links.checkout?.href,
+      },
+    };
+    return;
+  }
+
+  var amount = body.get("Amount")?.value;
+  var description = body.get("Description[]")?.value;
 
   context.res = {
     status: 302,
     headers: {
-      Location: payment._links.checkout?.href,
+      // Location: payment._links.checkout?.href,
     },
+    body: body.get("Description[]")?.value,
   };
 }

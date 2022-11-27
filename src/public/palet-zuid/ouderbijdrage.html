@@ -62,19 +62,20 @@
       <img src="./logo.png" />
       <h3>Ouderbijdrage 2022-2023</h3>
 
+      <!-- /api/mollie/palet/create-payment -->
       <form method="POST" action="/api/mollie/palet/create-payment">
         <input
           type="hidden"
-          name="Description[]"
+          name="Description"
           value="Het Palet (Zuid), 2022-2023"
         />
         <input type="hidden" name="Currency" value="EUR" />
 
         <div class="input-field">
-          <input type="text" name="Description[]" placeholder="Naam kind" />
+          <input type="text" name="Description" placeholder="Naam kind" />
         </div>
         <div class="input-field">
-          <input type="text" name="Description[]" placeholder="Groep" />
+          <input type="text" name="Description" placeholder="Groep" />
         </div>
 
         <div>

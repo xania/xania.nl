@@ -5,9 +5,10 @@ import chokidar from "chokidar";
 import cleanup from "rollup-plugin-cleanup";
 
 export default defineConfig({
+  logLevel: "error",
   server: {
     port: 9091,
-    host: "0.0.0.0",
+    // host: "0.0.0.0",
     proxy: {
       "/rem/api/": {
         target: "http://localhost:5000",
@@ -15,8 +16,7 @@ export default defineConfig({
       },
       "/api": {
         target: "http://localhost:7071",
-        // rewrite: (path) => path.replace(/^\/api/, "/api"),
-        // changeOrigin: true,
+        changeOrigin: true,
       },
     },
     // watch: {
@@ -35,7 +35,6 @@ export default defineConfig({
       ],
     },
   },
-  logLevel: "info",
 });
 
 // var watcher = chokidar.watch("./.netlify/functions-serve");
