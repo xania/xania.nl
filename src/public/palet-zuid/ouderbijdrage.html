@@ -49,8 +49,20 @@
         margin: 30px auto;
       }
 
+      .extra-bijdrage-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
       label.extra-bijdrage {
-        padding: 10px;
+        padding: 4px;
+        border: 1px solid rgb(194, 194, 194);
+        background-color: rgb(245, 245, 245);
+        flex: 1;
+        white-space: nowrap;
+        text-align: left;
+        margin: 6px;
       }
       h6 {
         margin-top: 30px;
@@ -60,7 +72,7 @@
   <body>
     <div class="container-box z-depth-3">
       <img src="./logo.png" />
-      <h3>Ouderbijdrage 2022-2023</h3>
+      <h3 class="title">Ouderbijdrage 2022-2023</h3>
 
       <!-- /api/mollie/palet/create-payment -->
       <form method="POST" action="/api/mollie/palet/create-payment">
@@ -68,6 +80,7 @@
           type="hidden"
           name="Description"
           value="Ouderbijdrage 2022-2023"
+          class="title"
         />
         <input type="hidden" name="Currency" value="EUR" />
 
@@ -78,15 +91,11 @@
           <input type="text" name="Description" placeholder="Groep" />
         </div>
 
-        <div>
-          <h6>Uw bijdrage</h6>
-          <hr />
+        <h6>Extra bijdrage voor de bibliotheek</h6>
+        <hr />
+        <div class="extra-bijdrage-container">
           <label class="extra-bijdrage">
-            <input name="Amount" type="radio" value="50.00" checked />
-            <span>&euro; 50,00 (basis)</span>
-          </label>
-          <label class="extra-bijdrage">
-            <input name="Amount" type="radio" value="55.00" />
+            <input name="Amount" type="radio" value="55.00" checked />
             <span>+&euro; 5,00</span>
           </label>
           <label class="extra-bijdrage">
@@ -97,6 +106,10 @@
             <input name="Amount" type="radio" value="65.00" />
             <span>+&euro; 15,00</span>
           </label>
+          <label class="extra-bijdrage">
+            <input name="Amount" type="radio" value="50.00" />
+            <span>Nee bedankt</span>
+          </label>
         </div>
         <br />
         <button class="waves-effect waves-light btn" type="submit">
@@ -105,4 +118,17 @@
       </form>
     </div>
   </body>
+  <script>
+    var date = new Date();
+    date.setMonth(date.getMonth() - 8);
+    var year = date.getFullYear();
+    var title = "Ouderbijdrage " + year + "-" + (year + 1);
+    var elts = document.querySelectorAll(".title");
+    console.log(elts);
+    for (let i = 0; i < elts.length; i++) {
+      elts[i].textContent = title;
+      elts[i].value = title;
+    }
+    console.log("bla");
+  </script>
 </html>
