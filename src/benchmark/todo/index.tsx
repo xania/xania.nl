@@ -9,6 +9,8 @@ import * as Rx from "rxjs";
 import * as Ro from "rxjs/operators";
 
 import classes from "./index.module.scss";
+import { Subscribable } from "@xania/view/lib/util/is-subscibable";
+import { RenderContext } from "@xania/view/lib/jsx";
 
 const jsx = jsxFactory({ classes });
 
@@ -123,15 +125,17 @@ interface TodoListProps {
 
 function TodoList(props: TodoListProps) {
   const $ = useContext<TodoItem>();
-  const currentEditing = new Rx.BehaviorSubject<symbol>(null);
+  const currentEditing = new Rx.BehaviorSubject<any>(null);
 
   return (
     <ul class="todo-list">
       <List source={props.items}>
         <li
           class={[
-            $((_, { key }) =>
-              currentEditing.pipe(Ro.map((x) => (key == x ? "editing" : null)))
+            $((todoItem) =>
+              currentEditing.pipe(
+                Ro.map((x) => (todoItem == x ? "editing" : null))
+              )
             ),
             $((todoItem) =>
               todoItem.map((x) => (x.completed ? "completed" : null))
@@ -143,16 +147,16 @@ function TodoList(props: TodoListProps) {
               class="toggle"
               type="checkbox"
               checked={$("completed")}
-              change={(evt) =>
-                evt.data.get("completed").update(evt.node.checked)
+              change={(evnt) =>
+                evnt.data.get("completed").update(evnt.node.checked)
               }
             />
-            <label dblclick={(e) => currentEditing.next(e.key)}>
+            <label dblclick={(e) => currentEditing.next(e.data)}>
               {$("label")}
             </label>
             <button
               class="destroy"
-              click={(e) => props.items.delete(e.values)}
+              click={(e) => props.items.delete(e.data)}
             ></button>
           </div>
           <input
@@ -171,13 +175,13 @@ function TodoList(props: TodoListProps) {
               }
             }}
           >
-            {$((_, { key, node }) =>
+            {focusOn(currentEditing)}
+            {/* {$((_, { key, node }) =>
               currentEditing.pipe(
-                Ro.map((x) =>
-                  x === key ? focusInput(node as HTMLInputElement) : null
-                )
+                Ro.filter((x) => x === key),
+                Ro.map(() => focusInput(node as HTMLInputElement))
               )
-            )}
+            )} */}
           </input>
         </li>
       </List>
@@ -194,10 +198,7 @@ class Person {
   constructor(public firstName: string) {}
 }
 
-function focusInput(elt: HTMLInputElement) {
-  elt.focus();
-  elt.setSelectionRange(0, elt.value.length);
-}
+function focusInput(elt: HTMLInputElement) {}
 
 var state = new State<TodoItem>(null);
 const completed = state.get("completed");
@@ -214,3 +215,18 @@ completed.subscribe({
 });
 
 state.flush();
+
+function focusOn(condition: Subscribable<State<TodoItem>>) {
+  return {
+    render(inputElt: HTMLInputElement, context: RenderContext<TodoItem>) {
+      return condition.subscribe({
+        next(b) {
+          if (b === context.data) {
+            inputElt.focus();
+            inputElt.setSelectionRange(0, inputElt.value.length);
+          }
+        },
+      });
+    },
+  };
+}

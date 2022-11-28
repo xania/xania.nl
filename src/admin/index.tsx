@@ -1,5 +1,5 @@
 import classes from "./admin.module.scss";
-import { State, jsxFactory, useState, Css } from "@xania/view";
+import { State, jsxFactory, useState } from "@xania/view";
 import { ToolBar } from "../layout/toolbar";
 import { MDCDrawer } from "@material/drawer";
 import { createBrowser } from "../router/browser-router";
@@ -38,10 +38,10 @@ function Drawer(props: DrawerProps) {
         dom.parentNode.querySelector(".mdc-drawer")
       );
       drawer.listen("MDCDrawer:opened", function () {
-        open.set(true);
+        open.update(true);
       });
       drawer.listen("MDCDrawer:closed", function () {
-        open.set(false);
+        open.update(false);
       });
 
       open.subscribe({
@@ -56,7 +56,7 @@ function Drawer(props: DrawerProps) {
       <aside
         class="mdc-drawer mdc-drawer--modal"
         style="top: 0;"
-        click={(_) => open.set(false)}
+        click={(_) => open.update(false)}
       >
         <div class="mdc-drawer__content">
           <nav class="mdc-list">
@@ -69,7 +69,7 @@ function Drawer(props: DrawerProps) {
           </nav>
         </div>
       </aside>
-      <div class="mdc-drawer-scrim" click={(_) => open.set(false)}>
+      <div class="mdc-drawer-scrim" click={(_) => open.update(false)}>
         {init}
       </div>
     </>

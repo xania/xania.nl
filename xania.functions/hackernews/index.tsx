@@ -1,4 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import jsx from "./jsx";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -8,32 +9,6 @@ const httpTrigger: AzureFunction = async function (
   context.res = {
     body: context.bindingDefinitions,
   };
-};
-
-const jsx = {
-  createElement(name: string | Function, props: any, ...children: any[]) {
-    if (name instanceof Function) {
-      return name(props, children);
-    }
-    let retval = `<${name}`;
-
-    if (props) {
-      for (const k in props) {
-        retval += ` ${k}=\"${props[k]}\"`;
-      }
-    }
-
-    retval += `>`;
-
-    if (children instanceof Array) {
-      for (const child of children) retval += child;
-    }
-
-    retval += `</${name}>`;
-
-    return retval;
-  },
-  createFragment() {},
 };
 
 function Button(props: any, children: any[]) {

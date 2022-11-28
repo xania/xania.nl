@@ -1,12 +1,14 @@
 import { MDCRipple } from "@material/ripple";
-import * as jsx from "@xania/view";
+import { jsxFactory } from "@xania/view";
 
-export interface ButtonProps {
+const jsx = jsxFactory();
+
+export interface ButtonProps<T> {
   icon: string;
   href?: string;
-  click?: (e: JSX.EventContext<MouseEvent>) => void;
+  click?: (e: JSX.EventContext<T, MouseEvent>) => void;
 }
-export function Button(props: ButtonProps) {
+export function Button<T>(props: ButtonProps<T>) {
   return (
     <a
       click={props.click}

@@ -2,7 +2,7 @@ import "./icon-button.scss";
 import { Attrs, Css, jsxFactory } from "@xania/view";
 import { MDCRipple } from "@material/ripple";
 
-const jsx = jsxFactory({});
+const jsx = jsxFactory();
 
 interface IconButtonProps {}
 export function IconButton(props: IconButtonProps, children) {
