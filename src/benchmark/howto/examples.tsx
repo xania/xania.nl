@@ -101,7 +101,7 @@ export function DelayedTextContent(props: { value: Promise<string> }) {
 }
 
 export function UseStateDemo() {
-  const count: State<number> = useState(0);
+  const count = useState(0);
 
   return (
     <div class="element">

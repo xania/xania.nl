@@ -1,5 +1,15 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 
+const httpTrigger: AzureFunction = async function (
+  context: Context,
+  req: HttpRequest
+) {
+  const name = req.query.name || (req.body && req.body.name);
+  context.res = {
+    body: context.bindingDefinitions,
+  };
+};
+
 const jsx = {
   createElement(name: string | Function, props: any, ...children: any[]) {
     if (name instanceof Function) {
@@ -24,16 +34,6 @@ const jsx = {
     return retval;
   },
   createFragment() {},
-};
-
-const httpTrigger: AzureFunction = async function (
-  context: Context,
-  req: HttpRequest
-) {
-  const name = req.query.name || (req.body && req.body.name);
-  context.res = {
-    body: <App name={name} />,
-  };
 };
 
 function Button(props: any, children: any[]) {
