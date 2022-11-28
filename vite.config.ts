@@ -5,17 +5,17 @@ import chokidar from "chokidar";
 import cleanup from "rollup-plugin-cleanup";
 
 export default defineConfig({
-  logLevel: "error",
+  logLevel: "info",
   server: {
     port: 9091,
-    // host: "0.0.0.0",
+    host: "0.0.0.0",
     proxy: {
       "/rem/api/": {
         target: "http://localhost:5000",
         rewrite: (path) => path.replace(/^\/rem\/api/, "/api"),
       },
       "/api": {
-        target: "http://localhost:7071",
+        target: "http://0.0.0.0:7071",
         changeOrigin: true,
       },
     },
@@ -27,13 +27,13 @@ export default defineConfig({
   build: {
     minify: true,
     outDir: "../dist",
-    rollupOptions: {
-      plugins: [
-        cleanup({
-          comments: [],
-        }),
-      ],
-    },
+    // rollupOptions: {
+    //   plugins: [
+    //     cleanup({
+    //       comments: [],
+    //     }),
+    //   ],
+    // },
   },
 });
 
