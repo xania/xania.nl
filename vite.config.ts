@@ -3,19 +3,21 @@ import { defineConfig } from "vite";
 import mkcert from "vite-plugin-mkcert";
 import chokidar from "chokidar";
 import cleanup from "rollup-plugin-cleanup";
+import path from "path";
 
 export default defineConfig({
   logLevel: "info",
+  resolve: {
+    alias: {
+      "@xania/view": path.resolve(__dirname, "view/lib/index.ts"),
+    },
+  },
   server: {
     port: 9091,
     host: "0.0.0.0",
     proxy: {
-      "/rem/api/": {
-        target: "http://localhost:5000",
-        rewrite: (path) => path.replace(/^\/rem\/api/, "/api"),
-      },
       "/api": {
-        target: "http://0.0.0.0:7071",
+        target: "http://0.0.0.0:7125",
         changeOrigin: true,
       },
     },

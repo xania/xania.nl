@@ -7,6 +7,7 @@ const jsx = jsxFactory();
 
 export function InvoiceApp() {
   var invoices: Invoice[] = [
+    invoice2017057(),
     invoice2017056(),
     invoice2017055(),
     invoice2017054(),
@@ -78,6 +79,18 @@ function invoice2017054(): Invoice {
     date: "2022-10-01",
     description: "Periode Sept 2022",
     lines: [reasultLine("Inzet Reasult BV", 176)],
+    expirationDays: 30,
+    company: multiplied,
+    sender: xania,
+  };
+}
+
+function invoice2017057(): Invoice {
+  return {
+    number: "2017057",
+    date: "2023-01-16",
+    description: "Periode Dec 2022",
+    lines: [reasultLine("Inzet Reasult BV", 120)],
     expirationDays: 30,
     company: multiplied,
     sender: xania,

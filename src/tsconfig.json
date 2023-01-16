@@ -1,6 +1,9 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "typeRoots": ["../view/types"]
+    "typeRoots": ["../view/types"],
+    "paths": {
+      "@xania/view": ["../view/lib/index.ts"]
+    }
   }
 }
