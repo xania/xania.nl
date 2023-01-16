@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "pwa-chrome",
+      "type": "chrome",
       "name": "Home",
       "request": "launch",
       "url": "http://localhost:9091",

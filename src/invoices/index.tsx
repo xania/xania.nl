@@ -1,10 +1,13 @@
-import * as jsx from "@xania/view";
 import { Company, Invoice, XaniaClient } from "../azure-functions";
 import { PageHeader } from "../layout/page/header";
 import { Page, PageContent } from "../layout/page";
+import { jsxFactory } from "@xania/view";
+
+const jsx = jsxFactory();
 
 export function InvoiceApp() {
   var invoices: Invoice[] = [
+    invoice2017056(),
     invoice2017055(),
     invoice2017054(),
     invoice2017053(),
@@ -74,6 +77,18 @@ function invoice2017054(): Invoice {
     number: "2017054",
     date: "2022-10-01",
     description: "Periode Sept 2022",
+    lines: [reasultLine("Inzet Reasult BV", 176)],
+    expirationDays: 30,
+    company: multiplied,
+    sender: xania,
+  };
+}
+
+function invoice2017056(): Invoice {
+  return {
+    number: "2017056",
+    date: "2022-12-15",
+    description: "Periode Nov 2022",
     lines: [reasultLine("Inzet Reasult BV", 176)],
     expirationDays: 30,
     company: multiplied,
