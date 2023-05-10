@@ -1,10 +1,2 @@
-﻿node_modules
-dist
-server/Xania.DevHost/.vs/
-# Local Netlify folder
-.netlify
-__blobstorage__/300fcb06-4834-4413-b4cb-1d01510b4779
-__azurite_db_blob_extent__.json
-__azurite_db_blob__.json
-__azurite_db_blob__.json~
-__blobstorage__
+﻿node_modules/
+dist/

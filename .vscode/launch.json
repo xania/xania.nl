@@ -1,43 +1,16 @@
 {
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
       "type": "chrome",
-      "name": "Home",
       "request": "launch",
-      "url": "http://localhost:9091",
+      "name": "Launch Xania App",
+      "url": "http://localhost:1981",
+      "webRoot": "${workspaceFolder}",
       "sourceMaps": true
-    },
-    {
-      "name": "Attach to Node Functions",
-      "type": "node",
-      "request": "attach",
-      "port": 9229,
-      "preLaunchTask": "func: host start"
-    },
-    {
-      "name": "netlify dev",
-      "type": "node",
-      "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/node_modules/.bin/netlify",
-      "args": ["dev"],
-      "console": "integratedTerminal",
-      "env": { "BROWSER": "none" },
-      "serverReadyAction": {
-        "pattern": "Server now ready on (https?://[\\w:.-]+)",
-        "uriFormat": "%s",
-        "action": "debugWithChrome"
-      }
-    },
-    {
-      "name": "netlify functions:serve",
-      "type": "node",
-      "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/node_modules/.bin/netlify",
-      "args": ["functions:serve"],
-      "console": "integratedTerminal"
     }
   ]
 }

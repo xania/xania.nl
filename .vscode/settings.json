@@ -1,21 +1,8 @@
-{
+﻿{
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.tabSize": 2,
   "files.exclude": {
-    "server/": true,
-    "ffdist/": true,
-    "dotnet-functions/": true,
-    ".netdlify/": true,
-    "**/node_modules/": true,
-    "__blobstorage__/": true,
-    ".netlify/": true
-  },
-  "azureFunctions.projectSubpath": "xania.functions",
-  "azureFunctions.deploySubpath": "xania.functions",
-  "azureFunctions.postDeployTask": "npm install (functions)",
-  "azureFunctions.projectLanguage": "TypeScript",
-  "azureFunctions.projectRuntime": "~4",
-  "debug.internalConsoleOptions": "neverOpen",
-  "azureFunctions.preDeployTask": "npm prune (functions)"
+    "dist/": true,
+  }
 }

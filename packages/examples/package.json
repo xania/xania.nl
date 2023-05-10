@@ -1,0 +1,12 @@
+{
+  "name": "examples",
+  "version": "0.0.1",
+  "description": "xania examples project",
+  "type": "module",
+  "author": "Ibrahim ben Salah",
+  "license": "ISC",
+  "exports": {
+    "import": "./index.tsx"
+  },
+  "main": "index.tsx"
+}
