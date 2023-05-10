@@ -1,5 +1,4 @@
 ﻿import { Attrs, useState as state } from "xania";
-import { Navigation } from "./nav";
 import { WebApp } from "xania/router";
 
 export function Layout(props: { children: JSX.Children }) {
@@ -11,9 +10,6 @@ export function Layout(props: { children: JSX.Children }) {
         drawerOpen.update(!location.pathname || location.pathname === "/")
       }
     >
-      <Attrs class="pt-14" />
-      <Navigation drawerOpen={drawerOpen} />
-
       <div
         click={drawerOpen.update(false)}
         drawer-backdrop=""

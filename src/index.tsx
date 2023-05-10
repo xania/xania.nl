@@ -20,7 +20,3 @@ export function App() {
     </>
   );
 }
-
-function LandingPage() {
-  return "landing page";
-}
