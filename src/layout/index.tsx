@@ -1,24 +1,8 @@
-﻿import { Attrs, useState as state } from "xania";
-import { WebApp } from "xania/router";
+﻿import { WebApp } from "xania/router";
 
 export function Layout(props: { children: JSX.Children }) {
-  const drawerOpen = state(false);
-
   return (
-    <WebApp
-      navigate={() =>
-        drawerOpen.update(!location.pathname || location.pathname === "/")
-      }
-    >
-      <div
-        click={drawerOpen.update(false)}
-        drawer-backdrop=""
-        class={[
-          "fixed inset-0 z-30 bg-gray-900 bg-opacity-50 ease-linear dark:bg-opacity-80",
-          drawerOpen.when(false, "hidden", null),
-        ]}
-      ></div>
-
+    <WebApp>
       <AppContainer>{props.children}</AppContainer>
     </WebApp>
   );

@@ -1,4 +1,4 @@
-export function ComingSoon() {
+export function Pricing() {
   return (
     <div class="w-full bg-gray-200 font-sans leading-normal tracking-normal">
       <section class="bg-white py-20">

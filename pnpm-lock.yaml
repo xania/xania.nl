@@ -13,19 +13,19 @@ importers:
       sass: ^1.62.1
       tailwindcss: ^3.3.2
       vite: latest
-      xania: latest
+      xania: ^0.5.39
     dependencies:
       examples: link:packages/examples
-      xania: 0.5.37
+      xania: 0.5.39
     devDependencies:
-      '@types/node': 20.1.1
+      '@types/node': 20.1.2
       autoprefixer: 10.4.14_postcss@8.4.23
       postcss: 8.4.23
       prettier: 2.8.8
       prettier-plugin-tailwindcss: 0.2.8_prettier@2.8.8
       sass: 1.62.1
       tailwindcss: 3.3.2
-      vite: 4.3.5_cmc6haabys5lqkn6dgaljsdwoe
+      vite: 4.3.5_ovcnoa7ydzd5w7y6ffrzlhonre
 
   packages/examples:
     specifiers: {}
@@ -290,8 +290,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@types/node/20.1.1:
-    resolution: {integrity: sha512-uKBEevTNb+l6/aCQaKVnUModfEMjAl98lw2Si9P5y4hLu9tm6AlX2ZIoXZX6Wh9lJueYPrGPKk5WMCNHg/u6/A==}
+  /@types/node/20.1.2:
+    resolution: {integrity: sha512-CTO/wa8x+rZU626cL2BlbCDzydgnFNgc19h4YvizpTO88MFQxab8wqisxaofQJ/9bLGugRdWIuX/TbIs6VVF6g==}
     dev: true
 
   /any-promise/1.3.0:
@@ -950,7 +950,7 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: true
 
-  /vite/4.3.5_cmc6haabys5lqkn6dgaljsdwoe:
+  /vite/4.3.5_ovcnoa7ydzd5w7y6ffrzlhonre:
     resolution: {integrity: sha512-0gEnL9wiRFxgz40o/i/eTBwm+NEbpUeTWhzKrZDSdKm6nplj+z4lKz8ANDgildxHm47Vg8EUia0aicKbawUVVA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -975,7 +975,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.1.1
+      '@types/node': 20.1.2
       esbuild: 0.17.18
       postcss: 8.4.23
       rollup: 3.21.6
@@ -988,8 +988,8 @@ packages:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
 
-  /xania/0.5.37:
-    resolution: {integrity: sha512-ljlIfnSe686e+LZTDAew6i93yJhFOmEcP/IZ126SeDLaJbFGhBUSmfao/7w1Ys4u4VcTbA42F/sgbrX5NusnFA==}
+  /xania/0.5.39:
+    resolution: {integrity: sha512-7Meny8lv3sO3w2Je7oAfEw1CJRncC8SaknK/8U0rBviIbyng3qx/7BvgdIGTbBd4eLUl71jr+og/iMKBow0xig==}
     engines: {node: '>=10'}
     peerDependencies:
       vitest: 0.31.0
