@@ -1,7 +1,8 @@
 {
-  "name": "xania-functions",
+  "name": "xania.functions",
   "version": "1.0.0",
   "description": "",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
