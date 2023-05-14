@@ -5,10 +5,6 @@ import terser from "@rollup/plugin-terser";
 import path from "path";
 
 export default defineConfig({
-  build: {
-    minify: false,
-    rollupOptions: {},
-  },
   server: {
     port: 1981,
     host: "0.0.0.0",
