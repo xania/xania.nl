@@ -2,6 +2,7 @@
 
 import { AnchorNode, Attachable, Attrs } from "xania";
 import { RouteTrigger, useRouteContext } from "xania/router";
+import { Feedback } from "~/components/feedback";
 
 interface PageProps {
   class?: string;
@@ -13,8 +14,9 @@ export function Page(props: PageProps) {
   const routeContext = useRouteContext();
 
   return (
-    <div class="box-border h-full last:flex-1 max-sm:fixed max-sm:left-0 max-sm:top-16 max-sm:w-full sm:py-4 sm:pl-4  sm:pr-4">
+    <div class="box-border h-full last:flex-1 max-sm:fixed max-sm:left-0 max-sm:w-full sm:py-4 sm:pr-4  sm:first:pl-4">
       <Attrs class={props.class} />
+      <Feedback />
       <Attrs
         class={routeContext.transition.map((b) => classes[`page--${b}`])}
       />

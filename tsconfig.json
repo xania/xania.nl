@@ -16,6 +16,10 @@
     "jsx": "react-jsx",
     "jsxImportSource": "xania",
 
-    "types": ["node"]
+    "types": ["node"],
+
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   }
 }

@@ -1,89 +1,105 @@
-﻿import { Attrs, State, UpdateCommand, render, update, useState } from "xania";
+﻿import { Attrs, render } from "xania";
 import "./main.css";
-import { Link, Path, Route, RouteContext } from "xania/router";
+import { Link, Path, Route, useRouteContext } from "xania/router";
 import { Layout } from "./layout";
 
-import { Prompt } from "./components/prompt";
-import { Job, jobfeed } from "./services/jobs";
+import { Job } from "./services/jobs";
 import { Page } from "./layout/page";
-
-import "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { Subscribe } from "./components/subscriptions";
+import { Cases } from "./components/cases";
+import { NavItem } from "./components/ui/nav-item";
+import { Relations } from "./components/relations";
+import { Incasso } from "./components/incasso";
+import {
+  Forms,
+  Pie,
+  Inbox,
+  Person,
+  Bag,
+  Exit,
+  Table,
+} from "./components/ui/svg";
+import { Seo } from "./components/seo";
 
 render(<App />, document.getElementById("app")!);
 
 export async function App() {
-  const email = useState("");
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBDqnfjEaAc7LPP6zWs6xqZfzYaFjPJk2M",
-    authDomain: "xania-on-fire.firebaseapp.com",
-    projectId: "xania-on-fire",
-    storageBucket: "xania-on-fire.appspot.com",
-    messagingSenderId: "287956370740",
-    appId: "1:287956370740:web:25a178d796361459395161",
-    measurementId: "G-H3BYB5N05S",
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const subscriptionsCol = collection(db, "subscriptions");
-
-  const subscribeCmd = update(async function (scope) {
-    const value = await scope.get(email);
-    setDoc(doc(subscriptionsCol, value), {
-      name: "San Francisco",
-      state: "CA",
-      country: "USA",
-      capital: false,
-      population: 860000,
-      regions: ["west_coast", "norcal"],
-    });
-
-    return email.update("");
-  });
-
-  // const aaa = await fetch("/api/storage/subscribe", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     email: "ibrahim.bensalah@gmail.com.nl",
-  //   }),
-  // }).then((e) => e.json());
-  // console.log(aaa);
-
+  const routeContext = useRouteContext();
   return (
     <>
-      {email.effect(async (email) => {
-        if (email)
-          await setDoc(doc(subscriptionsCol, email), {
-            name: "San Francisco",
-            state: "CA",
-            country: "USA",
-            capital: false,
-            population: 860000,
-            regions: ["west_coast", "norcal"],
-          });
-      })}
       <Attrs class="flex flex-row" />
       <Layout>
         <div class="border-box relative m-0 flex flex-auto flex-row overflow-auto bg-white p-0 align-middle dark:bg-gray-600">
           <Page>
-            <input placeholder="Search...">
-              <Prompt />
-            </input>
-            <div>{jobfeed().then(list(JobListItem))}</div>
-            <input type="email">{bind(email)}</input>
-            <button click={subscribeCmd}>subscribe</button>
+            <ul class="space-y-2 font-medium">
+              <NavItem>
+                <Bag />
+                <span class="ml-3">Home</span>
+                <Link to="/" />
+              </NavItem>
+              <NavItem>
+                <Inbox /> <span class="ml-3">Inbox</span>
+                <span class="ml-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                  3
+                </span>
+                <Link to="inbox" />
+              </NavItem>
+              <NavItem>
+                <Bag /> <span class="ml-3">Cases</span>
+                <Link to="cases" />
+              </NavItem>
+              <NavItem>
+                <Person /> <span class="ml-3">Relations</span>
+                <Link to="relations" />
+              </NavItem>
+              <NavItem>
+                <Pie /> <span class="ml-3">Documents</span>
+                <Link to="documents" />
+              </NavItem>
+              <NavItem>
+                <Exit /> <span class="ml-3">Incasso</span>
+                <Link to="incasso" />
+              </NavItem>
+              <NavItem>
+                <Forms /> <span class="ml-3">Forms</span>
+                <Link to="forms" />
+              </NavItem>
+              <NavItem>
+                <Pie /> <span class="ml-3">Bronnen</span>
+                <Link to="resources" />
+              </NavItem>
+              <NavItem>
+                <Table /> <span class="ml-3">Seo</span>
+                <Link to="seo" />
+              </NavItem>
+            </ul>
+            {/* <div>{jobfeed().then(list(JobListItem))}</div> */}
           </Page>
-          <Route path={jobRoute}>
-            {(context: RouteContext) => <Page>{context.params?.id}</Page>}
+          <Route>
+            <Page>
+              <Subscribe />
+            </Page>
+          </Route>
+          <Route path="job/:id">
+            <Page>{routeContext.params.prop("id")}</Page>
+          </Route>
+          <Route path="cases">
+            <Cases />
+          </Route>
+          <Route path="relations">
+            <Relations />
+          </Route>
+          <Route path="incasso">
+            <Incasso />
+          </Route>
+          <Route path="documents">
+            <Page>Documents</Page>
+          </Route>
+          <Route path="inbox">
+            <Page>inbox berichten</Page>
+          </Route>
+          <Route path="seo">
+            <Seo />
           </Route>
         </div>
       </Layout>
@@ -102,7 +118,7 @@ function JobListItem(props: Job, index?: number) {
     <div>
       <a>
         {props.title}
-        <Link to={String(index)} />
+        <Link to={"job/" + String(index)} />
       </a>
     </div>
   );
@@ -218,13 +234,3 @@ function measure<T>(tree: T, ...fns: Func<T>[]) {
 // Import the functions you need from the SDKs you need
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
-function bind(state: State<string>) {
-  return Attrs<HTMLInputElement>({
-    blur(e) {
-      console.log(e);
-      return state.update(e.currentTarget.value);
-    },
-    value: state,
-  });
-}

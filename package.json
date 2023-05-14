@@ -19,18 +19,18 @@
   "dependencies": {
     "examples": "workspace:*",
     "firebase": "9.21.0",
-    "xania": "^0.5.42",
+    "xania": "^0.5.58",
     "xania.functions": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "latest",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "sass": "^1.62.1",
     "tailwindcss": "^3.3.2",
-    "typescript": "5.0.4",
+    "typescript": "^5.0.4",
     "vite": "latest"
   }
 }
