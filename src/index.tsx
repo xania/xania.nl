@@ -20,6 +20,7 @@ import {
   Table,
 } from "./components/ui/svg";
 import { Seo } from "./components/seo";
+import { Viewer } from "./components/documents";
 
 render(<App />, document.getElementById("app")!);
 
@@ -93,7 +94,9 @@ export async function App() {
             <Incasso />
           </Route>
           <Route path="documents">
-            <Page>Documents</Page>
+            {import("./components/documents").then((mod) => (
+              <mod.Viewer />
+            ))}
           </Route>
           <Route path="inbox">
             <Page>inbox berichten</Page>
