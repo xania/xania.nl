@@ -13,8 +13,8 @@ const TEXT_LAYER_MODE = 1;
 
 export function DocumentViewer() {
   return (
-    <div class="absolute inset-0 box-border">
-      <div class="pdfViewer box-border h-full overflow-auto"></div>
+    <div class="absolute h-full">
+      <div class="pdfViewer"></div>
       <DocumentLoader path={sampledoc} />
     </div>
   );
