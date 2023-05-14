@@ -1,5 +1,4 @@
 import { Attrs, State, update, useState } from "xania";
-import { insert } from "~/services/firebase";
 
 export function Subscribe() {
   const email = useState("");
@@ -19,8 +18,11 @@ export function Subscribe() {
   );
 }
 
-function addSubscription(email: string) {
-  insert("subscriptions", email, { created: new Date().toUTCString() });
+async function addSubscription(email: string) {
+  const firebase = await import("~/services/firebase");
+  firebase.insert("subscriptions", email, {
+    created: new Date().toUTCString(),
+  });
 }
 
 function bind(state: State<string>) {
