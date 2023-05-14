@@ -1,5 +1,4 @@
-import { Page } from "~/layout/page";
-import pdfdoc from "./sample.pdf";
+import sampledoc from "./sample.pdf";
 import * as PDFJS from "pdfjs-dist";
 import "pdfjs-dist/build/pdf.worker.entry";
 import {
@@ -12,19 +11,19 @@ import "pdfjs-dist/web/pdf_viewer.css";
 
 const TEXT_LAYER_MODE = 1;
 
-export function Viewer() {
+export function DocumentViewer() {
   return (
     <div class="absolute inset-0 box-border">
       <div class="pdfViewer box-border h-full overflow-auto"></div>
-      {loadPdf(pdfdoc)}
+      <DocumentLoader path={sampledoc} />
     </div>
   );
 }
 
-function loadPdf(path: string) {
+function DocumentLoader(props: { path: string }) {
   return {
     async attachTo(container: HTMLDivElement) {
-      const pdfDocument = await PDFJS.getDocument(pdfdoc).promise;
+      const pdfDocument = await PDFJS.getDocument(props.path).promise;
       const eventBus = new EventBus();
       const linkService = new PDFLinkService({
         eventBus,
@@ -39,8 +38,8 @@ function loadPdf(path: string) {
       });
 
       linkService.setViewer(pdfViewer);
-      pdfViewer.setDocument(pdfDocument);
       linkService.setDocument(pdfDocument, null);
+      pdfViewer.setDocument(pdfDocument);
     },
   };
 }

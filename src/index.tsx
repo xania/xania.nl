@@ -20,7 +20,7 @@ import {
   Table,
 } from "./components/ui/svg";
 import { Seo } from "./components/seo";
-import { Viewer } from "./components/documents";
+import { DocumentViewer } from "./components/documents";
 
 render(<App />, document.getElementById("app")!);
 
@@ -95,7 +95,9 @@ export async function App() {
           </Route>
           <Route path="documents">
             {import("./components/documents").then((mod) => (
-              <mod.Viewer />
+              <Page>
+                <mod.DocumentViewer />
+              </Page>
             ))}
           </Route>
           <Route path="inbox">
