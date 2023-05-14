@@ -13,7 +13,7 @@ const TEXT_LAYER_MODE = 1;
 
 export function DocumentViewer() {
   return (
-    <div class="absolute h-full">
+    <div class="absolute">
       <div class="pdfViewer"></div>
       <DocumentLoader path={sampledoc} />
     </div>
