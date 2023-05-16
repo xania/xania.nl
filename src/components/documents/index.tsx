@@ -13,9 +13,13 @@ const TEXT_LAYER_MODE = 1;
 
 export function DocumentViewer() {
   return (
-    <div class="absolute">
-      <div class="pdfViewer"></div>
+    <div class="pdf-viewer-container absolute overflow-hidden">
+      <div class="pdfViewer w-full"></div>
       <DocumentLoader path={sampledoc} />
+
+      <div class="absolute left-6 top-[1500px] z-10 border-2 border-solid border-red-400 bg-white bg-opacity-60 p-4 ">
+        bla
+      </div>
     </div>
   );
 }
@@ -29,12 +33,19 @@ function DocumentLoader(props: { path: string }) {
         eventBus,
       });
 
+      for (let i = 0; i < pdfDocument.numPages; i++) {
+        const page = pdfDocument.getPage(i + 1);
+      }
+
       const pdfViewer = new PDFViewer({
         container,
         eventBus,
         linkService,
         l10n: NullL10n,
         textLayerMode: TEXT_LAYER_MODE,
+        useOnlyCssZoom: true,
+
+        // defaultViewport: pdfPage.getViewport({ scale: SCALE }),
       });
 
       linkService.setViewer(pdfViewer);
@@ -42,4 +53,21 @@ function DocumentLoader(props: { path: string }) {
       pdfViewer.setDocument(pdfDocument);
     },
   };
+}
+
+function fetchUserProfile(userName: string) {
+  return Promise.resolve({ userName });
+}
+
+async function SayHello(props: { name: string }) {
+  const profile = await fetchUserProfile(props.name);
+  return (<span>Hello, {profile.userName}</span>) as any;
+}
+
+async function HelloApp() {
+  return (
+    <div>
+      <SayHello name="Ibrahim" />
+    </div>
+  ) as any;
 }

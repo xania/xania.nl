@@ -12,3 +12,16 @@ body {
 .small-caps {
   font-variant: small-caps;
 }
+
+.pdfViewer {
+  --page-margin: 10px 10px 14px;
+  --scale-factor: 0.2;
+  --page-margin: 10px 10px 14px;
+  --page-border: 6px solid white;
+}
+
+.pdfViewer .page {
+  -webkit-box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.308);
+  -moz-box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.308);
+  box-shadow: 0px 0px 12px -1px rgba(0, 0, 0, 0.308);
+}
