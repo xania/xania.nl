@@ -54,20 +54,3 @@ function DocumentLoader(props: { path: string }) {
     },
   };
 }
-
-function fetchUserProfile(userName: string) {
-  return Promise.resolve({ userName });
-}
-
-async function SayHello(props: { name: string }) {
-  const profile = await fetchUserProfile(props.name);
-  return (<span>Hello, {profile.userName}</span>) as any;
-}
-
-async function HelloApp() {
-  return (
-    <div>
-      <SayHello name="Ibrahim" />
-    </div>
-  ) as any;
-}

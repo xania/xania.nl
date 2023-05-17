@@ -20,6 +20,8 @@
     "@types/pdfjs-dist": "^2.10.378",
     "examples": "workspace:*",
     "firebase": "9.21.0",
+    "oauth4webapi": "^2.3.0",
+    "openid-client": "^5.4.2",
     "pdfjs-dist": "^3.6.172",
     "xania": "^0.5.60"
   },

@@ -20,7 +20,6 @@ import {
   Table,
 } from "./components/ui/svg";
 import { Seo } from "./components/seo";
-import { DocumentViewer } from "./components/documents";
 
 render(<App />, document.getElementById("app")!);
 
@@ -101,7 +100,9 @@ export async function App() {
             ))}
           </Route>
           <Route path="inbox">
-            <Page>inbox berichten</Page>
+            {import("./components/inbox").then((mod) => (
+              <mod.InboxApp />
+            ))}
           </Route>
           <Route path="seo">
             <Seo />
