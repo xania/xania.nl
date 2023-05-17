@@ -4,6 +4,9 @@ importers:
 
   .:
     dependencies:
+      '@azure/msal-browser':
+        specifier: ^2.37.0
+        version: 2.37.0
       '@types/pdfjs-dist':
         specifier: ^2.10.378
         version: 2.10.378
@@ -166,6 +169,18 @@ packages:
     engines: {node: '>=14.0.0'}
     dependencies:
       tslib: 2.5.0
+    dev: false
+
+  /@azure/msal-browser@2.37.0:
+    resolution: {integrity: sha512-YNGD/W/tw/5wDWlXOfmrVILaxVsorVLxYU2ovmL1PDvxkdudbQRyGk/76l4emqgDAl/kPQeqyivxjOU6w1YfvQ==}
+    engines: {node: '>=0.8.0'}
+    dependencies:
+      '@azure/msal-common': 13.0.0
+    dev: false
+
+  /@azure/msal-common@13.0.0:
+    resolution: {integrity: sha512-GqCOg5H5bouvLij9NFXFkh+asRRxsPBRwnTDsfK7o0KcxYHJbuidKw8/VXpycahGXNxgtuhqtK/n5he+5NhyEA==}
+    engines: {node: '>=0.8.0'}
     dev: false
 
   /@esbuild/android-arm64@0.17.19:

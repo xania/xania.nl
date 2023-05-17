@@ -10,13 +10,15 @@
     "start": "npx vite",
     "build": "npx vite build",
     "func": "npm start --workspace packages/xania.functions",
-    "preview": "npx vite preview"
+    "preview": "npx vite preview",
+    "lint": "tsc"
   },
   "files": [
     "dist"
   ],
   "license": "MIT",
   "dependencies": {
+    "@azure/msal-browser": "^2.37.0",
     "@types/pdfjs-dist": "^2.10.378",
     "examples": "workspace:*",
     "firebase": "9.21.0",
