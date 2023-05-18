@@ -25,4 +25,7 @@ export type MailInfo = {
 
 interface Message {
   subject: string;
+  sender: {
+    emailAddress: { name: string };
+  };
 }
