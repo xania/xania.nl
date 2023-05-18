@@ -17,9 +17,11 @@ import { UIManager } from "./UIManager";
  * Configuration class for @azure/msal-browser:
  * https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-browser/modules/_src_config_configuration_.html
  */
-const MSAL_CONFIG: Configuration = {
+export const MSAL_CONFIG: Configuration = {
   auth: {
-    clientId: "4b37929a-6080-4e19-99ae-7e91a2c68ce9",
+    clientId: "ebc36696-753a-40a5-8149-0c0604e30fa7",
+    redirectUri: "/",
+    // authority: "tenanted_authority_here",
   },
   cache: {
     cacheLocation: "sessionStorage", // This configures where your cache will be stored
@@ -326,5 +328,88 @@ export class AuthModule {
     }
 
     return null;
+  }
+}
+
+/**
+ * Gets the token to read mail data from MS Graph silently, or falls back to interactive redirect.
+ */
+export async function getMailTokenRedirect(
+  myMSALObj: PublicClientApplication,
+  account: AccountInfo
+): Promise<string | null> {
+  const silentMailRequest = {
+    scopes: ["openid", "profile", "Mail.Read"],
+    forceRefresh: false,
+    account,
+  };
+
+  const mailRedirectRequest = {
+    scopes: ["Mail.Read"],
+    redirectStartPage: window.location.href,
+  };
+
+  return getTokenRedirect(myMSALObj, silentMailRequest, mailRedirectRequest);
+}
+
+async function getTokenRedirect(
+  myMSALObj: PublicClientApplication,
+  silentRequest: SilentRequest,
+  interactiveRequest: RedirectRequest
+): Promise<string | null> {
+  try {
+    const response = await myMSALObj.acquireTokenSilent(silentRequest);
+    return response.accessToken;
+  } catch (e) {
+    console.log("silent token acquisition fails.");
+    if (e instanceof InteractionRequiredAuthError) {
+      console.log("acquiring token using redirect");
+      myMSALObj.acquireTokenRedirect(interactiveRequest).catch(console.error);
+    } else {
+      console.error(e);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Gets a token silently, or falls back to interactive popup.
+ */
+export async function getTokenPopup(
+  myMSALObj: PublicClientApplication,
+  account: AccountInfo
+  // silentRequest: SilentRequest,
+  // interactiveRequest: PopupRequest
+): Promise<string | void> {
+  try {
+    const silentProfileRequest = {
+      scopes: ["openid", "profile", "User.Read", "Mail.Read"],
+      forceRefresh: true,
+      account,
+    };
+
+    const response: AuthenticationResult = await myMSALObj.acquireTokenSilent(
+      silentProfileRequest
+    );
+    return response.accessToken;
+  } catch (e) {
+    console.warn("silent token acquisition fails.", e);
+    if (e instanceof InteractionRequiredAuthError) {
+      console.log("acquiring token using redirect");
+
+      return myMSALObj
+        .acquireTokenPopup({
+          scopes: ["openid", "profile", "User.Read", "Mail.Read"],
+        })
+        .then((resp) => {
+          return resp.accessToken;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      console.error(e);
+    }
   }
 }

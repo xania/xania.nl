@@ -1,7 +1,13 @@
-import { AuthModule } from "./AuthModule";
-import { FetchManager } from "./FetchManager";
+import { AuthModule, getMailTokenRedirect, getTokenPopup } from "./AuthModule";
+import { FetchManager, callEndpointWithToken } from "./FetchManager";
 import { UIManager } from "./UIManager";
 import { GRAPH_CONFIG } from "./Constants";
+import {
+  AccountInfo,
+  EndSessionRequest,
+  PublicClientApplication,
+} from "@azure/msal-browser";
+import { MailInfo } from "./GraphReponseTypes";
 
 // Browser check variables
 // If you support IE, our recommendation is that you sign-in using Redirect APIs
@@ -23,7 +29,7 @@ window.addEventListener("load", async () => {
  * Called when user clicks "Sign in with Redirect" or "Sign in with Popup"
  * @param method
  */
-export function signIn(method: string = "loginPopup"): void {
+export function signIn(method: string = "loginRedirect"): void {
   const signInType = isIE ? "loginRedirect" : method;
   authModule.login(signInType);
 }
@@ -31,8 +37,14 @@ export function signIn(method: string = "loginPopup"): void {
 /**
  * Called when user clicks "Sign Out"
  */
-export function signOut(): void {
-  authModule.logout();
+export function signOut(myMSALObj: PublicClientApplication): void {
+  const currentAccounts = myMSALObj.getAllAccounts();
+  const account = currentAccounts[0];
+  const logOutRequest: EndSessionRequest = {
+    account,
+  };
+
+  myMSALObj.logoutRedirect(logOutRequest);
 }
 
 /**
@@ -54,16 +66,53 @@ export async function seeProfile(): Promise<void> {
 /**
  * Called when user clicks "Read Mail"
  */
-export async function readMail(): Promise<void> {
+export async function readMail(
+  myMSALObj: PublicClientApplication,
+  account: AccountInfo
+) {
   const token = isIE
-    ? await authModule.getMailTokenRedirect()
-    : await authModule.getMailTokenPopup();
+    ? await getMailTokenRedirect(myMSALObj, account)
+    : await getTokenPopup(myMSALObj, account);
+
   if (token && token.length > 0) {
-    const graphResponse = await networkModule.callEndpointWithToken(
+    const graphResponse = await callEndpointWithToken<MailInfo>(
       GRAPH_CONFIG.GRAPH_MAIL_ENDPT,
       token
     );
-    UIManager.updateUI(graphResponse, GRAPH_CONFIG.GRAPH_MAIL_ENDPT);
+    return graphResponse;
+
+    // UIManager.updateUI(graphResponse, GRAPH_CONFIG.GRAPH_MAIL_ENDPT);
+  }
+}
+
+export async function revoke(myMSALObj: PublicClientApplication) {
+  const currentAccounts = myMSALObj.getAllAccounts();
+  const account = currentAccounts[0];
+
+  const accessToken = isIE
+    ? await getMailTokenRedirect(myMSALObj, account)
+    : await getTokenPopup(myMSALObj, account);
+
+  const headers = new Headers();
+  const bearer = `Bearer ${accessToken}`;
+
+  headers.append("Authorization", bearer);
+
+  const options = {
+    method: "GET",
+    headers: headers,
+  };
+
+  console.log("request made at: " + new Date().toString());
+
+  try {
+    const response = await fetch(
+      "https://graph.microsoft.com/v1.0/me/revokeSignInSessions",
+      options
+    );
+    console.log(response);
+  } catch (e) {
+    console.error(e);
   }
 }
 

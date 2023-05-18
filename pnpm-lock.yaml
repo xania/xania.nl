@@ -7,6 +7,9 @@ importers:
       '@azure/msal-browser':
         specifier: ^2.37.0
         version: 2.37.0
+      '@microsoft/microsoft-graph-client':
+        specifier: ^3.0.5
+        version: 3.0.5(@azure/msal-browser@2.37.0)
       '@types/pdfjs-dist':
         specifier: ^2.10.378
         version: 2.10.378
@@ -31,7 +34,7 @@ importers:
         version: 0.4.2
       '@types/node':
         specifier: latest
-        version: 20.1.7
+        version: 20.2.0
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.23)
@@ -55,7 +58,7 @@ importers:
         version: 5.0.4
       vite:
         specifier: latest
-        version: 4.3.7(@types/node@20.1.7)(sass@1.62.1)
+        version: 4.3.7(@types/node@20.2.0)(sass@1.62.1)
       xania.functions:
         specifier: workspace:*
         version: link:packages/xania.functions
@@ -181,6 +184,13 @@ packages:
   /@azure/msal-common@13.0.0:
     resolution: {integrity: sha512-GqCOg5H5bouvLij9NFXFkh+asRRxsPBRwnTDsfK7o0KcxYHJbuidKw8/VXpycahGXNxgtuhqtK/n5he+5NhyEA==}
     engines: {node: '>=0.8.0'}
+    dev: false
+
+  /@babel/runtime@7.21.5:
+    resolution: {integrity: sha512-8jI69toZqqcsnqGGqwGS4Qb1VwLOEp4hz+CXPywcvjs60u3B4Pom/U/7rm4W8tMOYEB+E9wgD0mW1l3r8qlI9Q==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.13.11
     dev: false
 
   /@esbuild/android-arm64@0.17.19:
@@ -835,7 +845,7 @@ packages:
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': 0.7.7
-      '@types/node': 20.1.7
+      '@types/node': 20.2.0
     dev: false
 
   /@grpc/proto-loader@0.6.13:
@@ -921,6 +931,29 @@ packages:
       - supports-color
     dev: false
     optional: true
+
+  /@microsoft/microsoft-graph-client@3.0.5(@azure/msal-browser@2.37.0):
+    resolution: {integrity: sha512-xQADFNLUhE78RzYadFZtOmy/5wBZenSZhVK193m40MTDC5hl1aYMQO1QOJApnKga8WcvMCDCU10taRhuXTOz5w==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      '@azure/identity': '*'
+      '@azure/msal-browser': '*'
+      buffer: '*'
+      stream-browserify: '*'
+    peerDependenciesMeta:
+      '@azure/identity':
+        optional: true
+      '@azure/msal-browser':
+        optional: true
+      buffer:
+        optional: true
+      stream-browserify:
+        optional: true
+    dependencies:
+      '@azure/msal-browser': 2.37.0
+      '@babel/runtime': 7.21.5
+      tslib: 2.5.0
+    dev: false
 
   /@mollie/api-client@3.7.0:
     resolution: {integrity: sha512-8pYq08xwv7VJIQvOJU+3nThZbXuNLhtD8iJQQ4UYW67kxHw4eC6cVE9SNVtUuHRfxTwcKLv5wrZd9jFb3BFqiA==}
@@ -1018,8 +1051,8 @@ packages:
     resolution: {integrity: sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA==}
     dev: false
 
-  /@types/node@20.1.7:
-    resolution: {integrity: sha512-WCuw/o4GSwDGMoonES8rcvwsig77dGCMbZDrZr2x4ZZiNW4P/gcoZXe/0twgtobcTkmg9TuKflxYL/DuwDyJzg==}
+  /@types/node@20.2.0:
+    resolution: {integrity: sha512-3iD2jaCCziTx04uudpJKwe39QxXgSUnpxXSvRQjRvHPxFQfmfP4NXIm/NURVeNlTCc+ru4WqjYGTmpXrW9uMlw==}
 
   /@types/pdfjs-dist@2.10.378:
     resolution: {integrity: sha512-TRdIPqdsvKmPla44kVy4jv5Nt5vjMfVjbIEke1CRULIrwKNRC4lIiZvNYDJvbUMNCFPNIUcOKhXTyMJrX18IMA==}
@@ -1035,7 +1068,7 @@ packages:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.1.7
+      '@types/node': 20.2.0
     dev: true
     optional: true
 
@@ -2105,7 +2138,7 @@ packages:
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
       '@types/long': 4.0.2
-      '@types/node': 20.1.7
+      '@types/node': 20.2.0
       long: 4.0.0
     dev: false
 
@@ -2124,7 +2157,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 20.1.7
+      '@types/node': 20.2.0
       long: 5.2.3
     dev: false
 
@@ -2167,6 +2200,10 @@ packages:
     dependencies:
       picomatch: 2.3.1
     dev: true
+
+  /regenerator-runtime@0.13.11:
+    resolution: {integrity: sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==}
+    dev: false
 
   /require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
@@ -2460,7 +2497,7 @@ packages:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
 
-  /vite@4.3.7(@types/node@20.1.7)(sass@1.62.1):
+  /vite@4.3.7(@types/node@20.2.0)(sass@1.62.1):
     resolution: {integrity: sha512-MTIFpbIm9v7Hh5b0wSBgkcWzSBz7SAa6K/cBTwS4kUiQJfQLFlZZRJRQgqunCVzhTPCk674tW+0Qaqh3Q00dBg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -2485,7 +2522,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.1.7
+      '@types/node': 20.2.0
       esbuild: 0.17.19
       postcss: 8.4.23
       rollup: 3.21.8

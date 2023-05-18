@@ -1,41 +1,111 @@
-import { PublicClientApplication } from "@azure/msal-browser";
+import {
+  AccountInfo,
+  AuthenticationResult,
+  InteractionType,
+  PublicClientApplication,
+} from "@azure/msal-browser";
+import { List, useState } from "xania";
 import { Page } from "~/layout/page";
 // import * as oauth2 from "oauth4webapi";
-import { readMail, signIn } from "~/services/microsoft";
-import { AuthModule } from "~/services/microsoft/AuthModule";
-import { FetchManager } from "~/services/microsoft/FetchManager";
+import { readMail, revoke, signIn, signOut } from "~/services/microsoft";
+import { MSAL_CONFIG } from "~/services/microsoft/AuthModule";
+import { Client } from "@microsoft/microsoft-graph-client";
 
-const outlook =
-  "https://graph.microsoft.com/v1.0/me/mailfolders/inbox/messages";
+import {
+  AuthCodeMSALBrowserAuthenticationProvider,
+  AuthCodeMSALBrowserAuthenticationProviderOptions,
+} from "@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser";
 
 export async function InboxApp() {
-  const authModule: AuthModule = new AuthModule();
-  await authModule.loadAuthModule();
+  const app = createApp();
+  const account = useState(getAccount(app));
+  const email = account.map((account) =>
+    readMail(app, account).then((e) => e?.value)
+  );
 
-  // readMail();
-
-  return <Page>inbox berichten</Page>;
+  return (
+    <Page>
+      inbox berichten
+      <div>
+        <List source={email}>{(row) => <div>{row.prop("subject")}</div>}</List>
+      </div>
+      {account.prop("tenantId")}
+      <button class="m-2 bg-slate-500 px-2 text-white" click={(e) => signIn()}>
+        sign in
+      </button>
+      <button
+        class="m-2 bg-red-500 px-2 text-white"
+        click={(e) => signOut(app)}
+      >
+        sign out
+      </button>
+      <button class="m-2 bg-red-500 px-2 text-white" click={(e) => revoke(app)}>
+        revoke
+      </button>
+    </Page>
+  );
 }
 
-function authorize() {
-  const tenantId = "0278d500-4cee-4ff3-ba11-a727fc9c10bb";
-  const clientId = "4b37929a-6080-4e19-99ae-7e91a2c68ce9";
+export function createApp() {
+  return new PublicClientApplication(MSAL_CONFIG);
+}
 
-  const url = new URL(
-    `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize`
+// https://azuread.github.io/microsoft-authentication-library-for-js/ref/msal-browser/classes/_src_app_publicclientapplication_.publicclientapplication.html
+
+function getAccount(
+  myMSALObj: PublicClientApplication
+): Promise<AccountInfo | undefined> {
+  return myMSALObj.initialize().then(() =>
+    // Redirect: once login is successful and redirects with tokens, call Graph API
+    myMSALObj
+      .handleRedirectPromise()
+      .then((response) => {
+        if (response !== null) {
+          if (response.account) return response.account;
+        } else {
+          // need to call getAccount here?
+          const currentAccounts = myMSALObj.getAllAccounts();
+          if (currentAccounts === null) {
+            console.log("No accounts detected");
+          }
+
+          if (currentAccounts.length > 0) {
+            return currentAccounts[0];
+          }
+        }
+        return undefined;
+      })
+      .catch((err) => {
+        console.error(err);
+        return undefined;
+      })
   );
-  url.searchParams.set("client_id", clientId);
-  url.searchParams.set("response_type", "code");
-  url.searchParams.set("response_mode", "query");
-  url.searchParams.set("scope", "mail.read");
-  url.searchParams.set("state", "123");
-  // url.searchParams.set(
-  //   "code_challenge",
-  //   "YTFjNjI1OWYzMzA3MTI4ZDY2Njg5M2RkNmVjNDE5YmEyZGRhOGYyM2IzNjdmZWFhMTQ1ODg3NDcxY2Nl"
-  // );
-  // url.searchParams.set("code_challenge_method", "S256");
-  url.searchParams.set("redirect_uri", window.location.href);
-  return fetch(url, {
-    method: "POST",
+}
+
+async function readGraph(app: PublicClientApplication, account: AccountInfo) {
+  const options: AuthCodeMSALBrowserAuthenticationProviderOptions = {
+    account: account, // the AccountInfo instance to acquire the token for.
+    interactionType: InteractionType.Popup, // msal-browser InteractionType
+    scopes: ["user.read", "mail.read"], // example of the scopes to be passed
+  };
+
+  // Pass the PublicClientApplication instance from step 2 to create AuthCodeMSALBrowserAuthenticationProvider instance
+  const authProvider = new AuthCodeMSALBrowserAuthenticationProvider(
+    app,
+    options
+  );
+
+  const client = Client.init({
+    async authProvider(done) {
+      try {
+        const token = await authProvider.getAccessToken();
+        done(null, token);
+      } catch (err) {
+        done(err, null);
+      }
+    },
   });
+
+  let messages = await client.api("/me").get();
+  console.log(messages);
 }
