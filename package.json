@@ -25,10 +25,10 @@
     "firebase": "9.21.0",
     "oauth4webapi": "^2.3.0",
     "pdfjs-dist": "^3.6.172",
-    "xania": "^0.5.60"
+    "xania": "^0.5.61"
   },
   "devDependencies": {
-    "@rollup/plugin-terser": "^0.4.2",
+    "@rollup/plugin-terser": "^0.4.3",
     "@types/node": "latest",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",

@@ -13,14 +13,13 @@ export type UserInfo = {
   preferredLanguage?: string;
   surname?: string;
   userPrincipalName?: string;
-  value: Array<any>;
 };
 
 /**
  * Mail data from MS Graph
  */
 export type MailInfo = {
-  value?: Array<Message>;
+  value: Array<Message>;
 };
 
 interface Message {

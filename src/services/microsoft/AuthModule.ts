@@ -385,7 +385,7 @@ export async function getTokenPopup(
   try {
     const silentProfileRequest = {
       scopes: ["openid", "profile", "User.Read", "Mail.Read"],
-      forceRefresh: true,
+      forceRefresh: false,
       account,
     };
 
