@@ -1,6 +1,7 @@
 import { Attrs } from "xania";
 import { Link, Route, useRouteContext } from "xania/router";
 import { Page } from "~/layout/page";
+import { Header } from "~/layout/title";
 
 export function Case() {
   const routeContext = useRouteContext();
@@ -30,7 +31,8 @@ export function Case() {
     <>
       <Page>
         <Attrs drop={onDrop} paste={onDrop} dragover={onDropOver} />
-        case {routeContext.params.prop("id")}
+        <Header>Case {routeContext.params.prop("id")}</Header>
+
         <div>
           {loadDocuments().map((d) => (
             <div>

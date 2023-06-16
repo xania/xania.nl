@@ -9,9 +9,11 @@ export default defineConfig({
     port: 1981,
     host: "0.0.0.0",
     proxy: {
-      "/api": {
-        target: "http://0.0.0.0:7071",
+      "/api/tned": {
+        target: "https://www.tenderned.nl",
         changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api\/tned/, ""),
       },
     },
   },

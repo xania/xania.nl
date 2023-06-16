@@ -20,6 +20,8 @@ import {
   Table,
 } from "./components/ui/svg";
 import { Seo } from "./components/seo";
+import { Header } from "./layout/title";
+import { TenderNed } from "./components/tenderned";
 
 render(<App />, document.getElementById("app")!);
 
@@ -72,11 +74,17 @@ export async function App() {
                 <Table /> <span class="ml-3">Seo</span>
                 <Link to="seo" />
               </NavItem>
+              <NavItem>
+                <Table /> <span class="ml-3">TenderNed</span>
+                <Link to="tenderned" />
+              </NavItem>
             </ul>
             {/* <div>{jobfeed().then(list(JobListItem))}</div> */}
           </Page>
           <Route>
             <Page>
+              <Header>Subscribe</Header>
+
               <Subscribe />
             </Page>
           </Route>
@@ -106,6 +114,9 @@ export async function App() {
           </Route>
           <Route path="seo">
             <Seo />
+          </Route>
+          <Route path="tenderned">
+            <TenderNed />
           </Route>
         </div>
       </Layout>

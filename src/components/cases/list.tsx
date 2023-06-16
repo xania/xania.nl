@@ -1,6 +1,7 @@
 import { Link, Route } from "xania/router";
 import { Page } from "~/layout/page";
 import { Case } from "./item";
+import { Header } from "~/layout/title";
 
 export function Cases() {
   const cases = loadCases();
@@ -8,7 +9,8 @@ export function Cases() {
   return (
     <>
       <Page>
-        cases
+        <Header>Cases</Header>
+
         <div>
           <ul>
             {cases.map((c) => (

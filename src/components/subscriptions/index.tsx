@@ -5,7 +5,9 @@ export function Subscribe() {
 
   const subscribeCmd = update(async function (scope) {
     const value = await scope.get(email);
-    addSubscription(value);
+    if (value) {
+      addSubscription(value);
+    }
 
     return email.update("");
   });

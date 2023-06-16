@@ -1,6 +1,7 @@
 import { List, useState } from "xania";
 import { Link, Route } from "xania/router";
 import { Page } from "~/layout/page";
+import { Header } from "~/layout/title";
 // import * as oauth2 from "oauth4webapi";
 import { readMail, revoke, signIn, signOut } from "~/services/microsoft";
 
@@ -16,6 +17,7 @@ export async function InboxApp() {
   return (
     <>
       <Page>
+        <Header>Mail</Header>
         <button
           class="m-2 bg-slate-500 px-2 text-white"
           click={(e) => signIn()}
@@ -45,7 +47,10 @@ export async function InboxApp() {
                       </a>
                     </td>
                     <td class="p-2 pl-4">
-                      <a href="/inbox/message">{row.prop("subject")}</a>
+                      <a>
+                        {row.prop("subject")}
+                        <Link to="message" />
+                      </a>
                     </td>
                   </tr>
                 </>

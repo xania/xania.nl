@@ -1,10 +1,11 @@
 import { Page } from "~/layout/page";
+import { Header } from "~/layout/title";
 
 export function Relations() {
   return (
     <>
       <Page>
-        Relations
+        <Header close>Relations</Header>
         <div>
           <li>
             <li>Naam</li>

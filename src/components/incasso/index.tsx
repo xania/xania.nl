@@ -1,9 +1,12 @@
+import { useState } from "xania";
 import { Page } from "~/layout/page";
+import { Header } from "~/layout/title";
 
 export function Incasso() {
   return (
     <>
       <Page>
+        <Header>Incasso</Header>
         <p class="sm:w-72 sm:p-4">
           Stuur ons uw factuur en wij regelen de rest met de klant om te zorgen
           dat de facturen op een correcte manier betaald kunnen worden.

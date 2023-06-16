@@ -25,7 +25,7 @@
     "firebase": "9.21.0",
     "oauth4webapi": "^2.3.0",
     "pdfjs-dist": "^3.6.172",
-    "xania": "^0.5.61"
+    "xania": "^0.5.64"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.3",

@@ -1,2 +1,4 @@
 ﻿node_modules/
 dist/
+src/components/tenderned/data/import-tned.js
+src/components/tenderned/data/pub.*.json
