@@ -1,4 +1,4 @@
-import { Company, Invoice, XaniaClient } from "../azure-functions";
+import { Company, Invoice } from "../azure-functions";
 import { PageHeader } from "../layout/page/header";
 import { Page, PageContent } from "../layout/page";
 import { jsxFactory } from "@xania/view";
@@ -67,10 +67,9 @@ function invoiceLink(invoice: Invoice) {
   );
 
   async function onDownload() {
-    const client = new XaniaClient({ baseUrl: null });
-    const resp = await client.api.invoiceCreate(invoice);
-
-    const url = window.URL.createObjectURL(resp.data);
+    const { renderInvoicePdf } = await import("./render-pdf");
+    const blob = await renderInvoicePdf(invoice);
+    const url = window.URL.createObjectURL(blob);
 
     var link = document.createElement("a");
     link.href = url;
