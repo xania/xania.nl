@@ -34,6 +34,7 @@ export function InvoiceApp() {
     invoice2025077(),
     invoice2025078(),
     invoice2025079(),
+    invoice2026080(),
   ].reverse();
 
   return (
@@ -409,6 +410,18 @@ function invoice2025079(): Invoice {
     date: "2026-01-14",
     description: "Dec 2025",
     lines: [magnitLine("Software Development", 120, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026080(): Invoice {
+  return {
+    number: "2026080",
+    date: "2026-02-01",
+    description: "Jan 2026",
+    lines: [magnitLine("Lead Developer", 120, 92.5)],
     expirationDays: 30,
     company: magnit,
     sender: xania,

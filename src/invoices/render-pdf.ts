@@ -266,7 +266,7 @@ export async function renderInvoicePdf(invoice: Invoice): Promise<Blob> {
     font,
     9,
     `${normalized.sender.name} | Midwoudpad 18 1024 MC Amsterdam | ibrahim.bensalah@xania.nl\nIBAN: ${normalized.sender.bankAccount} | BTW: NL001613046B67 | KvK: 34236468`,
-    left + 28,
+    left + 38,
     46,
     width - 50,
     11,
