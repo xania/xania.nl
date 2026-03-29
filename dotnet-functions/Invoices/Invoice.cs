@@ -31,7 +31,7 @@ namespace Xania.Functions.Invoices
 
     public class InvoiceLine
     {
-        public int Hours { get; set; }
+        public double Hours { get; set; }
         public string Description { get; set; }
         public decimal Tax { get; set; }
         public decimal Amount { get; set; }

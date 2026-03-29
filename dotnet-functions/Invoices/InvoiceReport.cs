@@ -3,7 +3,6 @@ using iText.Kernel.Colors;
 using iText.Kernel.Font;
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
-using iText.Kernel.Pdf.Colorspace;
 using iText.Layout;
 using iText.Layout.Borders;
 using iText.Layout.Element;
