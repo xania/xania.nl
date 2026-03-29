@@ -2,6 +2,17 @@ import { Company, Invoice } from "../azure-functions";
 import { PageHeader } from "../layout/page/header";
 import { Page, PageContent } from "../layout/page";
 import { jsxFactory } from "@xania/view";
+import { EventContext } from "../../view/lib/jsx2/element";
+
+interface InvoiceDraftConfig {
+  recipients: string[];
+  bcc?: string[];
+  subject: string;
+  bodyLines: string[];
+  invoiceFilename: string;
+  timesheetFilename?: string;
+  timesheetPdfUrl?: string;
+}
 
 const jsx = jsxFactory();
 
@@ -48,6 +59,8 @@ export function InvoiceApp() {
 }
 
 function invoiceLink(invoice: Invoice) {
+  const draftConfig = getDraftConfig(invoice);
+
   return (
     <a class="mdc-card mdc-ripple-surface">
       <div class="mdc-card__content">
@@ -65,6 +78,13 @@ function invoiceLink(invoice: Invoice) {
           <span class="mdc-button__label">Download</span>
           <div class="mdc-button__ripple"></div>
         </button>
+        <button
+          click={onDraftEmail}
+          class="mdc-button mdc-card__action mdc-card__action--button mdc-ripple-upgraded"
+        >
+          <span class="mdc-button__label">Draft Email</span>
+          <div class="mdc-button__ripple"></div>
+        </button>
       </div>
     </a>
   );
@@ -80,6 +100,117 @@ function invoiceLink(invoice: Invoice) {
     link.click();
     window.URL.revokeObjectURL(url);
   }
+
+  async function onDraftEmail(e: EventContext<any, any>) {
+    const button = e.node as HTMLButtonElement | undefined;
+    const label = button?.querySelector(".mdc-button__label");
+    const previous = label?.textContent || "Draft Email";
+
+    try {
+      if (button) {
+        button.disabled = true;
+      }
+      if (label) {
+        label.textContent = "Creating...";
+      }
+
+      const { createInvoiceDraft } = await import("../gmail-draft");
+      const draft = await createInvoiceDraft(invoice, draftConfig);
+
+      alert(
+        `Gmail draft created. Open Gmail Drafts to review it. Draft id: ${
+          draft.id || "unknown"
+        }`,
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      alert(`Failed to create Gmail draft: ${message}`);
+    } finally {
+      if (button) {
+        button.disabled = false;
+      }
+      if (label) {
+        label.textContent = previous;
+      }
+    }
+  }
+}
+
+function getDraftConfig(invoice: Invoice): InvoiceDraftConfig {
+  const timesheet = timesheetAttachment(invoice.number);
+  const subject = `Invoice ${invoice.description}`;
+  const totalAmount = formatInvoiceTotal(invoice);
+  const dueDate = formatDueDate(invoice);
+  const bodyLines = [
+    "Hi Rens,",
+    "",
+    timesheet
+      ? `Please find attached the invoice and timesheet for ${invoice.description}.`
+      : `Please find attached the invoice for ${invoice.description}.`,
+    "",
+    `- Invoice ${invoice.number} - ${invoice.description}`,
+    `- Total amount: ${totalAmount}`,
+    `- Due date: ${dueDate}`,
+    "",
+    "Kind regards,",
+    "Ibrahim",
+  ];
+
+  return {
+    recipients: [
+      "rens.de.deugd@magnitglobal.com",
+      "apukgeneral@magnitglobal.com",
+    ],
+    bcc: ["1309036herken@e-boekhouden.nl"],
+    subject,
+    bodyLines,
+    invoiceFilename: `Factuur ${invoice.number}.pdf`,
+    timesheetFilename: timesheet?.filename,
+    timesheetPdfUrl: timesheet?.url,
+  };
+}
+
+function timesheetAttachment(invoiceNumber: string) {
+  if (invoiceNumber === "2026082") {
+    return {
+      filename: "Timesheet March 2026.pdf",
+      url: "/google-docs-export/document/d/13YqKa-vWZ0aYNhfGi-ypB9ohZqA4DudB/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026081") {
+    return {
+      filename: "Timesheet Feb 2026.pdf",
+      url: "/google-docs-export/document/d/1LiErOjScgcbbxm9XA2lGLlrivB_y9V5x/export?format=pdf",
+    };
+  }
+}
+
+function formatInvoiceTotal(invoice: Invoice) {
+  const subtotal = (invoice.lines || []).reduce(
+    (sum, line) => sum + Number(line.amount || 0),
+    0,
+  );
+  const tax = (invoice.lines || []).reduce(
+    (sum, line) => sum + Number(line.amount || 0) * Number(line.tax || 0),
+    0,
+  );
+
+  return new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: "EUR",
+  }).format(subtotal + tax);
+}
+
+function formatDueDate(invoice: Invoice) {
+  const base = new Date(invoice.date);
+  base.setDate(base.getDate() + Number(invoice.expirationDays || 0));
+
+  return new Intl.DateTimeFormat("nl-NL", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(base);
 }
 
 const magnit: Company = {

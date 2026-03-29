@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gmail Draft</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        background: linear-gradient(135deg, #f4efe6, #e7edf5);
+        color: #1f2933;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 48px auto;
+        padding: 32px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(31, 41, 51, 0.12);
+        box-shadow: 0 18px 60px rgba(31, 41, 51, 0.12);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 34px;
+      }
+
+      p,
+      li {
+        line-height: 1.6;
+      }
+
+      button {
+        margin-top: 18px;
+        padding: 14px 20px;
+        border: 0;
+        background: #1f4b99;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: progress;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        background: #f6f7f9;
+        padding: 16px;
+        border: 1px solid rgba(31, 41, 51, 0.08);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Draft March Invoice Email</h1>
+      <p>
+        This page creates a Gmail draft to
+        <code>rens.de.deugd@magnitglobal.com</code> with these attachments:
+      </p>
+      <ul>
+        <li><code>Factuur 2026082.pdf</code></li>
+        <li><code>Timesheet March 2026.pdf</code></li>
+      </ul>
+      <button id="create-draft">Create Gmail Draft</button>
+      <pre id="status">Ready.</pre>
+    </main>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module" src="./gmail-draft.ts"></script>
+  </body>
+</html>

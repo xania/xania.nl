@@ -16,6 +16,13 @@ export default defineConfig({
     port: 9091,
     host: "0.0.0.0",
     proxy: {
+      "/google-docs-export": {
+        target: "https://docs.google.com",
+        changeOrigin: true,
+        rewrite(path) {
+          return path.replace(/^\/google-docs-export/, "");
+        },
+      },
       "/api": {
         target: "http://0.0.0.0:7071",
         changeOrigin: true,
