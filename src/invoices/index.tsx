@@ -35,6 +35,8 @@ export function InvoiceApp() {
     invoice2025078(),
     invoice2025079(),
     invoice2026080(),
+    invoice2026081(),
+    invoice2026082(),
   ].reverse();
 
   return (
@@ -422,6 +424,30 @@ function invoice2026080(): Invoice {
     date: "2026-02-01",
     description: "Jan 2026",
     lines: [magnitLine("Lead Developer", 120, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026081(): Invoice {
+  return {
+    number: "2026081",
+    date: "2026-03-01",
+    description: "Feb 2026",
+    lines: [magnitLine("Lead Developer", 115, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026082(): Invoice {
+  return {
+    number: "2026082",
+    date: "2026-04-01",
+    description: "March 2026",
+    lines: [magnitLine("Lead Developer", 120.5, 92.5)],
     expirationDays: 30,
     company: magnit,
     sender: xania,
