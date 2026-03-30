@@ -81,10 +81,10 @@ export async function renderInvoicePdf(invoice: Invoice): Promise<Blob> {
   const metaX = left + 334;
   const metaRows = [
     ["Factuur nr", normalized.number],
-    ["Datum", formatDate(normalized.date)],
+    ["Datum", formatDate(normalized.creationDate)],
     [
       "Vervaldatum",
-      formatDate(addDays(normalized.date, normalized.expirationDays)),
+      formatDate(addDays(normalized.creationDate, normalized.expirationDays)),
     ],
     ["Excl btw", formatMoney(normalized.totalAmountExclTax)],
     ["Btw", formatMoney(normalized.totalTax)],
@@ -243,7 +243,7 @@ export async function renderInvoicePdf(invoice: Invoice): Promise<Blob> {
     `U wordt vriendelijk verzocht het bedrag van ${formatMoney(
       normalized.totalAmountInclTax,
     )} uiterlijk ${formatDate(
-      addDays(normalized.date, normalized.expirationDays),
+      addDays(normalized.creationDate, normalized.expirationDays),
     )} over te maken op ${normalized.sender.bankAccount} ten name van ${
       normalized.sender.name
     }`,
@@ -286,7 +286,7 @@ function normalizeInvoice(invoice: Invoice) {
     ...invoice,
     number: invoice.number || "",
     description: invoice.description || "",
-    date: invoice.date || new Date().toISOString().slice(0, 10),
+    creationDate: invoice.creationDate || new Date().toISOString().slice(0, 10),
     expirationDays: Number(invoice.expirationDays) || 30,
     company: {
       name: invoice.company?.name || "",

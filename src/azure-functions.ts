@@ -41,7 +41,7 @@ export interface MultiChoiceOption {
 export interface Invoice {
   number: string | null;
   description: string | null;
-  date: string | null;
+  creationDate: string | null;
   lines: InvoiceLine[];
 
   /** @format double */

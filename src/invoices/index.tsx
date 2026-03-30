@@ -67,7 +67,9 @@ function invoiceLink(invoice: Invoice) {
         <h2 class="mdc-typography mdc-typography--headline6">
           {invoice.number}
         </h2>
-        <h3 class="mdc-typography mdc-typography--subtitle2">{invoice.date}</h3>
+        <h3 class="mdc-typography mdc-typography--subtitle2">
+          {invoice.creationDate}
+        </h3>
         <div class="demo-card__supporting-text">{invoice.description}</div>
       </div>
       <div class="mdc-card__actions">
@@ -203,7 +205,7 @@ function formatInvoiceTotal(invoice: Invoice) {
 }
 
 function formatDueDate(invoice: Invoice) {
-  const base = new Date(invoice.date);
+  const base = new Date(invoice.creationDate);
   base.setDate(base.getDate() + Number(invoice.expirationDays || 0));
 
   return new Intl.DateTimeFormat("nl-NL", {
@@ -235,7 +237,7 @@ interface Sender {
 function invoice2023053(): Invoice {
   return {
     number: "2023053",
-    date: "2023-08-02",
+    creationDate: "2023-08-02",
     description: "July 2023",
     lines: [magnitLine("Lead Developer", 82)],
     expirationDays: 30,
@@ -247,7 +249,7 @@ function invoice2023053(): Invoice {
 function invoice2023054(): Invoice {
   return {
     number: "2023054",
-    date: "2023-09-23",
+    creationDate: "2023-09-23",
     description: "Aug 2023",
     lines: [magnitLine("Lead Developer", 23 * 8)],
     expirationDays: 30,
@@ -259,7 +261,7 @@ function invoice2023054(): Invoice {
 function invoice2023055(): Invoice {
   return {
     number: "2023055",
-    date: "2023-10-26",
+    creationDate: "2023-10-26",
     description: "Sept 2023",
     lines: [magnitLine("Lead Developer", 21 * 8)],
     expirationDays: 30,
@@ -270,7 +272,7 @@ function invoice2023055(): Invoice {
 function invoice2023056(): Invoice {
   return {
     number: "2023056",
-    date: "2023-12-31",
+    creationDate: "2023-12-31",
     description: "Okt 2023",
     lines: [magnitLine("Lead Developer", 178)],
     expirationDays: 30,
@@ -281,7 +283,7 @@ function invoice2023056(): Invoice {
 function invoice2023057(): Invoice {
   return {
     number: "2023057",
-    date: "2023-12-31",
+    creationDate: "2023-12-31",
     description: "Nov 2023",
     lines: [magnitLine("Lead Developer", 186)],
     expirationDays: 30,
@@ -292,7 +294,7 @@ function invoice2023057(): Invoice {
 function invoice2024058(): Invoice {
   return {
     number: "2024059",
-    date: "2024-04-01",
+    creationDate: "2024-04-01",
     description: "Dec 2023",
     lines: [magnitLine("Lead Developer", 140)],
     expirationDays: 30,
@@ -303,7 +305,7 @@ function invoice2024058(): Invoice {
 function invoice2024059(): Invoice {
   return {
     number: "2024059",
-    date: "2024-04-01",
+    creationDate: "2024-04-01",
     description: "Jan 2024",
     lines: [magnitLine("Lead Developer", 183)],
     expirationDays: 30,
@@ -314,7 +316,7 @@ function invoice2024059(): Invoice {
 function invoice2024060(): Invoice {
   return {
     number: "2024060",
-    date: "2024-04-01",
+    creationDate: "2024-04-01",
     description: "Feb 2024",
     lines: [magnitLine("Lead Developer", 179)],
     expirationDays: 30,
@@ -325,7 +327,7 @@ function invoice2024060(): Invoice {
 function invoice2024061(): Invoice {
   return {
     number: "2024061",
-    date: "2024-04-01",
+    creationDate: "2024-04-01",
     description: "Mrt 2024",
     lines: [magnitLine("Lead Developer", 183)],
     expirationDays: 30,
@@ -336,7 +338,7 @@ function invoice2024061(): Invoice {
 function invoice2024062(): Invoice {
   return {
     number: "2024062",
-    date: "2024-05-05",
+    creationDate: "2024-05-05",
     description: "Apr 2024",
     lines: [magnitLine("Lead Developer", 164)],
     expirationDays: 30,
@@ -347,7 +349,7 @@ function invoice2024062(): Invoice {
 function invoice2024063(): Invoice {
   return {
     number: "2024063",
-    date: "2024-06-02",
+    creationDate: "2024-06-02",
     description: "May 2024",
     lines: [magnitLine("Lead Developer", 127)],
     expirationDays: 30,
@@ -358,7 +360,7 @@ function invoice2024063(): Invoice {
 function invoice2024064(): Invoice {
   return {
     number: "2024064",
-    date: "2024-07-14",
+    creationDate: "2024-07-14",
     description: "Jun 2024",
     lines: [magnitLine("Lead Developer", 3 * 40 + 1 + 1 + 4 + 1 + 4)],
     expirationDays: 30,
@@ -369,7 +371,7 @@ function invoice2024064(): Invoice {
 function invoice2024065(): Invoice {
   return {
     number: "2024065",
-    date: "2024-08-10",
+    creationDate: "2024-08-10",
     description: "Jul 2024",
     lines: [magnitLine("Lead Developer", 186)],
     expirationDays: 30,
@@ -380,7 +382,7 @@ function invoice2024065(): Invoice {
 function invoice2024066(): Invoice {
   return {
     number: "2024066",
-    date: "2024-09-01",
+    creationDate: "2024-09-01",
     description: "Aug 2024",
     lines: [magnitLine("Lead Developer", 81)],
     expirationDays: 30,
@@ -391,7 +393,7 @@ function invoice2024066(): Invoice {
 function invoice2024067(): Invoice {
   return {
     number: "2024067",
-    date: "2024-10-09",
+    creationDate: "2024-10-09",
     description: "Sept 2024",
     lines: [magnitLine("Lead Developer", 176)],
     expirationDays: 30,
@@ -403,7 +405,7 @@ function invoice2024067(): Invoice {
 function invoice2024068(): Invoice {
   return {
     number: "2024068",
-    date: "2024-11-01",
+    creationDate: "2024-11-01",
     description: "Oct 2024",
     lines: [magnitLine("Lead Developer", 204, 87.5)],
     expirationDays: 30,
@@ -415,7 +417,7 @@ function invoice2024068(): Invoice {
 function invoice2024069(): Invoice {
   return {
     number: "2024069",
-    date: "2024-12-12",
+    creationDate: "2024-12-12",
     description: "Nov 2024",
     lines: [magnitLine("Lead Developer", 168, 87.5)],
     expirationDays: 30,
@@ -427,7 +429,7 @@ function invoice2024069(): Invoice {
 function invoice2024070(): Invoice {
   return {
     number: "2024070",
-    date: "2024-12-27",
+    creationDate: "2024-12-27",
     description: "Dec 2024",
     lines: [magnitLine("Lead Developer", 152, 90)],
     expirationDays: 30,
@@ -439,7 +441,7 @@ function invoice2024070(): Invoice {
 function invoice2024071(): Invoice {
   return {
     number: "2024071",
-    date: "2025-02-10",
+    creationDate: "2025-02-10",
     description: "Jan 2025",
     lines: [magnitLine("Lead Developer", 186, 90)],
     expirationDays: 30,
@@ -451,7 +453,7 @@ function invoice2024071(): Invoice {
 function invoice2025072(): Invoice {
   return {
     number: "2025072",
-    date: "2025-03-03",
+    creationDate: "2025-03-03",
     description: "Feb 2025",
     lines: [magnitLine("Lead Developer", 163, 90)],
     expirationDays: 30,
@@ -463,7 +465,7 @@ function invoice2025072(): Invoice {
 function invoice2025073(): Invoice {
   return {
     number: "2025073",
-    date: "2025-04-01",
+    creationDate: "2025-04-01",
     description: "March 2025",
     lines: [magnitLine("Lead Developer", 170.5, 92.5)],
     expirationDays: 30,
@@ -475,7 +477,7 @@ function invoice2025073(): Invoice {
 function invoice2025074(): Invoice {
   return {
     number: "2025074",
-    date: "2025-05-27",
+    creationDate: "2025-05-27",
     description: "April 2025",
     lines: [magnitLine("Lead Developer", 160, 92.5)],
     expirationDays: 30,
@@ -487,7 +489,7 @@ function invoice2025074(): Invoice {
 function invoice2025075(): Invoice {
   return {
     number: "2025075",
-    date: "2025-06-01",
+    creationDate: "2025-06-01",
     description: "May 2025",
     lines: [magnitLine("Lead Developer", 166, 92.5)],
     expirationDays: 30,
@@ -499,7 +501,7 @@ function invoice2025075(): Invoice {
 function invoice2025076(): Invoice {
   return {
     number: "2025076",
-    date: "2025-07-05",
+    creationDate: "2025-07-05",
     description: "Jun 2025",
     lines: [magnitLine("Lead Developer", 173, 92.5)],
     expirationDays: 30,
@@ -511,7 +513,7 @@ function invoice2025076(): Invoice {
 function invoice2025077(): Invoice {
   return {
     number: "2025077",
-    date: "2025-07-05",
+    creationDate: "2025-07-05",
     description: "Jul-Oct 2025",
     lines: [
       magnitLine("Jul", 152, 92.5),
@@ -528,7 +530,7 @@ function invoice2025077(): Invoice {
 function invoice2025078(): Invoice {
   return {
     number: "2025078",
-    date: "2025-07-05",
+    creationDate: "2025-07-05",
     description: "Nov 2025",
     lines: [magnitLine("Nov", 142, 92.5)],
     expirationDays: 30,
@@ -540,7 +542,7 @@ function invoice2025078(): Invoice {
 function invoice2025079(): Invoice {
   return {
     number: "2025079",
-    date: "2026-01-14",
+    creationDate: "2026-01-14",
     description: "Dec 2025",
     lines: [magnitLine("Software Development", 120, 92.5)],
     expirationDays: 30,
@@ -552,7 +554,7 @@ function invoice2025079(): Invoice {
 function invoice2026080(): Invoice {
   return {
     number: "2026080",
-    date: "2026-02-01",
+    creationDate: "2026-03-29",
     description: "Jan 2026",
     lines: [magnitLine("Lead Developer", 120, 92.5)],
     expirationDays: 30,
@@ -564,7 +566,7 @@ function invoice2026080(): Invoice {
 function invoice2026081(): Invoice {
   return {
     number: "2026081",
-    date: "2026-03-01",
+    creationDate: "2026-03-29",
     description: "Feb 2026",
     lines: [magnitLine("Lead Developer", 115, 92.5)],
     expirationDays: 30,
@@ -576,7 +578,7 @@ function invoice2026081(): Invoice {
 function invoice2026082(): Invoice {
   return {
     number: "2026082",
-    date: "2026-04-01",
+    creationDate: "2026-04-01",
     description: "March 2026",
     lines: [magnitLine("Lead Developer", 120.5, 92.5)],
     expirationDays: 30,

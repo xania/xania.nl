@@ -238,7 +238,7 @@ if (button && status) {
 function getMarchInvoice(): Invoice {
   return {
     number: "2026082",
-    date: "2026-04-01",
+    creationDate: "2026-04-01",
     description: "March 2026",
     lines: [
       {
