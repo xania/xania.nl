@@ -48,6 +48,8 @@ export function InvoiceApp() {
     invoice2026080(),
     invoice2026081(),
     invoice2026082(),
+    invoice2026083(),
+    invoice2026084(),
   ].reverse();
 
   return (
@@ -177,6 +179,20 @@ function timesheetAttachment(invoiceNumber: string) {
     return {
       filename: "Timesheet March 2026.pdf",
       url: "/google-docs-export/document/d/13YqKa-vWZ0aYNhfGi-ypB9ohZqA4DudB/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026083") {
+    return {
+      filename: "Timesheet Apr 2026.pdf",
+      url: "/google-docs-export/document/d/11jCR_c6zhGDy1zcazG91QZvzBlqkqHod/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026084") {
+    return {
+      filename: "Timesheet May 2026.pdf",
+      url: "/google-docs-export/document/d/1LkZVOjl1NNON20ZQnt6_hsGuWbrmJsPo/export?format=pdf",
     };
   }
 
@@ -581,6 +597,30 @@ function invoice2026082(): Invoice {
     creationDate: "2026-04-01",
     description: "March 2026",
     lines: [magnitLine("Lead Developer", 120.5, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026083(): Invoice {
+  return {
+    number: "2026083",
+    creationDate: "2026-05-01",
+    description: "Apr 2026",
+    lines: [magnitLine("Lead Developer", 176, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026084(): Invoice {
+  return {
+    number: "2026084",
+    creationDate: "2026-05-31",
+    description: "May 2026",
+    lines: [magnitLine("Lead Developer", 154, 92.5)],
     expirationDays: 30,
     company: magnit,
     sender: xania,

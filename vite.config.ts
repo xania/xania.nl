@@ -32,6 +32,14 @@ export default defineConfig({
     //   ignored: ["xania-functions"],
     // },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        quietDeps: true,
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
+  },
   root: "src",
   build: {
     minify: true,
