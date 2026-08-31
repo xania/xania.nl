@@ -50,6 +50,9 @@ export function InvoiceApp() {
     invoice2026082(),
     invoice2026083(),
     invoice2026084(),
+    invoice2026085(),
+    invoice2026086(),
+    invoice2026087(),
   ].reverse();
 
   return (
@@ -193,6 +196,27 @@ function timesheetAttachment(invoiceNumber: string) {
     return {
       filename: "Timesheet May 2026.pdf",
       url: "/google-docs-export/document/d/1LkZVOjl1NNON20ZQnt6_hsGuWbrmJsPo/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026085") {
+    return {
+      filename: "Timesheet Jun 2026.pdf",
+      url: "/google-docs-export/document/d/1eg_NwvKJbco8Vyziu3U_94VBGKiGH-pa/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026086") {
+    return {
+      filename: "Timesheet Jul 2026.pdf",
+      url: "/google-docs-export/document/d/1JwmADusNu2Q-FG7gT02MwYXFWQHj4E9f/export?format=pdf",
+    };
+  }
+
+  if (invoiceNumber === "2026087") {
+    return {
+      filename: "Timesheet Aug 2026.pdf",
+      url: "/google-docs-export/document/d/1XZH-xuwYnyRCyPL56oFMY-6-J5R5Icru/export?format=pdf",
     };
   }
 
@@ -621,6 +645,42 @@ function invoice2026084(): Invoice {
     creationDate: "2026-05-31",
     description: "May 2026",
     lines: [magnitLine("Lead Developer", 154, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026085(): Invoice {
+  return {
+    number: "2026085",
+    creationDate: "2026-07-01",
+    description: "Jun 2026",
+    lines: [magnitLine("Lead Developer", 176, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026086(): Invoice {
+  return {
+    number: "2026086",
+    creationDate: "2026-08-01",
+    description: "Jul 2026",
+    lines: [magnitLine("Feature Development", 168, 92.5)],
+    expirationDays: 30,
+    company: magnit,
+    sender: xania,
+  };
+}
+
+function invoice2026087(): Invoice {
+  return {
+    number: "2026087",
+    creationDate: "2026-09-01",
+    description: "Aug 2026",
+    lines: [magnitLine("Feature Development", 160, 92.5)],
     expirationDays: 30,
     company: magnit,
     sender: xania,
